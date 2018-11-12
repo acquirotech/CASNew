@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqOrganization1" table="acq_store_info" catalog="acquiro_ver1">
+        <id name="orgId" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="NAME" length="100" not-null="false" />
+        </property>
+      
+        <property name="address1" type="string">
+            <column name="ADDRESS1 " length="100" not-null="false" />
+        </property>
+        <property name="address2" type="string">
+            <column name="ADDRESS2 " length="100" not-null="false" />
+        </property>
+        
+         <property name="city" type="string">
+            <column name="CITY " length="50" not-null="false" />
+        </property>
+         <property name="state" type="string">
+            <column name="STATE " length="50" not-null="false" />
+        </property>
+         <property name="country" type="string">
+            <column name="COUNTRY " length="50" not-null="false" />
+        </property>
+         <property name="merchantId" type="java.lang.Integer">
+            <column name="MERCHANT_ID" length="50" not-null="false" />
+        </property>
+        <property name="pincode" type="string">
+            <column name="PINCODE " length="6" not-null="false" />
+        </property>
+      <property name="aquirerCode" type="string">
+            <column name="aquirer_code " length="50" not-null="false" />
+        </property>
+      
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqSettingEntity" table="acq_settings" catalog="acquiro_ver1">          
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+        </id>       
+        <property name="serviceTax" type="string">
+            <column name="servicetax" length="10" not-null="true" />
+        </property>   
+         <property name="mdrDebit0" type="string">
+            <column name="mdrdebit0" length="10" not-null="true" />
+        </property>     
+        <property name="mdrDebit1" type="string">
+            <column name="mdrdebit1" length="10" not-null="true" />
+        </property>
+        <property name="mdrDebit2" type="string">
+            <column name="mdrdebit2" length="10" not-null="false" />
+        </property>
+        <property name="mdrCr" type="string">
+            <column name="mdrcr" not-null="true" />
+        </property>
+        <property name="mdrCrpn" type="string">
+            <column name="mdrcrpn" not-null="true" />
+        </property>
+        <property name="mdrAmex" type="string">
+        	<column name="mdramex"></column>
+        </property>        
+        <property name="mdrMoiKwik" type="string">
+        	<column name="MDRMOBIKWIK"></column>
+        </property>
+        <property name="other" type="string">
+            <column name="other" not-null="true" />
+        </property>
+        <property name="mdrPayUmoney" type="string">
+            <column name="mdrpayumoney" not-null="false" />
+        </property>
+         <property name="mdrFreecharge" type="string">
+            <column name="mdrfreecharge" not-null="false" />
+        </property>
+        <property name="mdrCitrus" type="string">
+            <column name="mdrcitrus" not-null="false" />
+        </property>
+        <property name="mdrCashAtPos" type="string">
+            <column name="CASHATPOSAMT" not-null="true" />
+        </property>
+        <property name="mdrAirtelMoney" type="string">
+            <column name="MDRAIRTEL" not-null="false" />
+        </property>
+        
+        <property name="walletPayoutAc" type="string">
+            <column name="walletpayoutac" not-null="true" />
+        </property>
+         <property name="cardPayoutAc" type="string">
+            <column name="cardpayoutac" not-null="true" />
+        </property>
+        <property name="beneficiaryEmail" type="string">
+            <column name="BENEFICIARYEMAIL" not-null="false" />
+        </property>
+        <property name="payoutEmail" type="string">
+            <column name="PAYOUTEMAIL" not-null="false" />
+        </property>
+        <property name="aquirerCode" type="string">
+            <column name="AQUIRER_CODE" not-null="false" />
+        </property>
+        <property name="cashAtPosServiceTax" type="string">
+            <column name="CASHATPOSSERVICETAX" not-null="false" />
+        </property>
+        <property name="maintenanceMode" type="string">
+            <column name="MAINTENANCEMODE" not-null="false" />
+        </property>
+        <property name="maintenanceReason" type="string">
+            <column name="MAINTENANCEREASON" not-null="false" />
+        </property>
+        <property name="appVersion" type="string">
+            <column name="APPVERSION" not-null="false" />
+        </property>
+        <property name="mdrCrpnEmerging" type="string">
+            <column name="MDRCRPN_EMERGING" not-null="false" />
+        </property>
+        <property name="neftFee" type="string">
+            <column name="NEFTFEE" not-null="false" />
+        </property>
+        <property name="systemUtilityAmt" type="string">
+            <column name="SYSTEMUTILITYAMT" not-null="false" />
+        </property>
+        <property name="systemUtilityFee" type="string">
+            <column name="SYSTEMUTILITYFEE" not-null="false" />
+        </property>
+        
+        
+        
+        
+        
+        
+    </class>
+</hibernate-mapping>

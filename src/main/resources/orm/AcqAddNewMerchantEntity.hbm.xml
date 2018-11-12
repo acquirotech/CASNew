@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqAddNewMerchantEntity" table="acq_merchant_summary" catalog="acquiro_ver1">
+        <id name="merchantId" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>        
+        <set name="orgRecords" table=" acq_store_info" 
+				inverse="true" lazy="false"  fetch="join" >
+            <key>
+                <column name="MERCHANT_ID" />
+            </key>
+            <one-to-many class="com.acq.users.model.AcqOrganization" />
+        </set>
+        
+        <property name="merchantName" type="string">
+            <column name="name" length="100" not-null="true" />
+        </property>
+        <property name="businessType" type="string">
+            <column name="business_type" length="45" not-null="true" />
+        </property>
+         <property name="merchantType" type="string">
+            <column name="merchant_Type" length="20" not-null="true" />
+        </property>
+        <property name="directorsName" type="string">
+            <column name="directors_name" length="100" not-null="true" />
+        </property>
+        <property name="authorizedSignatory" type="string">
+            <column name="AUTHORIZED_SIGNATORY" length="50" not-null="true" />
+        </property>
+        <property name="businessNature" type="string">
+            <column name="BUSINESS_NATURE" length="100" not-null="true" />
+        </property>
+        <property name="businessCode" type="string">
+            <column name="BUSINESS_CODE" length="50" not-null="true" />
+        </property>
+        
+        <property name="marketingName" type="string">
+            <column name="MARKETING_NAME" length="100" not-null="false" />
+        </property>
+        <property name="businessAddress1" type="string">
+            <column name="ADDRESS1 " length="100" not-null="true" />
+        </property>
+        <property name="businessAddress2" type="string">
+            <column name="ADDRESS2 " length="100" not-null="true" />
+        </property>
+         <property name="businessCity" type="string">
+            <column name="CITY" length="50" not-null="true" />
+        </property>
+         <property name="businessState" type="string">
+            <column name="STATE" length="50" not-null="true" />
+        </property>
+         <property name="businessPincode" type="string">
+            <column name="business_pincode " length="6" not-null="true" />
+        </property>
+        
+         <property name="personalUserAddress1" type="string">
+            <column name="personal_address1" length="100" not-null="true" />
+        </property>
+          <property name="personalUserAddress2" type="string">
+            <column name="personal_address2" length="100" not-null="true" />
+        </property>
+         <property name="personalUserCity" type="string">
+            <column name="personal_city" length="50" not-null="true" />
+        </property>
+         <property name="personalUserState" type="string">
+            <column name="personal_state" length="50" not-null="true" />
+        </property>
+         <property name="personalUserPincode" type="string">
+            <column name="personal_pincode " length="6" not-null="true" />
+        </property>
+         <property name="password" type="string">
+            <column name="password " length="80" not-null="true" />
+        </property>
+         <property name="country" type="string">
+            <column name="country" length="50" not-null="true" />
+        </property>
+        
+        
+        
+        <property name="phoneNo" type="string">
+            <column name="phoneno " length="54" not-null="false" />
+        </property>
+         <property name="websiteUrl" type="string">
+            <column name="WEBSITEURL " length="150" not-null="false" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="EMAIL_ID" length="100" not-null="true" />
+        </property>
+        <property name="tinNo" type="string">
+            <column name="TIN_NO" length="15" not-null="false" />
+        </property>
+        <property name="serviceTaxNo" type="string">
+            <column name="SERVICE_TAX_NO" length="45" not-null="true" />
+        </property>
+         <property name="bankMid" type="string">
+            <column name="BANK_MID" length="45" not-null="false" />
+        </property>
+        
+         
+         <property name="verificationStatus" type="string">
+            <column name="VERIFICATION_STATUS" length="45" not-null="true" />
+        </property>
+        <property name="note" type="string">
+            <column name="NOTE" length="250" not-null="false" />
+        </property>
+        <property name="dateCreated" type="string">
+            <column name="create_on" length="10" not-null="false" />
+        </property>
+        <property name="dateUpdated" type="string">
+            <column name="updated_on" length="20" not-null="false"  />
+        </property>
+         <property name="paymentDetail" type="string">
+            <column name="PAYMENT_TYPE" length="20" not-null="false"  />
+        </property>
+         <property name="swipeAmount" type="string">
+            <column name="SWIPE_AMOUNT" not-null="false"  />
+        </property>
+         <property name="swipeDate" type="string">
+            <column name="SWIPE_DATE" length="20" not-null="false"  />
+        </property>
+         <property name="swipeTerminal" type="string">
+            <column name="SWIPE_TERMINAL" length="20" not-null="false"  />
+        </property>
+         <property name="chequeNo" type="string">
+            <column name="CHEQUE_NO" length="20" not-null="false"  />
+        </property>
+         <property name="chequeAmount" type="string">
+            <column name="CHEQUE_AMOUNT" not-null="false"  />
+        </property>
+         <property name="chequeDate" type="string">
+            <column name="CHEQUE_DATE" length="20" not-null="false"  />
+        </property>
+         <property name="chequeDepositeDate" type="string">
+            <column name="CHEQUE_DEPOSIT_DATE" length="20" not-null="false"  />
+        </property>
+         <property name="chequeBank" type="string">
+            <column name="CHEQUE_BANKNAME" length="20" not-null="false"  />
+        </property>
+         <property name="cashAmount" type="string">
+            <column name="CASH_AMOUNT" not-null="false"  />
+        </property>
+         <property name="cashDate" type="string">
+            <column name="CASH_DATE" length="20" not-null="false"  />
+        </property>
+      	<property name="neftAmount" type="string">
+            <column name="NEFT_AMOUNT" not-null="false"  />
+        </property>
+        <property name="neftDate" type="string">
+            <column name="NEFT_DATE" length="20" not-null="false"  />
+        </property>
+        <property name="neftchequeNo" type="string">
+            <column name="NEFT_CHEQUENO" length="20" not-null="false"  />
+        </property>
+        <property name="neftRefNo" type="string">
+            <column name="NEFT_REFNO" length="20" not-null="false"  />
+        </property>
+        
+        
+        <property name="executiveName" type="string">
+            <column name="EXECUTIVENAME" length="60" not-null="false"  />
+        </property>
+        <property name="cubMerchant" type="string">
+            <column name="CUB_MERCHANT" length="60" not-null="false"  />
+        </property>
+        <property name="aquirerCode" type="string">
+            <column name="AQUIRER_CODE" length="50" not-null="false"  />
+        </property>
+        <property name="appReceiptDate" type="string">
+            <column name="APP_RECEIPT_DATE" length="50" not-null="false"  />
+        </property>
+        <property name="typeOfSale" type="string">
+            <column name="TYPE_OF_SALE" length="50" not-null="false"  />
+        </property>
+        <property name="amName" type="string">
+            <column name="AM_NAME" length="50" not-null="false"  />
+        </property>
+        <property name="tsoName" type="string">
+            <column name="TSO_NAME" length="50" not-null="false"  />
+        </property>
+        <property name="onBoardEmpName" type="string">
+            <column name="ONBOARD_EXE_NAME" length="60" not-null="false"  />
+        </property>
+         <property name="onBoardUpdateEmpName" type="string">
+            <column name="ONBOARD_UPDATE_EXE_NAME" length="60" not-null="false"  />
+        </property>
+          <property name="onBoardingStatus" type="string">
+            <column name="BOARDING_STATUS" length="60" not-null="false"  />
+        </property>
+        
+          <property name="verificationEntryDate" type="string">
+            <column name="VERIFICATION_ENTRY_DATE" length="60" not-null="false"  />
+        </property>
+        
+          <property name="agreementRcvdDate" type="string">
+            <column name="AGREEMENT_RECEIVED_DATE" length="60" not-null="false"  />
+        </property>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </class>
+</hibernate-mapping>

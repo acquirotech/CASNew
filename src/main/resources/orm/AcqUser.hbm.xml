@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.model.AcqUser" table="acq_terminal_users" catalog="acquiro_ver1">
+        <id name="userId" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="userName" type="string">
+            <column name="name" length="100" not-null="false" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="70" not-null="true" />
+        </property>
+        <property name="loginId" type="java.lang.Long">
+            <column name="login_id" length="10" not-null="true" />
+        </property>
+        <property name="rmn" type="java.lang.Long">
+            <column name="rmn" length="10" not-null="true" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="email_id" length="100" not-null="false" />
+        </property>
+        <property name="orgId" type="java.lang.Long">
+            <column name="org_id" length="20" not-null="false" />
+        </property>
+         <property name="date" type="java.util.Date">
+            <column name="date" length="12" not-null="false" />
+        </property>
+         <property name="userStatus" type="string">
+            <column name="USERSTATUS"  />
+        </property>
+         <property name="loyaltyStatus" type="string">
+            <column name="LOYALTYSTATUS"  />
+        </property>
+        <property name="closeWalletStatus" type="string">
+            <column name="CLOSEWLLTSTATUS"  />
+        </property>
+        <property name="txnSmsStatus" type="string">
+            <column name="SMSSTATUS"  />
+        </property>
+        <property name="rechargeServiceEnable" type="string">
+            <column name="RECHARGESRVCENABLE"  />
+        </property>
+         <property name="aquirerCode" type="string">
+            <column name="AQUIRER_CODE"  />
+        </property>
+         <property name="switchType" type="string">
+            <column name="SWITCHTYPE"  />
+        </property>
+         <property name="ppcServiceEnable" type="string">
+            <column name="PPCSRVCENABLE"  />
+        </property>
+         <property name="dmtServiceEnable" type="string">
+            <column name="DMTSRVCENABLE"  />
+        </property>
+         <property name="dthMobileServiceEnable" type="string">
+            <column name="DTHMOBILESRVCENABLE"  />
+        </property>
+        
+        <one-to-one name="AcqDevice" class="com.acq.users.model.AcqDevice" cascade="all"></one-to-one>  
+        
+    </class>
+</hibernate-mapping>

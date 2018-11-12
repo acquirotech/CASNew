@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqDeviceAndUserEntity" table="acq_terminal_user_info" catalog="acquiro_ver1">
+          
+       <id name="id" type="string">
+            <column name="id" />
+        </id>       
+        <property name="bankTid" type="string">
+            <column name="bank_tid" length="50" />
+        </property>
+        <property name="userId" type="java.lang.Long">
+            <column name="user_id" length="20" not-null="false" />
+        </property>        
+        <one-to-one name="AcqUserEntity" class="com.acq.users.entity.AcqUserEntity" cascade="all"></one-to-one> 
+    </class>
+    
+    <class name="com.acq.users.entity.AcqUserEntity" table="acq_terminal_users" catalog="acquiro_ver1">          
+       <id name="id" type="string">
+            <column name="id" />
+        </id>     
+        <property name="rmn" type="string">
+            <column name="rmn" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

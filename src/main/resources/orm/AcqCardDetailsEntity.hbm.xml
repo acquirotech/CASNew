@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqCardDetailsEntity" table="acq_transaction_card_summary" catalog="acquiro_ver1">    	  
+    	<id name="id" type="string">
+            <column name="ID" />
+        </id>
+        <property name="txnId" type="string">
+            <column name="TRANSACTIONID" length="11" not-null="true" />
+        </property>
+        <property name="terminalId" type="string">
+        	<column name="TERMINALID" length="50" not-null="true" />
+        </property>
+        <property name="datetime" type="string">
+        	<column name="DATETIME" length="100" not-null="false" />
+        </property>  
+    </class>
+</hibernate-mapping>

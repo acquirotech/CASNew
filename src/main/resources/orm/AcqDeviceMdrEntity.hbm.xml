@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqDeviceMdrEntity" table="acq_terminal_user_info" catalog="acquiro_ver1">
+          
+         <id name="userId" type="java.lang.Long">
+            <column name="user_id" />
+        </id>
+       
+        <property name="mdrDebit1" type="java.math.BigDecimal">
+            <column name="mdr_debit1" not-null="false" />
+        </property>
+          <property name="mdrDebit2" type="java.math.BigDecimal">
+            <column name="mdr_debit2" not-null="false" />
+        </property>
+        <property name="mdrCreditNpre" type="java.math.BigDecimal">
+            <column name="mdr_credit_npre" not-null="false" />
+        </property>
+         <property name="mdrCreditPre" type="java.math.BigDecimal">
+            <column name="mdr_credit_pre" not-null="false" />
+        </property>
+        <property name="mdrAmex" type="java.math.BigDecimal">
+            <column name="mdr_amex" not-null="false" />
+        </property>
+        <property name="other" type="java.math.BigDecimal">
+            <column name="other" not-null="false" />
+        </property>
+          <property name="mdrDebit0" type="java.math.BigDecimal">
+            <column name="mdr_debit0" not-null="false" />
+        </property>
+    </class>
+</hibernate-mapping>

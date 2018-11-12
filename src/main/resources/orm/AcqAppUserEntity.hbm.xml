@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqAppUserEntity" table="acq_terminal_users" catalog="acquiro_ver1">
+        <id name="userId" type="java.lang.Long">
+            <column name="ID" />
+        </id>
+        <property name="orgId" type="java.lang.Long">
+            <column name="ORG_ID" not-null="false" />
+        </property>
+    </class>
+</hibernate-mapping>

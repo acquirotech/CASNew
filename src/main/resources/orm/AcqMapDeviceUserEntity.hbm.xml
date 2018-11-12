@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqMapDeviceUserEntity" table="acq_terminal_user_info" catalog="acquiro_ver1">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+        </id>
+        
+        <property name="userId" type="java.lang.Long">
+            <column name="user_id" length="30" not-null="false" />
+        </property>
+      
+        <property name="mdrDebit1" type="string">
+            <column name="MDR_DEBIT1" length="20" not-null="false" />
+        </property>
+        <property name="mdrDebit2" type="string">
+            <column name="MDR_DEBIT2" length="20" not-null="false" />
+        </property>
+        
+         <property name="mdrCreditNPRE" type="string">
+            <column name="MDR_CREDIT_NPRE " length="20" not-null="false" />
+        </property>
+         <property name="mdrCreditPRE" type="string">
+            <column name="MDR_CREDIT_PRE " length="20" not-null="false" />
+        </property>
+         <property name="mdrAMEX" type="string">
+            <column name="MDR_AMEX " length="20" not-null="false" />
+        </property>
+         <property name="other" type="string">
+            <column name="OTHER " length="20" not-null="false" />
+        </property>
+      
+    </class>
+</hibernate-mapping>

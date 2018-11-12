@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqLoanDetails" table="acq_loan_summary" catalog="acquiro_ver1">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>        
+        <property name="bankTid" type="string">
+            <column name="BANKTID" not-null="false" />
+        </property>
+        <property name="userId" type="java.lang.Long">
+            <column name="USERID" length="20" not-null="false" />
+        </property>
+        <property name="merchantId" type="java.lang.Long">
+            <column name="MERCHANTID" length="20" not-null="false" />
+        </property>
+        <property name="orgId" type="java.lang.Long">
+            <column name="ORGID" length="20" not-null="false" />
+        </property>
+        <property name="loanBankAccNo" type="string">
+            <column name="BANKACCOUNT" not-null="false" />
+        </property>
+        <property name="loanBankIfsc" type="string">
+            <column name="BANKIFSC"  not-null="false" />
+        </property>
+       
+        <property name="loanBankName" type="string">
+            <column name="BANKNAME"  not-null="false" />
+        </property>
+          <property name="dateTime" type="java.sql.Timestamp">
+            <column name="DATECREATED"  not-null="false" />
+        </property>
+        <property name="updatedOn" type="java.sql.Timestamp">
+            <column name="UPDATEDON"  not-null="false" />
+        </property>
+          <property name="aquirerCode" type="string">
+            <column name="AQUIRER_CODE"  not-null="false" />
+        </property>
+        
+        
+    </class>
+</hibernate-mapping>

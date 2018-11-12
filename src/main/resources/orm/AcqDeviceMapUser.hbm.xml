@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.model.AcqDeviceMapUser" table="acq_terminal_user_info" catalog="acquiro_ver1">
+    	
+    	<id name="userId" type="java.lang.Long">
+			<column name="USER_ID" />
+			<generator class="foreign">
+				<param name="property">appUser</param>
+			</generator>
+		</id>       
+        <property name="serialNo" type="string">
+            <column name="serial_no" length="50" not-null="true" />
+        </property>      
+        <property name="bankTId" type="string">
+            <column name="bank_tid" length="50" not-null="true" />
+        </property>
+        <property name="userId" type="java.lang.Long">
+            <column name="user_id" length="20" not-null="true" />
+        </property>
+          <property name="mdrDebit0" type="java.math.BigDecimal">
+    		<column name="MDTATZERO" not-null="false" />
+ 		</property>
+ 		 <property name="settlementCharges" type="java.math.BigDecimal">
+            <column name="SETTLEMENT_CHARGES" not-null="true" />
+        </property>
+        <property name="mdrDebit1" type="java.math.BigDecimal">
+            <column name="mdr_debit1" not-null="true" />
+        </property>
+          <property name="mdrDebit2" type="java.math.BigDecimal">
+            <column name="mdr_debit2" not-null="true" />
+        </property>
+        <property name="mdrCreditNpre" type="java.math.BigDecimal">
+            <column name="mdr_credit_npre" not-null="true" />
+        </property>
+        <property name="mdrMobiKwik" type="java.math.BigDecimal">
+            <column name="MDR_MOBIKWIK" not-null="true" />
+        </property>
+         <property name="mdrCreditPre" type="java.math.BigDecimal">
+            <column name="mdr_credit_pre" not-null="true" />
+        </property>
+        <property name="mdrAmex" type="java.math.BigDecimal">
+            <column name="mdr_amex" not-null="true" />
+        </property>
+        <property name="other" type="java.math.BigDecimal">
+            <column name="other" not-null="true" />
+        </property>
+        <property name="mdrCashAtPos" type="java.math.BigDecimal">
+            <column name="MDRCASHATPOS" not-null="true" />
+        </property>
+        <property name="userType" type="string">
+            <column name="DEVICE_TYPE" length="20" not-null="true" />
+        </property>
+     	  <property name="bankAccName" type="string">
+            <column name="bank_acc_name" length="45" not-null="true" />
+        </property>
+        <property name="bankAccNo" type="string">
+            <column name="bank_acc_no" length="45" not-null="true" />
+        </property>
+        <property name="bankName" type="string">
+            <column name="bank_name" length="45" not-null="true" />
+        </property>
+        <property name="benefName" type="string">
+            <column name="BENEFICIARY_NAME" length="60" not-null="true" />
+        </property>
+        <property name="bankBranch" type="string">
+            <column name="bank_branch" length="45" not-null="true" />
+        </property>
+        <property name="bankIfsc" type="string">
+            <column name="bank_ifsc" length="45" not-null="true" />
+        </property>
+        <property name="bankMicr" type="string">
+            <column name="bank_micr" length="45" not-null="true" />
+        </property>        
+		<property name="validTil" type="string">
+            <column name="VALIDTIL" length="20" not-null="false"  />
+        </property>
+      	<property name="rent" type="java.math.BigDecimal">
+            <column name="rent" not-null="true" />
+        </property>
+        <property name="paymentMode" type="string">
+            <column name="payment_mode" not-null="true" />
+        </property>
+        <property name="pendingRent" type="java.math.BigDecimal">
+            <column name="pendingrent" not-null="true" />
+        </property>
+        <property name="updateAmexActivated" type="string">
+            <column name="AMEXACTIVATED" />
+        </property>
+        <property name="updateAmexTID" type="string">
+            <column name="AMEXTID" />
+        </property>
+        <property name="updateAmexMID" type="string">
+            <column name="AMEXMID" />
+        </property>
+        <property name="discount" type="java.math.BigDecimal">
+            <column name="discount" not-null="true" />
+        </property>
+        <property name="penaltyAmount" type="java.math.BigDecimal">
+            <column name="penaltyamount" not-null="true" />
+        </property>
+        <property name="avgTxnAmount" type="java.math.BigDecimal">
+            <column name="avgtxnamount" not-null="true" />
+        </property>
+         <property name="penaltyReason" type="string">
+            <column name="penaltyreason" length="100"  />
+        </property>
+         <property name="discountReason" type="string">
+        	<column name="discountreason" length="100"  />
+        </property>
+        <property name="integrationKey" type="string">
+    		<column name="integrationkey" not-null="false" />
+ 		</property>       
+        <property name="rechargeBal" type="java.math.BigDecimal">
+    		<column name="RECHARGE_BAL" not-null="false" />
+ 		</property>
+ 		 <property name="rechargeIncentive" type="java.math.BigDecimal">
+    		<column name="RECHARGE_INCENTIVE" not-null="false" />
+ 		</property>
+ 		 <property name="rechargeMonthlyRental" type="java.math.BigDecimal">
+    		<column name="RECHARGE_MONTHLY_RENTAL" not-null="false" />
+ 		</property>       
+          <property name="loanDedAmount" type="string">
+    		<column name="LOAN_CHARGE" not-null="false" />
+ 		</property>
+ 		  <property name="loanStatus" type="string">
+    		<column name="LOAN_STATUS" not-null="false" />
+ 		</property>
+ 		  <property name="loanType" type="string">
+    		<column name="LOAN_TYPE" not-null="false" />
+ 		</property>
+ 		  <property name="acquirerCode" type="string">
+    		<column name="AQUIRER_CODE" not-null="false" />
+ 		</property>
+ 		  <property name="activationDate" type="string">
+    		<column name="LASTUPDATEDON" not-null="false" />
+ 		</property>
+ 		  <property name="planName" type="string">
+    		<column name="PLAN_DETAILS" not-null="false" />
+ 		</property>
+ 		  <property name="feeMode" type="string">
+    		<column name="FEE_MODE" not-null="false" />
+ 		</property>
+ 		  <property name="feeAmount" type="string">
+    		<column name="FEE_AMOUNT" not-null="false" />
+ 		</property>
+ 		  <property name="feeDate" type="string">
+    		<column name="FEE_DATE" not-null="false" />
+ 		</property>
+ 		  <property name="benId" type="string">
+    		<column name="BEN_ID" not-null="false" />
+ 		</property>       
+         <property name="midTidEntryDate" type="string">
+    		<column name="MID_TID_ENTRYDATE" not-null="false" />
+ 		</property>
+ 		 <property name="wlcmLtrSendDate" type="string">
+    		<column name="WLCM_SEND_DATE" not-null="false" />
+ 		</property>
+   
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqMdrEntity" table="acq_transaction_summary" catalog="acquiro_ver1">
+        <id name="txnId" type="java.lang.Integer">
+            <column name="ID" />
+        </id>        
+        <property name="cardPanNo" type="string">
+            <column name="CARDPANNO" />
+        </property>
+        <property name="bankMdr" type="java.math.BigDecimal">
+            <column name="BANKMDR" not-null="false" />
+        </property>
+         <property name="AcqMdr" type="java.math.BigDecimal">
+            <column name="ACQMDR" not-null="false" />
+        </property>
+        <property name="userId" type="java.lang.Integer">
+            <column name="USERID" not-null="false" />
+        </property>
+        <property name="txnType" type="string">
+            <column name="TXNTYPE"  not-null="false" />
+        </property>
+       
+        <property name="payoutStatus" type="string">
+            <column name="PAYOUTSTATUS"  not-null="false" />
+        </property>
+         <property name="agsPayoutSts" type="java.lang.Integer">
+            <column name="SwitchPAYOUTSTS"  not-null="false" />
+        </property>
+         <property name="acquirerMdr" type="java.math.BigDecimal">
+            <column name="AQUIRER_MDR"  not-null="false" />
+        </property>
+         <property name="acquirerCode" type="string">
+            <column name="AQUIRER_CODE"  not-null="false" />
+        </property>
+        
+    </class>   
+    
+</hibernate-mapping>
+ 

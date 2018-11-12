@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqEmpRoleEntity" table="acq_webusers_details" catalog="acquiro_ver1">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>                 
+         <property name="name" type="string">
+            <column name="empname" length="70"  />
+        </property>
+        <property name="emailId" type="string">
+            <column name="emailid" length="100" />
+        </property>
+        <property name="phone" type="string">
+            <column name="phone" length="10" />
+        </property>
+        <property name="enabled" type="string">
+            <column name="enabled" length="10" />
+        </property>
+        <property name="createdOn" type="java.util.Date">
+            <column name="created_on" not-null="true" />
+        </property>
+        <property name="empRole" type="string">
+            <column name="emprole" length="20" />
+        </property> 
+        <property name="password" type="string">
+            <column name="PASSWORD" length="20" />
+        </property>               
+           <property name="aquirerCode" type="string">
+            <column name="AQUIRER_CODE" length="50" />
+        </property>               
+    </class>
+</hibernate-mapping>

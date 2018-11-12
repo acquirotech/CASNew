@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqSearchEntity" table="acq_transaction" catalog="acquiro_ver1">
+    	  
+    	   <id name="id" type="java.lang.Long">
+            <column name="id" />
+            
+        </id>  
+        <property name="merchantId" type="string">
+            <column name="merchant_id" length="20" not-null="true" />
+        </property>
+        
+        <property name="custPhone" type="java.lang.Long">
+            <column name="cust_mobile" />
+        </property>
+      
+        <property name="amount" type="java.math.BigDecimal">
+            <column name="amount" length="30" not-null="true" />
+        </property>
+      
+        <property name="cardPanNo" type="string">
+            <column name="cardpan_no" length="20" not-null="true" />
+        </property>
+        <property name="dateTime" type="string">
+            <column name="datetime" length="20" not-null="true" />
+        </property>
+       
+          <property name="custEmail" type="string">
+            <column name="cust_email" />
+        </property>
+  
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.model.AcqOrganization" table="acq_store_info" catalog="acquiro_ver1">
+        <id name="orgId" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        
+         <many-to-one name="merchant" class="com.acq.users.model.AcqMerchant" cascade="all" fetch="select">
+            <column name="MERCHANT_ID" not-null="false" />
+        </many-to-one>
+          <property name="merchantId" type="java.lang.Integer">
+            <column name="merchant_id" length="20" not-null="false" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="100" not-null="false" />
+        </property>
+      <property name="pincode" type="string">
+            <column name="pincode" length="6" not-null="true" />
+        </property>
+        <property name="address1" type="string">
+            <column name="ADDRESS1 " length="100" not-null="false" />
+        </property>
+        <property name="address2" type="string">
+            <column name="ADDRESS2 " length="100" not-null="false" />
+        </property>
+        
+         <property name="city" type="string">
+            <column name="CITY " length="50" not-null="false" />
+        </property>
+         <property name="state" type="string">
+            <column name="STATE " length="50" not-null="false" />
+        </property>
+         <property name="country" type="string">
+            <column name="COUNTRY " length="50" not-null="false" />
+        </property>
+       <property name="aquirerCode" type="string">
+            <column name="aquirer_code " length="50" not-null="false" />
+        </property>
+        
+       <set name="appUsers" table=" acq_terminal_users" 
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORG_ID" not-null="true" />
+            </key>
+            <one-to-many class="com.acq.users.model.AcqAppUser" />
+        </set> 
+      
+    </class>
+</hibernate-mapping>

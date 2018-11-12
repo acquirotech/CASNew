@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqWalletListEntity" table="acq_transaction_summary" catalog="acquiro_ver1">
+    	
+    	   <id name="walletId" type="java.lang.Long">
+            <column name="id" />
+        </id>      
+        <property name="walletAmount" type="string">
+            <column name="amount" length="30" not-null="true" />
+        </property>      
+        <property name="walletEmail" type="string">
+            <column name="email" length="20" not-null="true" />
+        </property>
+        <property name="walletStatus" type="string">
+            <column name="status" length="20" not-null="true" />
+        </property>
+        <property name="walletDateTime" type="string">
+            <column name="otpdatetime" not-null="true" />
+        </property>
+         <property name="walletMobileNo" type="string">
+            <column name="mobileno" length="20" not-null="true" />
+        </property>
+        <property name="merchantId" type="java.lang.Long">
+            <column name="merchantid" length="20" />
+        </property>
+        <property name="orgId" type="java.lang.Long">
+            <column name="orgid" length="20" />
+        </property>
+        <property name="userId" type="java.lang.Long">
+            <column name="userid" length="20" />
+        </property>
+        <property name="walletBankMdr" type="string">
+            <column name="bankmdr" length="20" />
+        </property>
+        <property name="walletAcqMdr" type="string">
+            <column name="ACQmdr" length="20" />
+        </property>
+        <property name="serviceTax" type="string">
+            <column name="servicetax" length="20" />
+        </property>
+        <property name="statusDescription" type="string">
+            <column name="STATUSDESCRIPTION" length="200" />
+        </property>
+        <property name="txnType" type="string">
+            <column name="TXNTYPE" length="20" />
+        </property>
+        <property name="cardPanNo" type="string">
+            <column name="CARDPANNO" length="6" />
+        </property>
+         <property name="payoutStatus" type="java.lang.Integer">
+            <column name="PAYOUTSTATUS" length="3" />
+        </property>
+         <property name="payoutDateTime" type="java.sql.Timestamp">
+            <column name="PAYOUTDATETIME" />
+        </property>
+        
+          <property name="aquirerMdr" type="string">
+            <column name="AQUIRER_MDR" />
+        </property>
+         <property name="systmUtltyFee" type="string">
+            <column name="SYSTMUTLTYFEE" />
+        </property>
+          <property name="aquirerPayoutStatus" type="string">
+            <column name="ACQ_PAYOUT_STATUS" />
+        </property>
+          <property name="aquirerPayoutDateTime" type="java.sql.Timestamp">
+            <column name="ACQ_PAYOUT_DATETIME" />
+        </property>
+         <property name="acquirerCode" type="string">
+            <column name="AQUIRER_CODE" />
+        </property>
+    </class>
+</hibernate-mapping>
