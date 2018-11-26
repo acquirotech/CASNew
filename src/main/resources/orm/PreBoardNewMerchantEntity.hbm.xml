@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.PreBoardNewMerchantEntity" table="acq_preboard_merchant" catalog="acquiro_ver1">
+    
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>        
+       
+        
+        <property name="merchantName" type="string">
+            <column name="name" length="100" not-null="true" />
+        </property>
+        
+         <property name="marketingName" type="string">
+            <column name="MARKETING_NAME" length="100" not-null="false" />
+        </property>
+        <property name="executiveName" type="string">
+            <column name="EXECUTIVE_NAME" length="60" not-null="false"  />
+        </property>
+	  <property name="phoneNo" type="string">
+            <column name="phone_no " length="54" not-null="false" />
+        </property>
+         <property name="note" type="string">
+            <column name="KYC_NOTE " length="150" not-null="false" />
+        </property>
+        
+        
+        <property name="status" type="string">
+            <column name="status" length="100" not-null="true" />
+        </property>
+        <property name="cubBranch" type="string">
+            <column name="CUB_BRANCH" length="15" not-null="false" />
+        </property>
+        <property name="amount" type="string">
+            <column name="AMOUNT" length="45" not-null="true" />
+        </property>
+         <property name="location" type="string">
+            <column name="LOCATION" length="65" not-null="false" />
+        </property>
+        
+         
+         <property name="kycCheck" type="string">
+            <column name="CHEQUE_NO" length="45" not-null="true" />
+        </property>
+        <property name="created_on" type="string">
+            <column name="CREATE_ON" length="250" not-null="false" />
+        </property>
+        <property name="aquirerCode" type="string">
+            <column name="AQUIRER_CODE" length="60" not-null="false" />
+        </property>
+      
+    </class>
+</hibernate-mapping>

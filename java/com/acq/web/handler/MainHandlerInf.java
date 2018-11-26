@@ -16,4 +16,6 @@ public interface MainHandlerInf {
 	ServiceDto<List<String>> getSettingList();
 	ServiceDto<List<String>> getSettingUpdateList(AcqSettingModel modell);
 	ServiceDto<List<HashMap<String, String>>> getMerchantList(AcqSearchModel modell);
+	ServiceDto<List<HashMap<String, String>>> PreBoardedMerchantlist(AcqSearchModel modell);
+	ServiceDto<Map> PreBoardedmerchantdetails(String merchantId, String emp);
 }

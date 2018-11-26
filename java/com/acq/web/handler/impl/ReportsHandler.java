@@ -24,6 +24,21 @@ final static Logger logger = Logger.getLogger(ReportsHandler.class);
 	@Autowired
 	AcqEmailServiceHandler AcqEmailServiceHandler;
 	
+	public ServiceDto<Object> downloadcardCommisionProcedureFromAndToDate(String acquirerCode,String empId,String merchantId, String orgId, String userId,String fromDate,
+			String batch,String txnType,String payoutStatus) {
+		logger.info("request landing in download MDR Rpt NewProcess handler");
+		ServiceDto<Object> response = new ServiceDto<Object>();
+		try{
+			DbDto<Object> daoResponse = reportsDao.downloadcardCommisionProcedureFromAndToDate(acquirerCode,empId,merchantId,orgId,userId,fromDate,batch,txnType,payoutStatus);
+			response.setStatus(daoResponse.getStatus());
+			response.setMessage(daoResponse.getMessage());
+			response.setResult(daoResponse.getResult());
+		}catch(Exception e){
+			logger.error("error in download MDR Rpt New Process List handler "+e);
+		}
+		return response;
+	}
+	
 	@Override
 	public ServiceDto<List<HashMap<String, String>>> downloadCardTxnReport(String merchantId, String orgId, String userId, String fromDate,
 			String toDate,String txnType) {

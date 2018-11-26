@@ -56,6 +56,7 @@ import com.acq.users.entity.AcqLoanDetails;
 import com.acq.users.entity.AcqMobikwikEntity;
 import com.acq.users.entity.AcqNewOrganizationEntity;
 import com.acq.users.entity.AcqUserEntity;
+import com.acq.users.entity.PreBoardNewMerchantEntity;
 import com.acq.users.model.AcqAppUser;
 import com.acq.users.model.AcqDevice;
 import com.acq.users.model.AcqDeviceMapUser;
@@ -71,6 +72,7 @@ import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
 import com.acq.web.controller.model.AcqSearchModel;
+import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dao.MerchantDaoInf;
 import com.acq.web.dto.impl.DbDto;
 
@@ -90,6 +92,54 @@ public class MerchantDao implements  MerchantDaoInf {
 		return mrchntDetails;
 	}
 	
+	@Transactional
+	public DbDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model) {
+		DbDto<Object> response = new DbDto<Object>();
+		//logger.info("request landing in pre board merchant update dao");
+		boolean update = false;
+		try {
+			Session session = AcqMerchantDaoImpl.getSession();
+			 
+			PreBoardNewMerchantEntity entity = (PreBoardNewMerchantEntity) session.get(PreBoardNewMerchantEntity.class,Integer.parseInt(model.getId()));
+			if (entity == null || entity + "" == "") {
+				logger.info("mrchnt not found");
+				response.setMessage(AcqStatusDefination.NotFound.getDetails());
+			} else {
+				entity.setMerchantName(model.getName());	
+				entity.setKycCheck(model.getKycCheck());							
+				entity.setMarketingName(model.getMarketingName());  
+				entity.setPhoneNo(model.getPhoneNo());
+				entity.setStatus(model.getStatus());
+				entity.setLocation(model.getLocation());
+				entity.setChequeNo(model.getChequeNo());
+				entity.setAmount(model.getAmount());
+				entity.setNote(model.getNote());
+				entity.setCubBranch(model.getCubBranch());
+				if(model.getExecutiveName()!=null && model.getExecutiveName() != ""){
+					entity.setExecutiveName(model.getExecutiveName());
+				}else{
+					entity.setExecutiveName("NA");
+				}
+				Transaction tx = session.beginTransaction();
+				session.saveOrUpdate(entity);
+				tx.commit();
+				response.setStatus(AcqStatusDefination.OK.getIdentifier());
+				response.setMessage(AcqStatusDefination.OK.getDetails());
+				response.setResult(entity.getId());
+				logger.info("pr mrchnt added");
+			}
+			} catch (NumberFormatException e) {
+			logger.error("Wrong param value " + e);
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage("Number formate problem");
+			response.setResult(""+update);
+		} catch (Exception e){
+			logger.error("Error in update pre brd mrchnt " + e);
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+		}
+		return response;
+	}
 	
 	@Transactional
 	public DbDto<List<HashMap<String, String>>> downloadDeviceDetails(String fromDate,String toDate) {

@@ -27,6 +27,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.acq.AcqBase;
 import com.acq.AcqNumericValidator;
 import com.acq.AcqStatusDefination;
@@ -36,6 +38,7 @@ import com.acq.users.entity.AcqLoanDetails;
 import com.acq.users.entity.AcqSettingEntity;
 import com.acq.users.entity.AcqTransactionListEntity;
 import com.acq.users.entity.AcqWalletListEntity;
+import com.acq.users.entity.PreBoardNewMerchantEntity;
 import com.acq.users.model.AcqAppUser;
 import com.acq.users.model.AcqDeviceMapUser;
 import com.acq.users.model.AcqMerchant;
@@ -76,7 +79,152 @@ public class AcqMerchantDaoImpl implements UserDaoInf{
 		AcqMerchantDaoImpl stockBo = (AcqMerchantDaoImpl)appContext.getBean("merchantDao");
 		return stockBo.getSessionFactory().openSession();
 	}
+	@Override
+	public DbDto<Map> PreBoardedmerchantdetails(String merchantId, String emp){
+		DbDto<Map> response = new DbDto<Map>();
+		HashMap<String,HashMap<String,String>> globalMap = new  HashMap<String,HashMap<String,String>>();	
+		try{
+			Session session = getSession();
+		PreBoardNewMerchantEntity merchant = (PreBoardNewMerchantEntity) session.createCriteria(PreBoardNewMerchantEntity.class).add(Restrictions.eq("id", Integer.parseInt(merchantId))).uniqueResult();
+			logger.info("merchant selected");
+			Map<String,String> merchantDetails = new HashMap<String, String>();
+			if(merchant==null||merchant+""==""){
+				logger.info("No records fetch");
+				return null;
+			}else{
+				AcqEmpRoleEntity emp1 = (AcqEmpRoleEntity)session.createCriteria(AcqEmpRoleEntity.class).add(Restrictions.eq("emailId",emp)).uniqueResult();    
+				Criteria tx= session.createCriteria(AcqEmpRoleEntity.class).add(Restrictions.eq("empRole", "5"));				
+					List list = tx.list();
+					Iterator etr = list.iterator();	
+					HashMap<String,String> merchantMap=null;
+					int k=1;
+					while(etr.hasNext()){
+						merchantMap = new HashMap<String, String>();
+						AcqEmpRoleEntity txEntity = (AcqEmpRoleEntity)etr.next();
+						merchantMap.put("executiveEmail",""+txEntity.getEmailId()); 
+						merchantMap.put("executiveName",""+txEntity.getName()); 
+						globalMap.put(""+k,merchantMap);
+					}
+					k++;
+				response.setResult(globalMap);	
+				merchantDetails.put("kycCheck", merchant.getKycCheck());
+				merchantDetails.put("merchantId", ""+merchant.getId());
+				merchantDetails.put("merchantName", merchant.getMerchantName());
+				merchantDetails.put("marketingName", merchant.getMarketingName());
+				merchantDetails.put("location", merchant.getLocation());
+				if(merchant.getExecutiveName()!=null&&merchant.getExecutiveName()!=""&&!merchant.getExecutiveName().equals("NA")){
+					merchantDetails.put("executiveName", merchant.getExecutiveName());
+				}else{
+					merchantDetails.put("executiveName", "");
+				}
+				merchantDetails.put("verificationStatus", merchant.getStatus());
+				merchantDetails.put("phoneNo", merchant.getPhoneNo());
+				merchantDetails.put("amount", ""+merchant.getAmount());//new DecimalFormat("#.##").format(Double.parseDouble(merchant.getAmount())));
+				merchantDetails.put("chequeNo", merchant.getChequeNo());
+				merchantDetails.put("createdOn", merchant.getCreated_on());
+				merchantDetails.put("note", merchant.getNote());
+				merchantDetails.put("empRole", emp1.getEmpRole());
+				merchantDetails.put("cubBranch", merchant.getCubBranch());
+			System.out.println("pre boarded merchant details is populated........");				
+			response.setStatus(AcqStatusDefination.OK.getIdentifier());
+			response.setMessage(AcqStatusDefination.OK.getDetails());
+			response.setResult(merchantDetails);
+			logger.info("final return");
+			return response;
+		}
+		}catch(Exception e){
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			logger.error("Error in pre boarded MerchantDetails : "+e);
+			return null;
+		}
+	}
+	
+
+	@Transactional
+	public DbDto<List<HashMap<String, String>>> PreBoardedMerchantlist(AcqSearchModel modell) {
+		logger.info("request in pre board merchant list dao");
+		DbDto<List<HashMap<String, String>>> response = new DbDto<List<HashMap<String,String>>>();
+		List<HashMap<String,String>> merchantList = new ArrayList<HashMap<String,String>>();	
+		try{
+			Session session = getSession();
+		Criteria tx=session.createCriteria(PreBoardNewMerchantEntity.class);
+		Criteria tot=session.createCriteria(PreBoardNewMerchantEntity.class);		
+		if(modell.getUserId().equals("5")&&modell.getWalletEmail()!=null){
+			logger.info("executive role is executed");
+			tx.add(Restrictions.eq("executiveName",modell.getWalletEmail()));
+			tot.add(Restrictions.eq("executiveName",modell.getWalletEmail()));
+		}
+		if(modell.getModelName()!=null && modell.getModelName()!="" && modell.getModelName()!="%41"&&!modell.getModelName().equals("%41")){
+			tx.add(Restrictions.like("executiveName","%"+modell.getModelName()+"%"));
+			tot.add(Restrictions.like("executiveName","%"+modell.getModelName()+"%"));
+		}if(modell.getMerchantName()!=null&&modell.getMerchantName()!="" && modell.getMerchantName()!="%41"&&!modell.getMerchantName().equals("%41")){
+			tx.add(Restrictions.like("merchantName","%"+modell.getMerchantName()+"%"));
+			tot.add(Restrictions.like("merchantName","%"+modell.getMerchantName()+"%"));
+		}
+		if(modell.getMarketingName()!=null&&modell.getMarketingName()!="" && modell.getMarketingName()!="%41"&&!modell.getMarketingName().equals("%41")){
+			tx.add(Restrictions.like("marketingName","%"+modell.getMarketingName()+"%"));
+			tot.add(Restrictions.like("marketingName","%"+modell.getMarketingName()+"%"));
+		}
+		if(modell.getVerificationstatus()!=null&&modell.getVerificationstatus()!="" && modell.getVerificationstatus()!="%41"&&!modell.getVerificationstatus().equals("%41")){
+			tx.add(Restrictions.like("status","%"+modell.getVerificationstatus()+"%"));
+			tot.add(Restrictions.like("status","%"+modell.getVerificationstatus()+"%"));
+		}
+		tx.addOrder(Order.desc("id"));
+		tot.setProjection(Projections.rowCount());
+		tx.setFirstResult((Integer.valueOf(modell.getPage()) - 1) * 10);
+		tx.setMaxResults(10);
+		List criteriaList = tx.list();
+		AcqEmpRoleEntity emp1 = (AcqEmpRoleEntity)session.createCriteria(AcqEmpRoleEntity.class).add(Restrictions.eq("emailId",modell.getWalletEmail())).uniqueResult();
 		
+		HashMap<String,String> merchantMap=null;
+		try{
+			Long rows = (Long) tot.uniqueResult();
+			Long totalRows= rows/10;
+			Long modlus = rows%10;
+			HashMap<String,String> rowsMap = new HashMap<String,String>();
+			if(totalRows<=0){
+				rowsMap.put("rows","1");
+			}else{
+				if(modlus>0){
+					rowsMap.put("rows",totalRows+1+"");
+				}else{
+					rowsMap.put("rows",totalRows+"");
+				}
+			}
+			merchantList.add(0,rowsMap);
+			Iterator<PreBoardNewMerchantEntity> itr2 = criteriaList.iterator();
+			while(itr2.hasNext()){
+				PreBoardNewMerchantEntity txEntity = (PreBoardNewMerchantEntity)itr2.next();
+				merchantMap = new HashMap<String,String>();
+				merchantMap.put("applicationNo",""+txEntity.getId());
+		        merchantMap.put("merchantName",""+txEntity.getMerchantName());
+		        merchantMap.put("marketingName",""+txEntity.getMarketingName());
+		        merchantMap.put("location",txEntity.getLocation());
+		        merchantMap.put("executiveName",txEntity.getExecutiveName());
+		        merchantMap.put("phoneNo",txEntity.getPhoneNo());
+		        merchantMap.put("aquirerCode",txEntity.getAquirerCode());
+		        merchantMap.put("empRole",emp1.getEmpRole());
+		        if(txEntity.getStatus().equalsIgnoreCase("oktoboard")){
+		        	merchantMap.put("varificationStatus","Ok To Board");
+		        }else{
+		        	merchantMap.put("varificationStatus",txEntity.getStatus());
+		        }
+		        merchantList.add(merchantMap);
+			}
+		}catch(Exception e){
+			logger.info("Error to generate map and pre boarding list "+e);
+		}
+		logger.info("pre boarding merchant list successfully selected");
+		}catch(Exception e){
+			logger.info("Error to create hibernate session: "+e);
+		}
+		response.setStatus(AcqStatusDefination.OK.getIdentifier());
+		response.setMessage(AcqStatusDefination.OK.getDetails());
+		response.setResult(merchantList);
+		return response;
+	}
+	
 	@Override
 	public DbDto<HashMap<String,String>> getSuperAdminDetails(String email,String admnres) {
 		logger.info("request for super merchant details in dao");

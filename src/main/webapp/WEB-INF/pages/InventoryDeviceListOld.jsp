@@ -35,7 +35,6 @@ function searchClickedTns(){
 		appendMe=appendMe.concat("&serialNo="+SrNo+"");
 	}
 	
-	//console.log('111');
 	document.location.href = "?page=1&txn=123654321"+appendMe;
 }
 
@@ -403,7 +402,6 @@ $(document).ready(function (){
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="modelName">Model Name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                             	<select data-clear-btn="true" name="modelName" id="modelName" required="true" class="form-control">
-                                            	<option <c:if test="${modelName == 'A920'}">Selected="Selected"</c:if> value="A920">A920</option>
                                             	<option <c:if test="${modelName == 'WizarPosQ1'}">Selected="Selected"</c:if> value="WizarPosQ1">WizarPos Q1</option>
                                             	<option <c:if test="${modelName == 'NewlandN910'}">Selected="Selected"</c:if> value="NewlandN910">Newland N910</option>
                                             	<option <c:if test="${modelName == 'PaxA920'}">Selected="Selected"</c:if> value="PaxA920">Pax A920</option>

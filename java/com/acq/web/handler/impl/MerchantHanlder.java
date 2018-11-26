@@ -24,6 +24,7 @@ import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
 import com.acq.web.controller.model.AcqSearchModel;
+import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dao.MerchantDaoInf;
 import com.acq.web.dto.impl.DbDto;
 import com.acq.web.dto.impl.ServiceDto;
@@ -55,11 +56,32 @@ public class MerchantHanlder implements MerchantHanlderInf{
 	public String getAdminUptEmail() {
 		return adminUptEmail;
 	}
-		
+	 @Value("#{AcqConfig['preBoard.location']}")
+	  private String preBoardLocation;
+	 public String getPreBoardLocation() {
+	  return preBoardLocation;
+	 }	
 	 	
 	@Autowired
 	EmailServiceHandler emailServiceHandler;
-	
+	public ServiceDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model) {
+		ServiceDto<Object>  response = new ServiceDto<Object>();
+		try{
+			DbDto<Object> daoResponse = merchantDao.updatePreBoardMerchant(model);
+			if(model.getFile()!=null&&!model.getFile().isEmpty()){
+								String location = preBoardLocation+File.separator+model.getPhoneNo()+".pdf";			
+								if(AcqImageFunctions.savePdf(model.getFile(),location) == false) {
+									logger.warn("pdf not uploaded");				
+								}
+							} 
+						response.setStatus(daoResponse.getStatus());
+						response.setMessage(daoResponse.getMessage());
+						response.setResult(daoResponse.getResult());
+					}catch(Exception e){
+						logger.info("error in Update Pre BoardMerchant handler "+e);
+					}
+					return response;
+				 }
 	public ServiceDto<List<HashMap<String, String>>> downloadDeviceDetails(String fromDate,String toDate) {
 		ServiceDto<List<HashMap<String, String>>> response = new ServiceDto<List<HashMap<String,String>>>();
 		try{

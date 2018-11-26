@@ -15,6 +15,9 @@ public interface ReportsHandlerInf {
 	ServiceDto<List<HashMap<String, String>>> downloadDmtReport(String merchantId, String orgId, String loginId,
 			String fromDate, String toDate, String txnType);
 
+	ServiceDto<Object> downloadcardCommisionProcedureFromAndToDate(String acquirerCode, String empId, String merchantId,
+			String orgId, String loginId, String fromDate, String toDate, String txnType, String payoutStatus);
+
 
 	
 

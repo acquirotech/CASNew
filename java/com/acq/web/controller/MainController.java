@@ -59,6 +59,96 @@ public class MainController{
 	MerchantHanlderInf  mrchantHandler;
 	final static Logger logger = Logger.getLogger(MainController.class);	
 		
+	@RequestMapping(value = { "/PreBoardedMerchantlist" }, method = RequestMethod.GET)
+	public ModelAndView PreBoardedMerchantlist(AcqSearchModel modell,HttpServletRequest request,HttpServletResponse response){
+		ModelAndView model = new ModelAndView();
+		 if (AcqAuthToken.getAuthToken().getName().length()!=13&&AcqAuthToken.getAuthToken().getName() != "anonymousUser" ){
+			if(AcqNumericValidator.checkId(modell.getPage())!=true){
+	    	  modell.setPage("1");
+	    }
+			response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+			response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+			response.setDateHeader("Expires", 0);
+	   try{
+		HttpSession session = request.getSession();
+  		modell.setEmpId((String)session.getAttribute("empRole"));
+		model.setViewName("PreBoardedmerchantList");
+	    modell.setEmpId(AcqAuthToken.getAuthToken().getName());
+	    modell.setWalletEmail(AcqAuthToken.getAuthToken().getName());
+	    modell.setUserId((String)session.getAttribute("empRole"));
+	    System.out.println("wwwwwwwwwwww::::::::::::"+modell.getUserId());
+	    String modelName;
+	    if(modell.getModelName()!=null&&modell.getModelName()!=""&&!modell.getModelName().equals("%41")){
+	    	if(modell.getModelName().contains("%20")){
+	    		modelName = modell.getModelName().replace("%20", " ");
+	    		modell.setModelName(modelName);
+	    	}
+	    }
+	    ServiceDto<List<HashMap<String,String>>> merchantList1= mainHandler.PreBoardedMerchantlist(modell); 
+	    if(modell.getModelName()==null||modell.getModelName()==""||modell.getModelName().equals("%41")){
+  			model.addObject("executiveName", "");
+  			}else{
+  			model.addObject("executiveName", modell.getModelName());
+  			}
+	    if(modell.getVerificationstatus()==null||modell.getVerificationstatus()==""||modell.getVerificationstatus().equals("%41")){
+  			model.addObject("verificationstatus", "");
+  			}else{
+  			model.addObject("verificationstatus", modell.getVerificationstatus());
+  			}
+	    if(modell.getMerchantName()==null||modell.getMerchantName()==""||modell.getMerchantName().equals("%41")){
+  			model.addObject("merchantName", "");
+  			}else{
+  			model.addObject("merchantName", modell.getMerchantName());
+  			}
+	    if(modell.getMarketingName()==null||modell.getMarketingName()==""||modell.getMarketingName().equals("%41")){
+  			model.addObject("marketingName", "");
+  			}else{
+  			model.addObject("marketingName", modell.getMarketingName());
+  			}	    
+	    List<HashMap<String,String>> merchantList = merchantList1.getResult();
+	       HashMap<String,String> map = merchantList.get(0);
+	       model.addObject("totalRows", map.get("rows"));  
+	       merchantList.remove(0);
+	       model.addObject("empRole",modell.getEmpId());
+	       
+	    model.addObject("basicMerchantDetails", merchantList);
+	   }catch(Exception e){
+	    logger.info("Error to select PreBoarded merchant list "+e);  
+	   }
+	   model.addObject("page",modell.getPage());   
+	   model.setViewName("PreBoardedmerchantList");
+	     }else{
+	   logger.info("you are logged out preboard merchant list");
+	   model.setViewName("index");
+	  }
+	  return model;
+	 }
+	
+	@RequestMapping(value = { "/PreBoardedmerchantdetails" }, method = RequestMethod.GET)
+	public ModelAndView PreBoardedmerchantdetails(HttpServletRequest request) {
+		String merchantId =request.getParameter("MerchantId");
+		ModelAndView model = new ModelAndView();
+		List<HashMap<String,String>> list = null;
+	    if (AcqAuthToken.getAuthToken().getName().length()!=13&&AcqAuthToken.getAuthToken().getName() != "anonymousUser" ){
+	    	String emp = AcqAuthToken.getAuthToken().getName();
+	    	
+	    	ServiceDto<Map> daoResponse = mainHandler.PreBoardedmerchantdetails(merchantId,emp);
+	    	Map merchantDetails = daoResponse.getResult();
+	    	ServiceDto<List<HashMap<String, String>>> global= mrchantHandler.executivesList();
+			list = global.getResult();
+			model.addObject("executiveList", list);
+			model.addObject("kycCheck", merchantDetails.get("kycCheck"));
+	    	//System.out.println("qqqqqqq::::::::::::::"+merchantDetails.get("kycCheck"));
+	    	model.addObject("allMerchantDetails", merchantDetails);
+	    	model.setViewName("PreBoardingMerchantDetails");
+	    }else{
+			logger.info("you are logged out preboard merchant details");
+			model.setViewName("index");
+		}
+		return model;
+	}		
+	
+	
 	@RequestMapping(value = { "/{admnres}" }, method = RequestMethod.POST)
 	public @ResponseBody ResponseInf<Object> getSuperAdminDetails(@RequestParam String  servervalue, @PathVariable(value = "admnres") String admnres, HttpServletRequest request) {
 		ControllerResponse<Object> response = new ControllerResponse<Object>();

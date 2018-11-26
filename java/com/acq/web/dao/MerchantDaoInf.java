@@ -16,6 +16,7 @@ import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
 import com.acq.web.controller.model.AcqSearchModel;
 import com.acq.web.controller.model.AcqSettingModel;
+import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dto.impl.DbDto;
 
 public interface MerchantDaoInf {
@@ -65,6 +66,8 @@ public interface MerchantDaoInf {
 	DbDto<Object> downloadMerchantDtls(String merchantId);
 
 	DbDto<List<HashMap<String, String>>> downloadDeviceDetails(String fromDate, String toDate);
+
+	DbDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model);
 
 
 

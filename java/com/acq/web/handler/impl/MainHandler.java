@@ -32,7 +32,38 @@ public class MainHandler implements MainHandlerInf{
 		
 		@Autowired
 		AcqEmailServiceHandler AcqEmailServiceHandler;
-	
+		public ServiceDto<List<HashMap<String,String>>> PreBoardedMerchantlist(AcqSearchModel modell) {
+			   ServiceDto<List<HashMap<String,String>>> response = new ServiceDto<List<HashMap<String,String>>>();
+			   logger.info("request in pre boarded merchant list handler");
+			   try{
+			    DbDto<List<HashMap<String,String>>> daoResponse = usrDao.PreBoardedMerchantlist(modell);
+			    response.setStatus(daoResponse.getStatus());
+			    response.setMessage(daoResponse.getMessage());
+			    response.setResult(daoResponse.getResult());
+			   }catch(Exception e){
+			    logger.error("error to get pre boarded merchant list handler "+e);
+			    response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			    response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			    
+			   }
+			   return response;
+			  }
+		
+
+
+		public ServiceDto<Map> PreBoardedmerchantdetails(String merchantId, String emp){
+			ServiceDto<Map> response = new ServiceDto<Map>();
+			try{
+				DbDto<Map> daoResponse = usrDao.PreBoardedmerchantdetails(merchantId,emp);
+				response.setStatus(daoResponse.getStatus());
+				response.setMessage(daoResponse.getMessage());
+				response.setResult(daoResponse.getResult());
+			}catch(Exception e){
+				logger.error("error to get super details handler "+e);
+			}
+			return response;
+		}	
+		
 		public ServiceDto<List<String>> getSettingUpdateList(AcqSettingModel modell) {
 			ServiceDto<List<String>> response = new ServiceDto<List<String>>();
 			logger.info("request in super details handler");

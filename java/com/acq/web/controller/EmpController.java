@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -37,13 +39,14 @@ public class EmpController {
 	@Autowired
 	EmpManagementHandlerInf empManagementHandler;
 	
+	
 	@RequestMapping(value = { "/deleteEmployee" }, method = RequestMethod.POST)
-	 public @ResponseBody ResponseInf<Object> deleteEmployee(@RequestParam String dummyUser ,HttpServletRequest request) {
+	 public @ResponseBody ResponseInf<Object> deleteEmployee(@RequestParam String id2Delete ,HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		ControllerResponse<Object> response = new ControllerResponse<Object>();
 	if (AcqAuthToken.getAuthToken().getName().length()!=13&&AcqAuthToken.getAuthToken().getName() != "anonymousUser" ){
 			try{
-				ServiceDto<String> handerResponse = empManagementHandler.deleteEmployee(dummyUser);
+				ServiceDto<String> handerResponse = empManagementHandler.deleteEmployee(id2Delete);
 				response.setStatus(handerResponse.getStatus());
 				response.setMessage(handerResponse.getMessage());
 				response.setResult(handerResponse.getResult());

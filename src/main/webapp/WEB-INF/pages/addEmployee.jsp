@@ -91,62 +91,6 @@ function getaddEmp(){
 </script>
 
 
-<script type="text/javascript">
-
-function isAlphaNumeric(event) {	
-	try {
-   		if (window.event) {
-    	   	var charCode = window.event.keyCode;
-    	}else if (e) {
-    	     var charCode = e.which;
-    	}else { return true; }
-    	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 || charCode==32|| charCode==46|| charCode==40|| charCode==41||charCode==45||charCode==46||charCode==47||charCode==58||charCode==44||charCode==95)
-    	            return true;
-    	        else
-    	            return false;
-    }
-    catch (err) {
-    	alert(err.Description);
-   	}
-}
-
-function passwordValidations(event){
-	try {
-   		if (window.event) {
-    	   	var charCode = window.event.keyCode;
-    	}else if (e) {
-    	     var charCode = e.which;
-    	}else { return true; }
-    	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58||charCode==33||charCode==35||charCode==36||charCode==64||charCode==95)
-    	            return true;
-    	        else
-    	            return false;
-    }
-    catch (err) {
-    	alert(err.Description);
-   	}
-}
-
-function onlyAlphabets(e, t) {
-    try {
-        if (window.event) {
-            var charCode = window.event.keyCode;
-        }
-        else if (e) {
-            var charCode = e.which;
-        }
-        else { return true; }
-        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123 || charCode == 32))
-            return true;
-        else
-            return false;
-    }
-    catch (err) {
-        alert(err.Description);
-    }
-}
-
-</script>
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -234,10 +178,9 @@ function onlyAlphabets(e, t) {
                                                 
       </div>
       <div class="modal-footer">
-        <form id="id2DelFrm" method="GET">
-          <input type="hidden" class="form-control" id="id2Delete" name="id2Delete">
+       
           <button type="submit" class="btn btn-danger"><i class="fa fa-fw fa-remove"></i>Close</button>
-        </form>
+       
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@
 <% if(!(session.getAttribute("empRole").equals("1")||session.getAttribute("empRole").equals("2")||session.getAttribute("empRole").equals("3")||session.getAttribute("empRole").equals("7"))){	
 	response.sendRedirect("welcome");
 }%>
- <script src="<c:url value="resources/js/Acqcitystate.js" />"></script>
+<script src="<c:url value="resources/js/Acqcitystate.js" />"></script>
 
 <!-- ----------------------------------js functions---------------------------------------------------- -->
 <script type="text/javascript">
@@ -1230,7 +1230,7 @@ function ValidateDeviceSerialNoCSV(value)
                                 <div class="form-group percent-50">
                                             <label class="control-label col-md-12 col-sm-12 col-xs-12" for="UserAddress2">Address 2<span class="required">*</span></label>
                                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                              <input type="text" class="form-control" data-clear-btn="true" name="UserAddress2" id="UserAddress2" required="true" minlength="2" onkeypress="return addressValidation(event);" maxlength=100   />
+                                              <input type="text" class="form-control" data-clear-btn="true" name="UserAddress2" id="UserAddress2" required="true" minlength="2"  maxlength=100   />
                                           </div>
                                 </div>
                                 <div class="form-group percent-50" id ="userstatedropdowndiv">

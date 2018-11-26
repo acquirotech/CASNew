@@ -14,7 +14,7 @@ function getaddEmp(){
 	var phone=$("#phone").val();
 	var password=$("#password").val();
 	var emprole=$("#emprole").val();
-	
+	var empid =$("#empid").val();
 	var regex ="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\\s).{8,20}$";
 
 	 if(name==null||name==""){
@@ -46,7 +46,7 @@ function getaddEmp(){
 		return false;
 	}
 	
-	var sendvalue={employeeName:name,empEmailId:email,empPhone:phone,empPassword:password,empRole:emprole}
+	var sendvalue={employeeName:name,empEmailId:email,empPhone:phone,empPassword:password,empRole:emprole,empid:empid}
 	var opts = {
             type: "POST",
             success: function (data) {
@@ -100,6 +100,7 @@ function getaddEmp(){
               <h3 class="box-title"> Employee Details</h3>
             </div>
             <form role="form">
+             <input type="hidden" value="${empId}" name="empid" id="empid" /> 
               <div class="box-body">
                 <div class="row">
                   <div class="col-md-5">
@@ -142,7 +143,7 @@ function getaddEmp(){
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="emprole">Employee Role</label>
-                      <input type="text" class="form-control" data-clear-btn="true" name="emprole" id="emprole" value="${empRole}" digits="true" readonly="readonly"/>
+                      <input type="text" class="form-control input-lg" data-clear-btn="true" name="emprole" id="emprole" value="${empRole}" digits="true" readonly="readonly"/>
                     </div>
                   </div>
                 </div>
@@ -162,7 +163,6 @@ function getaddEmp(){
   
   
   <!-- Small modal -->
-  
   <div class="modal fade bs-example-modal-sm" id="deleteConfirm">
   <div class="modal-dialog">
     <div class="modal-content">

@@ -16,6 +16,9 @@ public interface ReportsDaoInf {
 	DbDto<List<HashMap<String, String>>> downloadDmtReport(String merchantId, String orgId, String userId,
 			String fromDate, String toDate, String txnType);
 
+	DbDto<Object> downloadcardCommisionProcedureFromAndToDate(String acquirerCode, String empId, String merchantId,
+			String orgId, String userId, String fromDate, String batch, String txnType, String payoutStatus);
+
 	
 
 }

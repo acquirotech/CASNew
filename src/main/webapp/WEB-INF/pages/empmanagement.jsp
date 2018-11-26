@@ -7,54 +7,11 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <script type="text/javascript"> 
-function empProfile(id,user,email,phone,status,date,role){
-	document.body.innerHTML += '<form id="dynForm" action="<c:url value='empProfile' />" method="post"><input type="hidden" name="empId" value='+id+' /></form>';
+function empProfile(profileid,user,email,phone,status,date,role){
+	document.body.innerHTML += '<form id="dynForm" action="<c:url value='empProfile' />" method="post"><input type="hidden" name="empId" value='+profileid+' /></form>';
 	document.getElementById("dynForm").submit();
 }
 
-function deleteEmp(empId){
-	if (confirm("Do you want to delete Employee ?") == true) {
-		var sendvalue={dummyUser:empId}
-		var opts = {
-	            type: "POST",
-	            success: function (data) {
-	                $(".loading").css("visibility","hidden");
-	                if (data.status == 0&&data.message=='OK') {
-	                    $("#modal-body").html("<h2>Employee Deleted Successfully</h2>"); 
-	                     window.location.href="empList";
-	                } else if (data.status==111) {
-	                    $("body").attr("onload","noBack();");
-	                    $("body").attr("onpageshow","if (e00vent.persisted) noBack();");
-	                    $("body").attr("onunload","");
-	                    window.location.href="logout.jsp";
-	                }else if (data.status==100) {
-	                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
-	                }else if (data.status==101) {
-	                    $("#modal-body").html("<h2>"+data.message+"</h2>");                    
-	                }
-	                 else {
-	                    $(".loading").css("visibility", "hidden");
-	                    $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
-	                }
-	            },
-	            error: function (data, textStatus, errorThrown) {
-	                $(".loading").css("visibility","hidden");
-	                if(textStatus=="timeout"){
-	                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
-	                }else{
-	                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
-	                }
-	            },
-	            url: "deleteEmployee",
-	            data: sendvalue
-	        }; 
-	        $.ajax(opts);
-	        return false;
-
-	}else{
-		return false;
-	}
-}
 </script>
     <!-- Main content -->
     <section class="content">
@@ -96,7 +53,7 @@ function deleteEmp(empId){
 		                                            <td><c:out value="${allRowData['dateTime']}"/></td>
 		                                            <td><c:out value="${allRowData['empRole']}"/></td>
 		                                           <td><button type="button" class="btn btn-success btn-xs" onclick='return empProfile("${allRowData.id}","${allRowData.name}","${allRowData.emailId}","${allRowData.phone}","${allRowData.enabled}","${allRowData.dateTime}","${allRowData.empRole}")'><i class="fa fa-fw fa-eye"></i>View Details</button>
-		                                           <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteConfirm" data-id2del="merchantId"><i class="fa fa-fw fa-remove"></i>Delete</button>
+		                                           <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteConfirm" data-id2del="${allRowData.id}"><i class="fa fa-fw fa-remove"></i>Delete</button>
 		                                           </td>											
 												</tr>	
 											</c:forEach>
@@ -128,10 +85,10 @@ function deleteEmp(empId){
         <h4 class="modal-title">Are you sure you want to remove the merchant.<br> You can't undo this action.</h4>
       </div>
       <div class="modal-footer">
-        <form id="id2DelFrm" method="GET">
-          <input type="hidden" class="form-control" id="id2Delete" name="id2Delete" value="${empList['id']}">
+        <form id="id2DelFrm" action="<c:url value='deleteEmployee'/>" method="POST">
+          <input type="hidden" class="form-control" id="id2Delete" name="id2Delete" >
           <button type="button" class="btn btn-default" data-dismiss="modal">Keep It</button>
-          <button type="submit" class="btn btn-danger"><i class="fa fa-fw fa-remove" onclick="return deleteEmp('${empList['id']}');"></i>Delete</button>
+          <button type="submit" class="btn btn-danger"><i class="fa fa-fw fa-remove" ></i>Delete</button>
         </form>
       </div>
     </div>

@@ -16,7 +16,7 @@
         <li class="header">MAIN NAVIGATION</li>
         
         <li>
-          <a href="index.php">
+          <a href="welcome">
             <i class="fa fa-dashboard"></i> <span>Home</span>
           </a>
         </li>
@@ -43,7 +43,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="addPreBoardMerchant"><i class="fa fa-circle-o"></i>Preboard New Merchant</a></li>
-            <li><a href="preMerchantList.php"><i class="fa fa-circle-o"></i>Preboard Merchant List</a></li>
+            <li><a href="PreBoardedMerchantlist"><i class="fa fa-circle-o"></i>Preboard Merchant List</a></li>
           </ul>
         </li>
 
@@ -55,10 +55,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="merchantList.php"><i class="fa fa-circle-o"></i>Merchant List</a></li>
-            <li><a href="addMerchant.php"><i class="fa fa-circle-o"></i>Add New Merchant</a></li>
-            <li><a href="addStore.php"><i class="fa fa-circle-o"></i>Add New Store</a></li>
-            <li><a href="addTerminal.php"><i class="fa fa-circle-o"></i>Add New Terminal</a></li>
+            <li><a href="list"><i class="fa fa-circle-o"></i>Merchant List</a></li>
+            <li><a href="addmerchant"><i class="fa fa-circle-o"></i>Add New Merchant</a></li>
+            <li><a href="addOrg"><i class="fa fa-circle-o"></i>Add New Store</a></li>
+            <li><a href="addDeviceDetail"><i class="fa fa-circle-o"></i>Add New Terminal</a></li>
           </ul>
         </li>
 
@@ -71,10 +71,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="lstCards.php"><i class="fa fa-circle-o"></i>Debit/Credit</a></li>
-            <li><a href="lstRecharges.php"><i class="fa fa-circle-o"></i>Recharges</a></li>
-            <li><a href="lstDmt.php"><i class="fa fa-circle-o"></i>DMT</a></li>
-            <li><a href="lstWallets.php"><i class="fa fa-circle-o"></i>e-Wallets</a></li>
+            <li><a href="walletList"><i class="fa fa-circle-o"></i>Debit/Credit</a></li>
+            <li><a href="rechargeList"><i class="fa fa-circle-o"></i>Recharges</a></li>
+            <li><a href="transactionList"><i class="fa fa-circle-o"></i>DMT</a></li>
           </ul>
         </li>
 
@@ -87,8 +86,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="rptTxn.php"><i class="fa fa-circle-o"></i> Transaction Report</a></li>
-            <li><a href="rptComRpt.php"><i class="fa fa-circle-o"></i> Commission Report</a></li>
+            <li><a href="cardTxnReport"><i class="fa fa-circle-o"></i> Transaction Report</a></li>
+            <li><a href="cardCommissionReportProcedure"><i class="fa fa-circle-o"></i> Commission Report</a></li>
           </ul>
         </li>
 
@@ -122,26 +121,13 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="addInventory.php"><i class="fa fa-circle-o"></i>Add New</a></li>
-            <li><a href="lstInventory.php"><i class="fa fa-circle-o"></i>Inventory List</a></li>
-          </ul>
-        </li>
-
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-phone-square"></i> <span>Call Management</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="addCall.php"><i class="fa fa-circle-o"></i>Log New Calls</a></li>
-            <li><a href="lstCall.php"><i class="fa fa-circle-o"></i>List Calls</a></li>
+            <li><a href="inventoryAddDevice"><i class="fa fa-circle-o"></i>Add New Inventory</a></li>
+            <li><a href="inventoryList"><i class="fa fa-circle-o"></i>Inventory List</a></li>
           </ul>
         </li>
 
         <li>
-          <a href="settings.php">
+          <a href="settingHome">
             <i class="fa fa-gears"></i> <span>Settings</span>
           </a>
         </li>

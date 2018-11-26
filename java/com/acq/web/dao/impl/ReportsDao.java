@@ -1,7 +1,10 @@
 package com.acq.web.dao.impl;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -18,13 +22,16 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.acq.AcqStatusDefination;
 import com.acq.users.entity.AcqBankItTransactionEntity;
 import com.acq.users.entity.AcqCardDetails;
 import com.acq.users.entity.AcqRechargeListEntity;
 import com.acq.users.entity.AcqRiskManagement;
+import com.acq.users.entity.AcqTempCommisionRptEntity;
 import com.acq.users.entity.AcqWalletListEntity;
 import com.acq.users.model.AcqMerchant;
 import com.acq.users.model.AcqOrganization;
@@ -38,9 +45,176 @@ import com.acq.web.dao.ReportsDaoInf;
 public class ReportsDao implements ReportsDaoInf {
 
 	final static Logger logger = Logger.getLogger(ReportsDao.class);  
-
+	@Value("#{AcqConfig['commisionRpt.location']}")
+	private String commisionFileLocation;
+	public String getCommisionFileLocation() {
+		return commisionFileLocation;
+	}
 	@Autowired
 	AcqMerchantDaoImpl AcqMerchantDaoImpl;
+	@Transactional
+	public DbDto<Object> downloadcardCommisionProcedureFromAndToDate(String acquirerCode,String empId,String merchantId, String orgId, String userId, String fromDate,
+			String toDate,String transactionType,String payoutStatus) {
+		DbDto<Object> response = new DbDto<Object>();
+		try{
+			Session session = AcqMerchantDaoImpl.getSession();
+			StringBuffer conditions;
+			conditions = new StringBuffer();
+			if(merchantId!=null&&merchantId!=""){
+				conditions.append("and acq_transaction_summary.merchantid="+merchantId);
+			}if(orgId!=null&&orgId!=""){
+				conditions.append(" and acq_transaction_summary.orgid="+orgId);
+			}if(userId!=null&&userId!=""){
+				conditions.append(" and acq_transaction_summary.userid="+userId);
+			}
+			if(transactionType!=null&&transactionType!=""){
+				conditions.append(" and acq_transaction_summary.txntype in('"+transactionType+"')");
+			}else{
+				conditions.append(" and acq_transaction_summary.txntype in('CARD','CASHATPOS','CVOID','VOID')");
+			}
+			if(payoutStatus!=null&&payoutStatus!=""){
+				if(payoutStatus.equalsIgnoreCase("unsettled")){
+					conditions.append(" and acq_transaction_summary.payoutstatus="+700);
+				}else {
+					conditions.append(" and acq_transaction_summary.payoutstatus="+701);
+				}
+			}	
+			if(fromDate!=null&&fromDate!=""){
+				Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
+			Date fdate =sdfDestination.parse(fromDate);
+			
+			SimpleDateFormat sdfSource = new SimpleDateFormat("yyyy-MM-dd");
+			String newFromDate1 = sdfSource.format(fdate);
+			String newToDate=null;
+		    String newFromDate = newFromDate1+" 00:00:00";
+		    cal.setTime(fdate);
+			cal.add(Calendar.YEAR,+1);
+			Date dateBefore1yaer= cal.getTime();
+			//System.out.println("sssssssssssss:::::::::::::::"+dateBefore1yaer);
+			if(toDate!=null&&toDate!=""){ 
+				Date tdate =sdfDestination.parse(toDate);
+				 if(tdate.after(dateBefore1yaer)){
+					System.out.println("you can not select more than one year date");  
+					return response;
+				 }else{
+				String newToDate1 = sdfSource.format(tdate);
+			    newToDate= newToDate1+" 23:59:59";
+			    conditions.append(" and acq_transaction_summary.otpdatetime>= '"+newFromDate+"'");
+			    conditions.append(" and acq_transaction_summary.otpdatetime<= '"+newToDate+"'");
+			    }
+			}else{
+				Date tDate = new Date();
+				 String stringToDate = sdfSource.format(tDate)+" 23:59:59";
+				 if(tDate.after(dateBefore1yaer)){
+						System.out.println("you can not select more than one year date"); 
+						response.setStatus(AcqStatusDefination.NotFound.getIdentifier());
+						response.setMessage("Please Select to Date, You can not download more than one year data");
+						response.setResult(null);
+						return response;
+					 }else{
+						 conditions.append(" and acq_transaction_summary.otpdatetime>= '"+newFromDate+"'");
+						 conditions.append(" and acq_transaction_summary.otpdatetime<= '"+newToDate+"'");
+					 }
+		    }
+		}
+			if(acquirerCode.equalsIgnoreCase("Acquiro")){
+				conditions.append(" and acq_transaction_summary.aquirer_code= 'Acquiro'");
+			}else{
+				conditions.append(" and acq_transaction_summary.aquirer_code= '"+acquirerCode+"'");
+			}
+			
+			Date date = new Date();
+			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		    String rndchars = RandomStringUtils.randomAlphanumeric(6);
+	        String  fileName =  "commisionReport_"+timeStamp.toString()+rndchars;
+			String fileLocation = commisionFileLocation+"/"+fileName+".csv";
+			/*Session session = null;
+			session = getOpenSession();*/
+			System.out.println("tttttttttt:"+conditions);
+			
+			if(acquirerCode.equalsIgnoreCase("Acquiro")){
+				System.out.println("Acquiro");
+				int query = session.createSQLQuery("CALL generatecommissionreport(:employeeid,:acquirername,:conditions,:lmt)")
+						.setParameter("employeeid", empId).setParameter("acquirername", "Acquiro").setParameter("conditions", conditions.toString())
+						.setParameter("lmt", "limit 500000")
+						.executeUpdate();
+				session.flush();
+				session.close();
+			 	
+			}else{
+				System.out.println("Acquirer");
+				int query = session.createSQLQuery("CALL generateacquirercommissionreport(:employeeid,:acquirername,:conditions,:lmt)")
+						.setParameter("employeeid", empId).setParameter("acquirername", "Acquiro").setParameter("conditions", conditions.toString())
+						.setParameter("lmt", "limit 500000")
+						.executeUpdate();
+				session.flush();
+				session.close();
+				System.out.println("qUERY::"+query);	
+			}
+						
+			
+		 		BufferedWriter commisionRpt = new BufferedWriter(new FileWriter(fileLocation));
+		 		String header ="Invoiceno,"+"DateTime,"+"TxnType,"+"MerchantName,"+"State,"+"Tid,"+"RRNo,"+"CardPanNo,"+"TxnAmount,"
+		 				+"TotalDeduction,"+"TotalIncentive,"+"NetAmount,"+"BankMdr,"+"BankMdrCharged,"+"GST(%),"+"GST,"+"BankIncentive,"
+		 				+"TDS(%),"+"TDS,"+"AcqMdr,"+"AcqMdrCharged,"+"AcqGST(%),"+"AcqGST,"+"AcqIncentive,"+"AcqTDS(%),"+"AcqTDS,"
+		 				+"acquiroShare,"+"PayoutStatus,"+"PayoutDateTime\n";
+		 				commisionRpt.write(header);
+		 				commisionRpt.close();	
+		 				int count = 0;
+		 				int rowStart = 0;
+		 			    int rowLimit = 2000;
+		 			    Boolean hasMoreRow = true;
+		 			    List<AcqTempCommisionRptEntity> entityList = null;		 			    
+		 			    while (hasMoreRow) {
+		 			    	/*session = getOpenSession();*/
+		 			    	try{
+		 			    	BufferedWriter commisionRptLoop = new BufferedWriter(new FileWriter(fileLocation,true));
+		 			        entityList = (List<AcqTempCommisionRptEntity>) session.createCriteria(AcqTempCommisionRptEntity.class).add(Restrictions.eq("empID", empId)).setFirstResult(rowStart).setMaxResults(rowLimit).list();
+		 			    	
+		 			    	//logger.info("Succesfuly Loop :");
+		 			    	
+		 			    	for(AcqTempCommisionRptEntity ent : entityList){	  
+		 			    		commisionRptLoop.append("\""+ent.getInvoiceNo()+"\","+"\""+ent.getDateTime()+"\","+"\""+ent.getTxnType()+"\","
+		 					    		+"\""+(ent.getMerchantName()== null ? "Unknown" : ent.getMerchantName())+"\","+"\""+(ent.getState()== null ? "Unknown" : ent.getState())+"\","+"\""+ent.getTid()+"\","+"\""+ent.getRrNo()+"\","+"\""+ent.getCardPanNo()+"\","
+		 								+"\""+ent.getTxnAmount()+"\","+"\""+ent.getTotalDeduction()+"\","+"\""+ent.getTotalIncentive()+"\","+"\""+ent.getNetAmount()
+		 								+"\","+"\""+ent.getBankMDR()+"\","+"\""+ent.getBankMDRCharged()+"\","+"\""+ent.getGst()+"\","+"\""+ent.getGstCharged()+"\","
+		 								+"\""+ent.getBankIncentive()+"\","+"\""+ent.getTds()+"\","+"\""+ent.getTdsCharged()+"\","+"\""+ent.getAcqMDR()+"\","
+		 								+"\""+ent.getAcqMDRCharged()+"\","+"\""+ent.getAcqGST()+"\","+"\""+ent.getAcqGSTCharged()+"\","+"\""+ent.getAcqIncentive()+"\","
+		 								+"\""+ent.getAcqTDS()+"\","+"\""+ent.getAcqTDSCharged()+"\","+"\""+ent.getacquiroShare()+"\","+"\""+ent.getPayoutStatus()+"\","
+		 								+"\""+ent.getPayoutDateTime()+"\"\n");									
+		 			    		count++;
+		 			    	}
+		 			    //	logger.info("Succesfuly Loop end :"+count);
+		 			    	
+		 			    	
+		 			    	if(entityList.size()<rowLimit){
+		 			    		hasMoreRow = false ; 
+		 			    	}else{
+		 			    		rowStart = rowStart+rowLimit;
+		 			    	}
+		 			    
+		 			    	commisionRptLoop.close();
+		 				}finally{
+		 					entityList.clear();
+		 			    	 session.flush();
+		 					 session.close();
+		 				}
+			}
+		    
+			logger.info("Succesfuly Selected ::");
+			response.setStatus(AcqStatusDefination.OK.getIdentifier());
+			response.setMessage(AcqStatusDefination.OK.getDetails());
+			response.setResult(fileName);
+			}catch (Exception e) {
+			logger.info("error in commision report dao "+e);
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			response.setResult(null);
+		} 
+		return response;
+	}
+	
 	
 	@Override
 	public DbDto<List<HashMap<String, String>>> downloadCardTxnReport(String merchantId,String orgId, String userId,String fromDate,String toDate,String txnType) {

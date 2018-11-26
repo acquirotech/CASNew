@@ -11,6 +11,7 @@ import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
 import com.acq.web.controller.model.AcqSearchModel;
+import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dto.impl.ServiceDto;
 
 public interface MerchantHanlderInf {
@@ -52,6 +53,8 @@ public interface MerchantHanlderInf {
 	ServiceDto<Object> downloadMerchantDtls(String merchantId);
 
 	ServiceDto<List<HashMap<String, String>>> downloadDeviceDetails(String fromDate, String toDate);
+
+	ServiceDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model);
 
 
 	

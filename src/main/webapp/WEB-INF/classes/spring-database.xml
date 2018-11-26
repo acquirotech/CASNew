@@ -50,6 +50,7 @@
 				<value>orm/AcqAppUserEntity.hbm.xml</value>	
 				<value>orm/AcqMobikwikEntity.hbm.xml</value>
 				<value>orm/AcqTransactionListEntity.hbm.xml</value>	
+				<value>orm/PreBoardNewMerchantEntity.hbm.xml</value>	
 				<value>orm/AcqGCMNotificationEntity.hbm.xml</value>
 				<value>orm/AcqDeviceAndUserEntity.hbm.xml</value>	
 				<value>orm/AcqLoanDetails.hbm.xml</value>	

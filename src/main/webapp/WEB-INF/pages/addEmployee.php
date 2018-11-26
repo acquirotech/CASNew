@@ -1,4 +1,3 @@
-
 <jsp:include page="/jsp/head.jsp" />
 <jsp:include page="/jsp/topbar.jsp" />
 <jsp:include page="/jsp/sidebar.jsp" />

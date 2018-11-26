@@ -47,6 +47,7 @@ import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
 import com.acq.web.controller.model.AcqSearchModel;
+import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dto.ResponseInf;
 import com.acq.web.dto.impl.ControllerResponse;
 import com.acq.web.dto.impl.ServiceDto;
@@ -75,6 +76,43 @@ public class MerchantController {
 	public String getPreBoardLocation() {
 		return preBoardLocation;
 	}
+	
+	@RequestMapping(value = { "/updatePreBoardMerchant" }, method = RequestMethod.POST)
+	public @ResponseBody ResponseInf<Object> updatePreBoardMerchant(PreBoardNewMerchant model,HttpServletRequest request) {
+		ControllerResponse<Object> response = new ControllerResponse<Object>();
+		try{
+			ValidatorFactory vFactory = Validation.buildDefaultValidatorFactory();
+			Validator validator = vFactory.getValidator();
+			Set<ConstraintViolation<PreBoardNewMerchant>> inputErrSet= validator.validate(model);
+			if(inputErrSet.size()>0){
+				Iterator<ConstraintViolation<PreBoardNewMerchant>> itr = inputErrSet.iterator();
+				while(itr.hasNext()){
+					ConstraintViolation<PreBoardNewMerchant> validate = (ConstraintViolation<PreBoardNewMerchant>)itr.next();
+					response.setStatus(100);
+					response.setMessage(validate.getMessage());
+					//System.out.println("validate.getMessage(): "+validate.getMessage());
+				}
+			}else{
+				/*ServiceDto<Object> verifyTokenRes =  merchantHandler.verifyToken(Acq_AuthToken.getAuthToken().getName(), "preBoardMerchant",model.getRequestToken());
+				if(verifyTokenRes.getStatus()==Acq_StatusDefination.OK.getId()&&verifyTokenRes.getMessage().equals(Acq_StatusDefination.OK.getDescription())){*/
+				
+					ServiceDto<Object> handerResponse = merchantHandler.updatePreBoardMerchant(model);
+					response.setStatus(handerResponse.getStatus());
+					response.setMessage(handerResponse.getMessage());
+					logger.info("successfully updated and return from update pre board merchant controller:");	
+				/*}else{
+					response.setStatus(verifyTokenRes.getStatus());
+					response.setMessage(verifyTokenRes.getMessage());
+				}*/
+			}
+		}catch(Exception e){
+			logger.error("error to update Pre Board merchant in controller:"+e);	
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+		}
+		return response;
+	}
+	
 	
 	@RequestMapping(value = { "/downloadDeviceDetails" }, method = RequestMethod.GET)
 	public ModelAndView downloadDeviceDetails(@RequestParam (required=true)String fromDate,@RequestParam (required=true)String toDate,HttpServletRequest request) {
@@ -368,8 +406,6 @@ public class MerchantController {
 		return response;
 	}
 	
-	
-	
 	@RequestMapping(value = { "/addOrg" }, method = RequestMethod.POST)
 	public @ResponseBody ResponseInf<Object> addOrganization(AcqNewOrganization model,HttpServletRequest request, HttpServletResponse res) {
 		logger.info("request is landing add Organization");
@@ -485,10 +521,10 @@ public class MerchantController {
 	
 	
 	@RequestMapping(value = { "/inventoryDeviceDelete" }, method = RequestMethod.POST)
-	 public @ResponseBody ResponseInf<Object> inventoryDeviceDelete(@RequestParam String deviceId ,HttpServletRequest request) {
+	 public @ResponseBody ResponseInf<Object> inventoryDeviceDelete(@RequestParam String id2Delete ,HttpServletRequest request) {
 		ControllerResponse<Object> response = new ControllerResponse<Object>();
 		try{   
-			ServiceDto<String> handerResponse = merchantHandler.inventoryDeviceDelete(deviceId);
+			ServiceDto<String> handerResponse = merchantHandler.inventoryDeviceDelete(id2Delete);
 			response.setStatus(handerResponse.getStatus());
 			response.setMessage(handerResponse.getMessage());
 			response.setResult(handerResponse.getResult());
@@ -529,7 +565,7 @@ public class MerchantController {
 		return response;
 	 }
 	
-	@RequestMapping(value = { "/InventoryDeviceList" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/inventoryList" }, method = RequestMethod.GET)
 	public ModelAndView InventoryDeviceList(AcqSearchModel modell,HttpServletRequest request){
 		ModelAndView model = new ModelAndView();
 		List<HashMap<String,String>> list = null; 	    

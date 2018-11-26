@@ -39,6 +39,10 @@ public interface UserDaoInf {
 
 	public List<HashMap<String, String>> txnOrgList(AcqBillingModel modell);
 
+	public DbDto<List<HashMap<String, String>>> PreBoardedMerchantlist(AcqSearchModel modell);
+
+	public DbDto<Map> PreBoardedmerchantdetails(String merchantId, String emp);
+
 }
 
 	
