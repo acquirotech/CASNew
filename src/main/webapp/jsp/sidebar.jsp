@@ -6,7 +6,7 @@
           <img src="resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p><%= session.getAttribute("userName") %></p>
           <a href="#"> Admin</a>
         </div>
       </div>
@@ -97,20 +97,6 @@
             <i class="fa fa-archive"></i>
             <span>Archived Reports</span>
           </a>
-        </li>
-
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-list"></i> <span>Manage Payouts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="doPayout.php"><i class="fa fa-circle-o"></i>Do Payout</a></li>
-            <li><a href="listPayout.php"><i class="fa fa-circle-o"></i>Payout History</a></li>
-            <li><a href="payoutStatemetnt.php"><i class="fa fa-circle-o"></i>Payout Statement</a></li>
-          </ul>
         </li>
 
         <li class="treeview">

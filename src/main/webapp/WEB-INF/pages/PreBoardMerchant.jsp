@@ -194,7 +194,7 @@ function submitMerchant(){
                       <label for="exampleInputEmail1">Sales Executive Name/DSA/Channel Partner</label>
                       <select name="executiveName" id="executiveName" class="form-control input-lg">
 										    	<option value="">select</option>
-										 			<c:forEach var="RowData" items="${executiveList}">
+										        <c:forEach var="RowData" items="${executiveList}">
 										 				<option value="<c:out value="${RowData['executiveEmail']}"/>" <c:if test="${RowData['executiveEmail'] == param.executiveEmail}">selected="selected"</c:if> ><c:out value="${RowData['executiveName']}"/></option> 
 										 			</c:forEach>
 											</select>
