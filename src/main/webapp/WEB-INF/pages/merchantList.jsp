@@ -4,13 +4,57 @@
 <jsp:include page="/jsp/topbar.jsp" />
 <jsp:include page="/jsp/sidebar.jsp" />
 
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <script type="text/javascript"> 
+<script type="text/javascript"> 
 function empProfile(profileid,user,email,phone,status,date,role){
 	document.body.innerHTML += '<form id="dynForm" action="<c:url value='empProfile' />" method="post"><input type="hidden" name="empId" value='+profileid+' /></form>';
 	document.getElementById("dynForm").submit();
 }
+$(document).ready(function (){
+	<c:if var="pg" test="${page!=null&&page!=''}">
+		$("#pageNo").val('<c:out value="${page}" />');
+	</c:if>
+	<c:if var="lct" test="${totalRows!=null&&totalRows!=''}">		
+	$("#totRows").val('<c:out value="${totalRows}" />');
+	</c:if>
+
+	$("#pageNo").change(function(){
+		var pageNo = $("#pageNo").val();
+		if(pageNo!=null&&pageNo!=""){
+			document.body.innerHTML += '<form id="pageForm" action="<c:url value='list' />"><input type="hidden" name="txn" value="123" /><input type="hidden" name="page" value='+pageNo+' /></form>';
+			document.getElementById("pageForm").submit();
+		}
+	});	
+	$("#first").click(function () {
+		var page=1;
+		$("#pageNo").val(page);
+		document.body.innerHTML += '<form id="firstForm" action="<c:url value='list' />"><input type="hidden" name="txn" value="123" /><input type="hidden" name="page" value="1" /></form>';
+		document.getElementById("firstForm").submit();	
+	});
+	$("#previous").click(function () {
+		var page=$("#pageNo").val();
+		if(page>1){
+			$("#pageNo").val(page-1);
+		}
+		var previousPage=$("#pageNo").val();
+		document.body.innerHTML += '<form id="previousForm" action="<c:url value='list' />"><input type="hidden" name="txn" value="123" /><input type="hidden" name="page" value='+previousPage+' /></form>';
+		document.getElementById("previousForm").submit();	
+	});
+	$("#next").click(function () {
+		var page=parseInt($("#pageNo").val());
+		var lastPage=$("#totRows").val();
+		if(page<lastPage){
+			$("#pageNo").val(page+1);
+		}
+		var nextPage=parseInt($("#pageNo").val());
+		document.body.innerHTML += '<form id="nextForm" action="<c:url value='list' />"><input type="hidden" name="txn" value="123" /><input type="hidden" name="page" value='+nextPage+' /></form>';
+		document.getElementById("nextForm").submit();
+	});
+	$("#last").click(function () {
+		var lastPage=$("#totRows").val();
+		document.body.innerHTML += '<form id="lastForm" action="<c:url value='list' />"><input type="hidden" name="txn" value="123" /><input type="hidden" name="page" value='+lastPage+' /></form>';
+		document.getElementById("lastForm").submit();
+	});
+	});
 
 function deleteEmp(empId){
 	if (confirm("Do you want to delete Employee ?") == true) {
@@ -56,6 +100,9 @@ function deleteEmp(empId){
 	}
 }
 </script>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+   
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -118,12 +165,20 @@ function deleteEmp(empId){
                                                     </tr>
                                                 </c:if>
                                             </c:forEach>
+                                             <tr id="pagingTd">
+											<td colspan="9" align="right"><a href="#" id="first">First</a>&nbsp;
+												<a style="cursor: pointer;" id="previous">Previous</a>&nbsp;
+												<input type="text" size="1.5" id="pageNo" style="height:20px;" maxlength="5" name="pageNo" onkeypress="return isNumber(event)" />
+												&nbsp;<a style="cursor: pointer;" id="next">Next</a>
+												&nbsp;<a style="cursor: pointer;" id="last">Last</a><input type="hidden" id="totRows"/>
+												</td>
+											</tr>
                   <?php } ?>
                   </tbody>
                 </table>
               </div>
               
-              <div class="box-footer clearfix">
+             <!--  <div class="box-footer clearfix">
               <ul class="pagination pagination-sm no-margin pull-right">
                 <li><a href="#">«</a></li>
                 <li><a href="#">1</a></li>
@@ -133,7 +188,7 @@ function deleteEmp(empId){
                 <li><a href="#">5</a></li>
                 <li><a href="#">»</a></li>
               </ul>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

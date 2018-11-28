@@ -34,15 +34,104 @@ $(function () {
               }           
     });
 });
-
-function tinNoValidate(evt){
-	evt = (evt) ? evt : window.event;
-	var charCode = (evt.which) ? evt.which : evt.keyCode;
-	if ((charCode >= 48 && event.charCode <= 57)||charCode==8||charCode==37){
- 	   return true;
- 	}else{
- 	   return false;
- 	}
+function updOrgDetails(){
+	$("#modal-body").html("In Process");  
+	var updOrgId = $("#UpdOrgId").val();
+	var updOrgName = $("#updOrgName").val();
+	var updOrgAddress1 = $("#updOrgAddress1").val();
+	var updOrgAddress2 = $("#updOrgAddress2").val();
+	var orgstate = $("#updOrgbusinessstate").val();
+	var orgcity = $("#updOrgbusinesscity").val();
+	var updCountry = $("#updCountry").val();
+	var updOrgPinCode = $("#updOrgPinCode").val();
+	
+	if(updOrgName==null||updOrgName==''){
+			$("#modal-body").html('Validation Error<p>Enter Store Name</p></n>Length should be min 3 and max 50 char');
+			return false;
+		}else if(updOrgName.length<=2||updOrgName.length>50){
+			$("#modal-body").html('Validation Error<p>Enter Correct Store Name</p></n>Length should be min 3 and max 50 char');
+			return false;
+		}else if(updOrgAddress1==null||updOrgAddress1==''){
+			$("#modal-body").html('Validation Error<p>Enter Address Line1</p></n>Length should be min 4 and max 100 char');
+			return false;
+		}else if(updOrgAddress1.length<4||updOrgAddress1.length>100){
+			$("#modal-body").html('Validation Error<p>Enter Correct Address Line1</p></n>Length should be min 4 and max 100 char');
+			return false;
+		}else if(updOrgAddress2==null||updOrgAddress2==''){
+			$("#modal-body").html('Validation Error<p>Enter Address Line2</p></n>Length should be min 4 and max 100 char');
+			return false;
+		}else if(updOrgAddress2.length<4||updOrgAddress2.length>100){
+			$("#modal-body").html('Validation Error<p>Enter Correct Address Line2</p></n>Length should be min 4 and max 100 char');
+			return false;
+		}else if(orgstate==null||orgstate==''){
+			$("#modal-body").html('Validation Error<p>Enter Store State</p></n>Length should be min 2 and max 50 char');
+			return false;
+		}else if(orgstate.length<2||orgstate.length>50){
+			$("#modal-body").html('Validation Error<p>Enter Correct Store State</p></n>Length should be min 2 and max 50 char');
+			return false;
+		}else if(orgcity==null||orgcity==''){
+			$("#modal-body").html('Validation Error<p>Enter Store City</p></n>Length should be min 2 and max 50 char');
+			return false;
+		}else if(orgcity.length<=2||orgcity.length>50){
+			$("#modal-body").html('Validation Error<p>Enter Correct Store City</p></n>Length should be min 2 and max 50 char');
+			return false;
+		}else if(updOrgPinCode==null||updOrgPinCode==''){
+			$("#modal-body").html('Validation Error<p>Enter Store PinCode</p></n>Length should be 6 digits');
+			return false;
+		}else if(updOrgPinCode.length!=6){
+			$("#modal-body").html('Validation Error<p>Enter Correct Store PinCode</p></n>Length should be 6 digits');
+			return false;
+		}else if(updCountry==null||updCountry==''){
+			$("#modal-body").html('Validation Error<p>Enter Country</p>');
+			return false;
+		}else if(updCountry!='INDIA'){
+			$("#modal-body").html('Validation Error<p>Enter Correct Country</p>');
+			return false;
+		}
+	var sendvalue={UpdOrgId:updOrgId,UpdOrgName:updOrgName,UpdOrgAddress1:updOrgAddress1,UpdOrgAddress2:updOrgAddress2,UpdOrgCity:orgcity,UpdOrgState:orgstate,UpdOrgCountry:updCountry,UpdOrgPinCode:updOrgPinCode}
+		var opts = {
+	            type: "POST",
+	            success: function (data) {
+	                $(".loading").css("visibility","hidden");
+	                if (data.status == 0&&data.message=='OK') {
+	                    $("#modal-body").html("Store Details Updated Successfully"); 
+	                    location.reload(); 
+	                } else if (data.status==111) {
+	                    $("body").attr("onload","noBack();");
+	                    $("body").attr("onpageshow","if (event.persisted) noBack();");
+	                    $("body").attr("onunload","");
+	                    window.location.href="logout.jsp";
+	                }else if (data.status==100) {
+	                    $("#modal-body").html("Server Side Validation Failed<p>"+data.message+"</p>");                    
+	                } else {
+	                    $(".loading").css("visibility", "hidden");
+	                    $("#modal-body").html("Connection Error<p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+	                }
+	            },
+	            error: function (data, textStatus, errorThrown) {
+	                $(".loading").css("visibility","hidden");
+	                if(textStatus=="timeout"){
+	                	$("#modal-body").html("Connection Error<p>Your Request Has Timed-Out. Please Try Again Later</p>");
+	                }else{
+	                	$("#modal-body").html("Connection Error<p>"+ textStatus+"</p>");  
+	                }
+	            },
+	            url: "updateOrg",
+	            data: sendvalue
+	        }; 
+	        $.ajax(opts);
+	        return false;
+	}
+	
+function setOrgDetails(UpdOrgId,UpdOrgName,UpdOrgAddress1,UpdOrgAddress2,UpdOrgCity,UpdOrgState,UpdOrgCountry,UpdOrgPinCode){
+	$("#UpdOrgId").val(UpdOrgId);
+	$("#updOrgName").val(UpdOrgName);
+	$("#updOrgAddress1").val(UpdOrgAddress1);
+	$("#updOrgAddress2").val(UpdOrgAddress2);	
+	$("#updOrgbusinessstate").val(UpdOrgState);
+	$("#updOrgbusinesscity").val(UpdOrgCity);
+	$("#updCountry").val(UpdOrgCountry);
+	$("#updOrgPinCode").val(UpdOrgPinCode);		
 }
 
 function onOffSameAddress() {
@@ -84,7 +173,7 @@ function onFileSelected(event) {
 }
 
  function updMerchant(){
-	 $("#modal-body").html("<h2>In Process</h2>");
+	 $("#modal-body").html("In Process");
 	var merchantId=$("#merchantId").val();
 	var merchantName=$("#Name").val();
 	var businessType=$("#BusinessType").val();
@@ -148,270 +237,270 @@ function onFileSelected(event) {
 	}	
 	var regex="^[0-9]{1,8}[\\.]{1}[0-9]{0,2}?$";
 	if(typeOfSale==null||typeOfSale==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Type Of Sale</p>');
+		$("#modal-body").html('Validation Error<p>Select Type Of Sale</p>');
 		$("#AddMerchantDetails").show();
 		return false;
 	}if(onBoardingStatus==null||onBoardingStatus==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select OnBoarding Status</p>');
+		$("#modal-body").html('Validation Error<p>Select OnBoarding Status</p>');
 		$("#AddMerchantDetails").show();
 		return false;
 	}if(verificationEntryDate==null||verificationEntryDate==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Verification Entry Date</p>');
+		$("#modal-body").html('Validation Error<p>Select Verification Entry Date</p>');
 		$("#AddMerchantDetails").show();
 		return false;
 	}
 
 	
 	if(merchantName==null||merchantName==""){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Merchant Name</p></n>Length should be min 2 and max 60 char');
+		$("#modal-body").html('Validation Error<p>Enter Merchant Name</p></n>Length should be min 2 and max 60 char');
 		return false;
 	}else if(merchantName.length<2||merchantName.length>60){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Merchant Correct Format</p></n>Length should be min 2 and max 60 char');
+		$("#modal-body").html('Validation Error<p>Enter Merchant Correct Format</p></n>Length should be min 2 and max 60 char');
 		return false;
 	}else if(businessType=='Business Type'){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Business Type</p>');
+		$("#modal-body").html('Validation Error<p>Select Business Type</p>');
 		return false;
 	}else if(businessType=='Others'){
 	var other=$("#other").val();
 	if(other==null||other==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Business Type Other</p>');
+		$("#modal-body").html('Validation Error<p>Enter Business Type Other</p>');
 		return false;
 	}else if(other.length<2||other.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Business Type</p></n>Length should be min 2 and max 50 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Business Type</p></n>Length should be min 2 and max 50 char');
 		   return false;
 	}
 	}else if(merchantType==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Merchant Type</p>');
+		$("#modal-body").html('Validation Error<p>Select Merchant Type</p>');
 		return false;
 	}
 	if(executiveName!=null&&executiveName!='' ){
 		if(executiveName.length<2||executiveName.length>100){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Executive Name</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Executive Name</p></n>Length should be min 2 and max 100 char');
 		$("#AddMerchantDetails").show();
 		return false;
 	}
 	}
 	
 	else if(directorsName==null||directorsName==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Proprietor/Director/Partner Name</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Proprietor/Director/Partner Name</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(directorsName.length<2||directorsName.length>100){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Proprietor/Director/Partner Name</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Proprietor/Director/Partner Name</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(authorizedSignatory==null||authorizedSignatory==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Authorized Signatory</p></n>Length should be min 2 and max 50 char');
+		$("#modal-body").html('Validation Error<p>Enter Authorized Signatory</p></n>Length should be min 2 and max 50 char');
 		return false;
 	}else if(authorizedSignatory.length<2||directorsName.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Authorized Signatory</p></n>Length should be min 2 and max 50 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Authorized Signatory</p></n>Length should be min 2 and max 50 char');
 		return false;
 	}else if(businessNature==null||businessNature==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Business Nature</p></n>Length should be min 2 and max 50 char');
+		$("#modal-body").html('Validation Error<p>Enter Business Nature</p></n>Length should be min 2 and max 50 char');
 		return false;
 	}else if(businessNature.length<2||businessNature.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Business Nature</p></n>Length should be min 2 and max 50 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Business Nature</p></n>Length should be min 2 and max 50 char');
 		return false;
 	}else if(BusinessCode==null||BusinessCode==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Business Code</p>');
+		$("#modal-body").html('Validation Error<p>Enter Business Code</p>');
 		return false;
 	}else if(MarketingName==null||MarketingName==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Marketing Name</p></n>Length should be min 2 and max 50 char');
+		$("#modal-body").html('Validation Error<p>Enter Marketing Name</p></n>Length should be min 2 and max 50 char');
 		return false;
 	}else if(MarketingName.length<2||MarketingName.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Marketing Name</p></n>Length should be min 2 and max 50 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Marketing Name</p></n>Length should be min 2 and max 50 char');
 		return false;
 	}else if(businessAddress1==null||businessAddress1==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Business Address1</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Business Address1</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(businessAddress1.length<2||businessAddress1.length>100){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Business Address1</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Business Address1</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(businessAddress2==null||businessAddress2==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Business Address2</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Business Address2</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(businessAddress2.length<2||businessAddress2.length>100){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Business Address2</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Business Address2</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(businessState==null||businessState==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Business State</p>');
+		$("#modal-body").html('Validation Error<p>Select Business State</p>');
 		return false;
 	}else if(businessState.length<2||businessState.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Business State</p>');
+		$("#modal-body").html('Validation Error<p>Enter Correct Business State</p>');
 		return false;
 	}else if(businessCity==null||businessCity==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Business City</p>');
+		$("#modal-body").html('Validation Error<p>Select Business City</p>');
 		return false;
 	}else if(businessCity.length<2||businessCity.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Business City</p>');
+		$("#modal-body").html('Validation Error<p>Enter Correct Business City</p>');
 		return false;
 	}else if(businessPinCode==null||businessPinCode==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Business PinCode</p></n>Length should be 6 digits');
+		$("#modal-body").html('Validation Error<p>Enter Business PinCode</p></n>Length should be 6 digits');
 		return false;
 	}else if(businessPinCode.length!=6){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Business PinCode</p></n>Length should be 6 digits');
+		$("#modal-body").html('Validation Error<p>Enter Correct Business PinCode</p></n>Length should be 6 digits');
 		return false;
 	}else if(personalAddress1==null||personalAddress1==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Personal Address1</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Personal Address1</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(personalAddress1.length<2||personalAddress1.length>100){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Personal Address1</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Personal Address1</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(personalAddress2==null||personalAddress2==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Personal Address2</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Personal Address2</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(personalAddress2.length<2||personalAddress2.length>100){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Personal Address2</p></n>Length should be min 2 and max 100 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Personal Address2</p></n>Length should be min 2 and max 100 char');
 		return false;
 	}else if(personalState==null||personalState==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Personal State</p>');
+		$("#modal-body").html('Validation Error<p>Enter Personal State</p>');
 		return false;
 	}else if(personalState.length<2||personalState.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Personal State</p>');
+		$("#modal-body").html('Validation Error<p>Enter Correct Personal State</p>');
 		return false;
 	}else if(personalCity==null||personalCity==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Personal City</p>');
+		$("#modal-body").html('Validation Error<p>Enter Personal City</p>');
 		return false;
 	}else if(personalCity.length<2||personalCity.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Personal City</p>');
+		$("#modal-body").html('Validation Error<p>Enter Correct Personal City</p>');
 		return false;
 	}else if(personalPinCode==null||personalPinCode==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Personal PinCode</p></n>Length should be 6 digits');
+		$("#modal-body").html('Validation Error<p>Enter Personal PinCode</p></n>Length should be 6 digits');
 		return false;
 	}else if(personalPinCode.length!=6){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Personal PinCode</p></n>Length should be 6 digits');
+		$("#modal-body").html('Validation Error<p>Enter Correct Personal PinCode</p></n>Length should be 6 digits');
 		return false;
 	}else if(country==null||country==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Country</p>');
+		$("#modal-body").html('Validation Error<p>Enter Country</p>');
 		return false;
 	}else if(country!='INDIA'){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Country</p>');
+		$("#modal-body").html('Validation Error<p>Enter Correct Country</p>');
 		return false;
 	}else if(phoneNo==null||phoneNo==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Phone No</p></n>Phone No Length should be 10 digits');
+		$("#modal-body").html('Validation Error<p>Enter Phone No</p></n>Phone No Length should be 10 digits');
 		return false;
 	}else if(phoneNo.length<10||phoneNo.length>54){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Phone No</p></n>Phone No Length should be 10 digits</n>Add Many Phone No with comma(,) Separeted');
+		$("#modal-body").html('Validation Error<p>Enter Correct Phone No</p></n>Phone No Length should be 10 digits</n>Add Many Phone No with comma(,) Separeted');
 		return false;
 	}else if(webSiteUrl!=null&&webSiteUrl!=''){
 		var re = /(http(s)?:\\)?([\w-]+\.)+[\w-]+[.com|.in|.org]+(\[\?%&=]*)?/
 		if(webSiteUrl.length>=100){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct WebSite Url</p></n>Length should be less than 100 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct WebSite Url</p></n>Length should be less than 100 char');
 			return false;
 		}else if(re.test(webSiteUrl)==false){
-			 $("#modal-body").html('<h2>Validation Error</h2><p>website url Should be in proper format</p>');
+			 $("#modal-body").html('Validation Error<p>website url Should be in proper format</p>');
 			  return false;
 		}
 	}else if(emailId!=null&&emailId!=''){
 		var re =/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 		if(emailId.length>100){
 			console.log("email length is > 100");
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct EmailId</p>');
+			$("#modal-body").html('Validation Error<p>Enter Correct EmailId</p>');
 			return false;
 		}else if(re.test(emailId)==false){			
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct EmailId</p></n>Length should be less than 100 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct EmailId</p></n>Length should be less than 100 char');
 			return false;
 	    }
 	}else if(tinNo!=null&&tinNo!=''&&tinNo.length!=11){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Tin No</p></n>Length should be 11 digits');
+		$("#modal-body").html('Validation Error<p>Enter Correct Tin No</p></n>Length should be 11 digits');
 		return false;
 	}else if(serviceTaxNo!=null&&serviceTaxNo!=''&&serviceTaxNo.length!=15){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Service Tax No</p></n>Length should be 15 digits');
+		$("#modal-body").html('Validation Error<p>Enter Correct Service Tax No</p></n>Length should be 15 digits');
 		return false;
 	}else if(note!=null&&note!=''&&note>200){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Note</p></n>Length should be less than 200 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Note</p></n>Length should be less than 200 char');
 		return false;
 	}else if(verificationStatus==null||verificationStatus==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Verification Status</p>');
+		$("#modal-body").html('Validation Error<p>Select Verification Status</p>');
 		return false;
 	}else if(verificationStatus.length<3||verificationStatus.length>25){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Verification Status</p>');
+		$("#modal-body").html('Validation Error<p>Enter Correct Verification Status</p>');
 		return false;
 	}
 	if(modeofpayment=="Swipe")
 	{
 		if(swipeAmount==null||swipeAmount==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter swipeAmount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter swipeAmount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(swipeAmount.length<1||swipeAmount.length>11){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Swipe Amount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct Swipe Amount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(swipeAmount.match(regex) == null){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Swipe Amount Should be in proper format (xxxxxxxx.xx)</p>');
+			$("#modal-body").html('Validation Error<p>Swipe Amount Should be in proper format (xxxxxxxx.xx)</p>');
 			return false;
 		}else if(SwipeDate==null||SwipeDate==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter SwipeDate</p>');
+			$("#modal-body").html('Validation Error<p>Enter SwipeDate</p>');
 			return false;
 		}else if(swipeTerminal==null||swipeTerminal==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter swipeTerminal</p></n>Length should be min 2 and max 50 char');
+			$("#modal-body").html('Validation Error<p>Enter swipeTerminal</p></n>Length should be min 2 and max 50 char');
 			return false;
 		}else if(swipeTerminal.length<2||swipeTerminal.length>50){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Swipe Terminal</p>');
+			$("#modal-body").html('Validation Error<p>Enter Correct Swipe Terminal</p>');
 			return false;
 		}
 	}
 	else if(modeofpayment=="Cheque")
 	{
 		if(chequeNo==null||chequeNo==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter chequeNo</p></n>Length should be min 1 and max 10 char');
+			$("#modal-body").html('Validation Error<p>Enter chequeNo</p></n>Length should be min 1 and max 10 char');
 			return false;
 		}else if(chequeNo.length<1||chequeNo.length>10){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Cheque No</p></n>Length should be min 1 and max 10 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct Cheque No</p></n>Length should be min 1 and max 10 char');
 			return false;
 		}else if(chequeAmount==null||chequeAmount==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter cheque Amount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter cheque Amount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(chequeAmount.length<1||chequeAmount.length>11){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Cheque Amount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct Cheque Amount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(chequeAmount.match(regex) == null){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Cheque Amount Should be in proper format (xxxxxxxx.xx)</p>');
+			$("#modal-body").html('Validation Error<p>Cheque Amount Should be in proper format (xxxxxxxx.xx)</p>');
 			return false;
 		}else if(chequeDate==null||chequeDate==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter chequeDate</p>');
+			$("#modal-body").html('Validation Error<p>Enter chequeDate</p>');
 			return false;
 		}else if(chequeDepositDate==null||chequeDepositDate==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter chequeDepositDate</p>');
+			$("#modal-body").html('Validation Error<p>Enter chequeDepositDate</p>');
 			return false;
 		}else if(chequeBank==null||chequeBank==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter cheque Bank Name</p></n>Length should be min 1 and max 50 char');
+			$("#modal-body").html('Validation Error<p>Enter cheque Bank Name</p></n>Length should be min 1 and max 50 char');
 			return false;
 		}else if(chequeBank.length<1||chequeBank.length>50){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Cheque Bank Name</p></n>Length should be min 1 and max 50 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct Cheque Bank Name</p></n>Length should be min 1 and max 50 char');
 			return false;
 		}
 	}
 else if(modeofpayment=="Cash")
 	{
 		if(cashDate==null||cashDate==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter cash Date</p>');
+			$("#modal-body").html('Validation Error<p>Enter cash Date</p>');
 			return false;
 		}else if(cashAmount==null||cashAmount==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter cash Amount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter cash Amount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(cashAmount.length<1||cashAmount.length>11){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Cash Amount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct Cash Amount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(cashAmount.match(regex) == null){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Cash Amount Should be in proper format (xxxxxxxx.xx)</p>');
+			$("#modal-body").html('Validation Error<p>Cash Amount Should be in proper format (xxxxxxxx.xx)</p>');
 			return false;
 		}
 	}else if(modeofpayment=="NEFT"){
 		if(neftAmount==null||neftAmount==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter neft Amount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter neft Amount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(neftAmount.length<1||neftAmount.length>11){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct neft Amount</p></n>Length should be min 1 and max 11 char');
+			$("#modal-body").html('Validation Error<p>Enter Correct neft Amount</p></n>Length should be min 1 and max 11 char');
 			return false;
 		}else if(neftAmount.match(regex) == null){
-			$("#modal-body").html('<h2>Validation Error</h2><p>neft Amount Should be in proper format (xxxxxxxx.xx)</p>');
+			$("#modal-body").html('Validation Error<p>neft Amount Should be in proper format (xxxxxxxx.xx)</p>');
 			return false;
 		}else if(neftDate==null||neftDate==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter neft Date</p>');
+			$("#modal-body").html('Validation Error<p>Enter neft Date</p>');
 			return false;
 		}else if(neftchequeNo==null&&neftRefNo==null){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Neft chequeNo OR Ref chequeNo</p></n>Length should be min 1 and max 10 char');
+			$("#modal-body").html('Validation Error<p>Enter Neft chequeNo OR Ref chequeNo</p></n>Length should be min 1 and max 10 char');
 			return false;
 		}else if(neftchequeNo==""&&neftRefNo==""){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Neft chequeNo OR Ref chequeNo</p></n>Length should be min 1 and max 10 char');
+			$("#modal-body").html('Validation Error<p>Enter Neft chequeNo OR Ref chequeNo</p></n>Length should be min 1 and max 10 char');
 			return false;
 		}
 	}
@@ -419,10 +508,10 @@ else if(modeofpayment=="Cash")
 
 if((merchantType=="credit"|| merchantType=="wallet/credit")&&verificationStatus=="Activated"){
 	if(bankMid==null&&bankMid==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank MId</p></n>Length should be min 15 and max 45 char');
+		$("#modal-body").html('Validation Error<p>Enter Bank MId</p></n>Length should be min 15 and max 45 char');
 		return false;
 	}else if(bankMid.length<15||bankMid.length>45){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Bank Mid</p></n>Length should be min 15 and max 45 char');
+		$("#modal-body").html('Validation Error<p>Enter Correct Bank Mid</p></n>Length should be min 15 and max 45 char');
 		return false;
 	}
 }
@@ -505,7 +594,7 @@ if((merchantType=="credit"|| merchantType=="wallet/credit")&&verificationStatus=
             success: function (data) {
                    var obj = JSON.parse(data);
                if (obj.status == 0&&obj.message=='OK') {
-                    $("#modal-body").html("<h2>Merchant Updated Successfully</h2>");  
+                    $("#modal-body").html("Merchant Updated Successfully");  
                     location.reload(); 
                 } else if (data.status==111) {
                     $("body").attr("onload","noBack();");
@@ -513,20 +602,20 @@ if((merchantType=="credit"|| merchantType=="wallet/credit")&&verificationStatus=
                     $("body").attr("onunload","");
                     window.location.href="logout.jsp";
                 }else if (obj.message.startsWith('Invalid')) {
-                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+obj.message+"</p>");                    
+                    $("#modal-body").html("Server Side Validation Failed<p>"+obj.message+"</p>");                    
                 }else if (obj.status==100) {
-                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+obj.message+"</p>");                    
+                    $("#modal-body").html("Server Side Validation Failed<p>"+obj.message+"</p>");                    
                 } else {
                     $(".loading").css("visibility", "hidden");
-                    $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+                    $("#modal-body").html("Connection Error<p>Your Request Could Not Be Processed. Please Try Again Later</p>");
                 }
             },
             error: function (data, textStatus, errorThrown) {
                 $(".loading").css("visibility","hidden");
                 if(textStatus=="timeout"){
-                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+                	$("#modal-body").html("Connection Error<p>Your Request Has Timed-Out. Please Try Again Later</p>");
                 }else{
-                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+                	$("#modal-body").html("Connection Error<p>"+ textStatus+"</p>");  
                 }
             },
             mimeType:"multipart/form-data",
@@ -1234,7 +1323,7 @@ $('select option[value="1"]').attr("selected",true);
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="Password">Boarding Date</label>
-                      <input type="password" class="form-control input-lg" value="${allMerchantDetails['createdOn']}" data-clear-btn="true"
+                      <input type="text" class="form-control input-lg" value="${allMerchantDetails['createdOn']}" data-clear-btn="true"
 						          name="boardingDate" id="boardingDate">
                     </div>
                   </div>
@@ -1361,15 +1450,7 @@ $('select option[value="1"]').attr("selected",true);
 													<button type="button" class="btn-submit"
 														data-toggle="modal" data-target=".update_device_popup"
 														onclick='setDeviceDetails("${deviceDetails.userId}","${deviceDetails.bankTId}","${deviceDetails.serialNo}","${deviceDetails.validTil}","${deviceDetails.rent}","${deviceDetails.paymentMode}","${deviceDetails.pendingRent}","${deviceDetails.penaltyAmount}","${deviceDetails.discount}","${deviceDetails.avgTxnAmount}","${deviceDetails.userName}","${deviceDetails.userPhoneNo}","${deviceDetails.rmn}","${deviceDetails.userEmail}","${deviceDetails.mdrDebit1}","${deviceDetails.mdrDebit2}","${deviceDetails.mdrCreditPre}","${deviceDetails.mdrCreditNpre}","${deviceDetails.mdrAmex}","${deviceDetails.other}","${deviceDetails.mdrCashAtPos}","${deviceDetails.amexActivated}","${deviceDetails.amexTID}","${deviceDetails.amexMID}","${deviceDetails.bankAccName}","${deviceDetails.bankAccNo}","${deviceDetails.bankName}","${deviceDetails.bankIfsc}","${deviceDetails.bankMicr}","${deviceDetails.bankBranch}","${deviceDetails.mdrMobiKwik}","${deviceDetails.userType}","${deviceDetails.userStatus}","${deviceDetails.benefName}","${deviceDetails.penaltyReason}","${deviceDetails.discountReason}","${deviceDetails.loyaltyStatus}","${deviceDetails.closeWalletStatus}","${deviceDetails.txnSmsStatus}","${deviceDetails.integrationKey}","${deviceDetails.emprole2}","${deviceDetails.loanStatus}","${deviceDetails.loanType}","${deviceDetails.loanDedAmount}","${deviceDetails.loanBankName}","${deviceDetails.loanBankAcc}","${deviceDetails.loanBankIfsc}","${deviceDetails.mdrZero}","${deviceDetails.mdrDebit0}","${deviceDetails.activationDate}","${deviceDetails.planName}","${deviceDetails.feeMode}","${deviceDetails.feeAmount}","${deviceDetails.feeDate}","${deviceDetails.feeRemark}","${deviceDetails.switchType}","${deviceDetails.midTidEntryDate}","${deviceDetails.wlcmLtrSendDate}","${deviceDetails.settlementCharges}","${deviceDetails.rechargeService}","${deviceDetails.rechargeBal}","${deviceDetails.rechargeIncentive}","${deviceDetails.rechargeMonthlyRental}","${deviceDetails.ppcServiceEnable}","${deviceDetails.dmtServiceEnable}","${deviceDetails.dthMobileServiceEnable}");'<c:if test="${allMerchantDetails.emprole1 == '10'||allMerchantDetails.emprole1 == '12'}">style="display:none;"</c:if>>Update</button>
-													<button type="button" class="btn-submit" data-toggle="modal" data-target=".create_clone_device_popup"
-														onclick='setCloneDeviceDetails("${orgDetails.orgId}","${deviceDetails.userId}","${deviceDetails.bankTId}","${deviceDetails.validTil}","${deviceDetails.rent}","${deviceDetails.paymentMode}","${deviceDetails.pendingRent}","${deviceDetails.penaltyAmount}","${deviceDetails.discount}","${deviceDetails.avgTxnAmount}","${deviceDetails.userName}","${deviceDetails.rmn}","${deviceDetails.userEmail}","${deviceDetails.mdrDebit1}","${deviceDetails.mdrDebit2}","${deviceDetails.mdrCreditPre}","${deviceDetails.mdrCreditNpre}","${deviceDetails.mdrAmex}","${deviceDetails.other}","${deviceDetails.mdrCashAtPos}","${deviceDetails.amexActivated}","${deviceDetails.amexTID}","${deviceDetails.amexMID}","${deviceDetails.bankAccName}","${deviceDetails.bankAccNo}","${deviceDetails.bankName}","${deviceDetails.bankIfsc}","${deviceDetails.bankMicr}","${deviceDetails.bankBranch}","${deviceDetails.mdrMobiKwik}","${deviceDetails.userType}","${deviceDetails.mdrCashAtPos}","${deviceDetails.benefName}","${deviceDetails.penaltyReason}","${deviceDetails.discountReason}","${deviceDetails.integrationKey}","${deviceDetails.mdrDebit0}","${deviceDetails.activationDate}","${deviceDetails.planName}","${deviceDetails.feeMode}","${deviceDetails.feeAmount}","${deviceDetails.feeDate}","${deviceDetails.feeRemark}","${deviceDetails.midTidEntryDate}","${deviceDetails.wlcmLtrSendDate}","${deviceDetails.settlementCharges}","${deviceDetails.rechargeService}");'<c:if test="${allMerchantDetails.acquirerCode != 'Acquiro'||allMerchantDetails.emprole1 == '10'||allMerchantDetails.emprole1 == '12'}">style="display:none;"</c:if>>Clone</button>
-													<%-- <button type="button" class="btn-submit" data-toggle="modal" data-target=".nodal_details_popup"
-														onclick='setNodalAccountDetails("${deviceDetails.bankTId}","${allMerchantDetails.merchantId}","${orgDetails.orgId}","${deviceDetails.userId}","${deviceDetails.bankIfsc}","${deviceDetails.bankAccNo}","${deviceDetails.benefName}","${deviceDetails.bankName}","${allMerchantDetails.emailId}","${deviceDetails.rmn}","${allMerchantDetails.businessAddress1}","${allMerchantDetails.businessAddress2}","${allMerchantDetails.businessCity}","${allMerchantDetails.businessState}","${allMerchantDetails.businessPincode}","${deviceDetails.benDob}","${deviceDetails.benBankCd}","${deviceDetails.benBranchCd}","${deviceDetails.benTranParticular}","${deviceDetails.benTrnsRmks}","${deviceDetails.benPan}","${deviceDetails.benType}","${deviceDetails.benId}","${deviceDetails.limitDaily}","${deviceDetails.limitWeekly}","${deviceDetails.limitMonthly}","${deviceDetails.issueBranchCd}","${deviceDetails.benHide}","${allMerchantDetails.businessType}");' <c:if test="${allMerchantDetails.emprole1 == '9' ||allMerchantDetails.emprole1 == '4'|| allMerchantDetails.emprole1 == '10'}">style="display:none;"</c:if>>Update Nodal</button>
-													 --%><button type="button" class="btn-submit" data-toggle="modal" data-target=".send_sms_popup"
-														onclick='setsendsms("${allMerchantDetails.merchantId}","${orgDetails.orgId}","${deviceDetails.userId}","${deviceDetails.rmn}");' <c:if test="${allMerchantDetails.emprole1 == '9'||allMerchantDetails.emprole1 == '10'||allMerchantDetails.emprole1 == '4'}">style="display:none;"</c:if>>Send Sms</button>
-													<button type="button" class="btn-submit" data-toggle="modal"
-														onclick='welcomeLetter("${deviceDetails.bankTId}","${deviceDetails.userPhoneNo}","${deviceDetails.userId}","${deviceDetails.amexMID}","${deviceDetails.mdrCreditNpre}","${deviceDetails.mdrCreditPre}","${deviceDetails.mdrDebit1}","${deviceDetails.mdrDebit2}");' <c:if test="${allMerchantDetails.emprole1 == '9'||allMerchantDetails.emprole1 == '10'||allMerchantDetails.emprole1 == '4'}">style="display:none;"</c:if>>Send WelcomeLetter</button>
-										
+													
 													
 												</td>
 											</tr>
@@ -1387,7 +1468,94 @@ $('select option[value="1"]').attr("selected",true);
       </div>
       <!-- /.row -->
     </section>
+<!------------------------------ Update ORG -------------------------------------------->
+.
+<div class="modal fade update_org_popup" tabindex="-1" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
 
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Update Organization</h4>
+					
+				</div>
+				<div class="modal-body1">
+					<form class="form-horizontal form-label-left">
+					<input type="hidden" id="id" name="id" value="">
+						<div class="x_panel">
+							<div class="x_title">
+								<div class="clearfix"></div>
+							</div>
+							<div class="x_content">
+								<br />
+								 <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="modelName"> Name<span class="required">*</span></label>
+                                               <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" class="form-control" data-clear-btn="true" name="updOrgName" id="updOrgName" required="true" minlength="8" maxlength="17" />
+                                           </div>
+                                        </div>                                                            
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="serialNo">Address Line 1<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                               <input type="text" class="form-control" data-clear-btn="true" name="updOrgAddress1" id="updOrgAddress1" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                           </div>
+                                        </div>
+                                        
+                                       <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Address Line 2<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="updOrgAddress2" id="updOrgAddress2" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">State<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="updOrgbusinessstate" id="updOrgbusinessstate" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                                                                              
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">City<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="name="updOrgbusinessstate" id="updOrgbusinesscity" name="updOrgbusinesscity" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Pincode<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="updOrgPinCode" id="updOrgPinCode" name="updOrgbusinesscity" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                                                                              
+                                            </div>
+                                        </div>                   
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Country<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="name="updCountry" id="updCountry" name="updCountry" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                                                                              
+                                            </div>
+                                        </div>                                               
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>	
+					<button type="button" class="btn btn-info pull-right"
+										data-toggle="modal" data-target=".bs-example-modal-sm"
+										onclick="return updOrgDetails();" id="UpdDeviceDetails"
+										name="UpdDeviceDetails">Update Org</button>	
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+                
 <!------------------------------ Update Device -------------------------------------------->
 
  <div class="modal fade bs-example-modal-sm" id="deleteConfirm">
