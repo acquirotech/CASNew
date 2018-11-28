@@ -123,7 +123,7 @@ function submitDevice(){
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right" data-target=".bs-example-modal-sm" onclick="return submitDevice();">Sign in</button>
+                <button type="submit" class="btn btn-info pull-right" data-target=".bs-example-modal-sm" onclick="return submitDevice();">Submit</button>
               </div>
             </form>
           </div>

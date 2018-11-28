@@ -614,17 +614,6 @@ function addOrgSub(){
 </script>
 <script type="text/javascript">
     $(function () {
-        $("#BusinessType").change(function () {
-              var bsnsstype = $("#BusinessType").val();
-              if ($("#BusinessType").val() == "Others") {
-                $("#dvOther").show();
-             } else {
-                $("#dvOther").hide();
-            }
-        });
-    });
-
-    $(function () {
         $("#appCheckStatus").change(function () {
               var checkStatus = $("#appCheckStatus").val();
               if ($("#appCheckStatus").val() == "Yes") {
@@ -656,16 +645,6 @@ function fillBilling(f) {
 </script>
 <script type="text/javascript">
     $(function () {
-        
-        $("#BusinessType").change(function () {
-              var bsnsstype = $("#BusinessType").val();
-              if ($("#BusinessType").val() == "Others") {
-                $("#dvOther").show();
-             } else {
-                $("#dvOther").hide();
-            }
-        });
-
         $("#modeofpayment").change(function () {
             var modeofpayment = $("#modeofpayment").val();
             if (modeofpayment == "Swipe") 
@@ -1052,7 +1031,7 @@ function fillBilling(f) {
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
+                  <div class="col-md-5" id ="userstatedropdowndiv">
                     <div class="form-group">
                       <label for="exampleInputEmail1">State</label>
                        <select onchange="print_usercity('usercity',this.selectedIndex);" id="userstate" name ="userstate" class="form-control input-lg">
@@ -1061,16 +1040,20 @@ function fillBilling(f) {
                     </div>
                   </div>
                 </div>
-                  <div class="row">&nbsp;</div>
+                 <!--  <div class="row">&nbsp;</div> -->
+                
                 <div class="row">
-                  <div class="col-md-5">
+                  <div class="col-md-5" id="userstatediv" style="display: none;">
+                    <div class="row">&nbsp;</div>
+                
                     <div class="form-group">
                       <label for="exampleInputEmail1">State</label>
                       <input type="text" class="form-control input-lg" id="userstate1" placeholder="Enter State">
                     </div>
                   </div>
-                  <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
+                  <!-- <div class="col-md-1">&nbsp;</div>
+                   --><div class="col-md-5" id ="usercitydropdowndiv">
+                    <div class="row">&nbsp;</div>               
                     <div class="form-group">
                       <label for="exampleInputEmail1">City</label>
                       <script language="javascript">print_userstate("userstate");</script>
@@ -1080,9 +1063,11 @@ function fillBilling(f) {
                     </div>
                   </div>
                 </div>
-                  <div class="row">&nbsp;</div>
-                <div class="row">
-                  <div class="col-md-5">
+                <!--   <div class="row">&nbsp;</div>
+                 --><div class="row">
+                  <div class="col-md-5" style="display: none;" id="usercitydiv">
+                    <div class="row">&nbsp;</div>
+                
                     <div class="form-group">
                       <label for="exampleInputEmail1">City</label>
                       <input type="text" class="form-control input-lg" id="usercity1" placeholder="Enter User City">
@@ -1129,8 +1114,8 @@ function fillBilling(f) {
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_swipeAmount" style="display:none;">
+                  <div class="col-md-5" id="div_swipeAmount" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="swipeAmount" placeholder="Enter Amount" step=".01">
                     </div>
@@ -1138,23 +1123,23 @@ function fillBilling(f) {
                 </div>
                <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_SwipeDate" style="display:none;">
+                  <div class="col-md-5" id="div_SwipeDate" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="SwipeDate" id="SwipeDate" readonly='true'/>
                                            
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_swipeTerminal" style="display:none;">
+                  <div class="col-md-5" id="div_swipeTerminal" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Swiped on the terminal of</label>
                         <input type="text" class="form-control input-lg" id="swipeTerminal" placeholder="Enter swipe Terminal">
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_swipeCardType" style="display:none;">
+                  <div class="col-md-5" id="div_swipeCardType" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Card Type</label>
                          <select data-clear-btn="true" name="cardType" id="cardType" required="true" class="form-control input-lg">
 										         	<option value="Rupay">Rupay</option>
@@ -1168,14 +1153,14 @@ function fillBilling(f) {
                 </div>
             <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeNo" style="display:none;">
+                  <div class="col-md-5" id="div_chequeNo" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Cheque No</label>
                      <input type="number" class="form-control input-lg" id="chequeNo" placeholder="Enter cheque No"> </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeAmount" style="display:none;">
+                  <div class="col-md-5" id="div_chequeAmount" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="chequeAmount" placeholder="Enter cheque Amount" step=".01">
                     </div>
@@ -1183,15 +1168,15 @@ function fillBilling(f) {
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeDate" style="display:none;">
+                  <div class="col-md-5" id="div_chequeDate" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="chequeDate" id="chequeDate" readonly='true'/>
                       </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeDepositDate" style="display:none;">
+                  <div class="col-md-5"  id="div_chequeDepositDate" style="display:none;">
+                    <div class="form-group">
                       <label for="exampleInputEmail1">Cheque Deposit Date</label>
                           <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="chequeDepositDate" id="chequeDepositDate" readonly='true'/>
                       </div>
@@ -1199,15 +1184,15 @@ function fillBilling(f) {
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeBank" style="display:none;">
+                  <div class="col-md-5"  id="div_chequeBank" style="display:none;">
+                    <div class="form-group">
                       <label for="exampleInputEmail1">Bank Name</label>
                         <input type="text" class="form-control input-lg" id="chequeBank" placeholder="Enter Cheque Bank">
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_cashAmount" style="display:none;">
+                  <div class="col-md-5" id="div_cashAmount" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="cashAmount" placeholder="Enter Amount" step=".01">
                     </div>
@@ -1215,15 +1200,15 @@ function fillBilling(f) {
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_cashDate" style="display:none;">
+                  <div class="col-md-5" id="div_cashDate" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="cashDate" id="cashDate" readonly='true'/>
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neft" style="display:none;">
+                  <div class="col-md-5" id="div_neft" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="text" class="form-control input-lg" id="neftAmount" placeholder="Enter Amount" step=".01">
                     </div>
@@ -1231,16 +1216,16 @@ function fillBilling(f) {
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftDate" style="display:none;">
+                  <div class="col-md-5" id="div_neftDate" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="neftDate" id="neftDate" readonly='true'/>
                                            
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftchequeNo" style="display:none;">
+                  <div class="col-md-5" id="div_neftchequeNo" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Cheque No.</label>
                         <input type="text" class="form-control input-lg" id="neftchequeNo" placeholder="Enter Cheque No">
                     </div>
@@ -1250,16 +1235,16 @@ function fillBilling(f) {
             
             <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftRefNo" style="display:none;">
+                  <div class="col-md-5" id="div_neftRefNo" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Ref/UTR. No.</label>
                             <input type="number" class="form-control input-lg" data-role="date" data-clear-btn="true" name="neftRefNo" id="neftRefNo" />
                                            
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftchequeNo" style="display:none;">
+                  <div class="col-md-5" id="div_neftchequeNo" style="display:none;">
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Cheque No.</label>
                         <input type="text" class="form-control input-lg" id="neftchequeNo" placeholder="Enter Cheque No">
                     </div>
@@ -1288,7 +1273,7 @@ function fillBilling(f) {
 										 			</c:forEach>
 						</select>
                     </div>
-                  </div>
+                  </div>tr
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">

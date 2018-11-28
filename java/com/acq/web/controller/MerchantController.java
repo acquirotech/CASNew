@@ -466,9 +466,6 @@ public class MerchantController {
 	@RequestMapping(value = { "/addmerchant" }, method = RequestMethod.GET)
 	public ModelAndView addMerchantHome(HttpServletRequest request, HttpServletResponse res) {
 		logger.info("request landing add merchant home home page");
-		res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-		res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-		res.setDateHeader("Expires", 0);
 		List<HashMap<String,String>> list = null;
 		ModelAndView model = new ModelAndView();
 		HttpSession ses = request.getSession();
@@ -477,7 +474,7 @@ public class MerchantController {
 			list = global.getResult();
 			model.addObject("executiveList", list);
 			model.addObject("employeeName",(String)ses.getAttribute("userName"));
-			model.setViewName("addmerchant");
+			model.setViewName("addMerchant");
 	    }else{
 			logger.info("you are logged out add merchant 1");
 			model.setViewName("index");

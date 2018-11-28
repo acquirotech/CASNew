@@ -45,9 +45,6 @@ function tinNoValidate(evt){
  	}
 }
 
-
-
-
 function onOffSameAddress() {
 	if($("#sameStateCity").is(":checked") == true) {
 	  	var address1=$("#BusinessAddress1").val();
@@ -544,7 +541,7 @@ if((merchantType=="credit"|| merchantType=="wallet/credit")&&verificationStatus=
 }
 
 
-
+</script>
  
 <script type="text/javascript">
 
@@ -795,7 +792,7 @@ $('select option[value="1"]').attr("selected",true);
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="phone">Phone No</label>
-                      <input type="number" class="form-control input-lg" ivalue="${allMerchantDetails['phoneNo']}" data-clear-btn="true"
+                      <input type="number" class="form-control input-lg" value="${allMerchantDetails['phoneNo']}" data-clear-btn="true"
 										name="PhoneNo" id="PhoneNo" >
                     </div>
                   </div>
@@ -995,23 +992,23 @@ $('select option[value="1"]').attr("selected",true);
                 </div>
                <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_SwipeDate" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_SwipeDate" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="SwipeDate" id="SwipeDate" readonly='true'/>
                                            
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_swipeTerminal" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_swipeTerminal" >
                       <label for="exampleInputEmail1">Swiped on the terminal of</label>
                         <input type="text" class="form-control input-lg" id="swipeTerminal" placeholder="Enter swipe Terminal">
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_swipeCardType" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_swipeCardType" >
                       <label for="exampleInputEmail1">Card Type</label>
                          <select data-clear-btn="true" name="cardType" id="cardType" required="true" class="form-control input-lg">
 										         	<option value="Rupay">Rupay</option>
@@ -1025,14 +1022,14 @@ $('select option[value="1"]').attr("selected",true);
                 </div>
             <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_chequeNo" >
                       <label for="exampleInputEmail1">Cheque No</label>
                      <input type="number" class="form-control input-lg" id="chequeNo" placeholder="Enter cheque No"> </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeAmount" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_chequeAmount" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="chequeAmount" placeholder="Enter cheque Amount" step=".01">
                     </div>
@@ -1040,15 +1037,15 @@ $('select option[value="1"]').attr("selected",true);
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeDate" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_chequeDate" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="chequeDate" id="chequeDate" readonly='true'/>
                       </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeDepositDate" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_chequeDepositDate" >
                       <label for="exampleInputEmail1">Cheque Deposit Date</label>
                           <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="chequeDepositDate" id="chequeDepositDate" readonly='true'/>
                       </div>
@@ -1056,15 +1053,15 @@ $('select option[value="1"]').attr("selected",true);
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_chequeBank" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_chequeBank" >
                       <label for="exampleInputEmail1">Bank Name</label>
                         <input type="text" class="form-control input-lg" id="chequeBank" placeholder="Enter Cheque Bank">
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_cashAmount" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
+                  <div class="col-md-5"<c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_cashAmount" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="cashAmount" placeholder="Enter Amount" step=".01">
                     </div>
@@ -1072,15 +1069,15 @@ $('select option[value="1"]').attr("selected",true);
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_cashDate" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_cashDate" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="cashDate" id="cashDate" readonly='true'/>
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neft" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_neft" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="text" class="form-control input-lg" id="neftAmount" placeholder="Enter Amount" step=".01">
                     </div>
@@ -1088,18 +1085,18 @@ $('select option[value="1"]').attr("selected",true);
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftDate" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_neftDate" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="neftDate" id="neftDate" readonly='true'/>
                                            
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftchequeNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFTt'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_neftchequeNo">
                       <label for="exampleInputEmail1">Cheque No.</label>
-                        <input type="text" class="form-control input-lg" id="neftchequeNo" placeholder="Enter Cheque No">
+                        <input type="text" class="form-control input-lg" id="neftchequeNo0" placeholder="Enter Cheque No">
                     </div>
                   </div>
                 </div>
@@ -1107,16 +1104,16 @@ $('select option[value="1"]').attr("selected",true);
             
             <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftRefNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_neftRefNo" >
                       <label for="exampleInputEmail1">Ref/UTR. No.</label>
                             <input type="number" class="form-control input-lg" data-role="date" data-clear-btn="true" name="neftRefNo" id="neftRefNo" />
                                            
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group" id="div_neftchequeNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                    <div class="form-group" id="div_neftchequeNo" >
                       <label for="exampleInputEmail1">Cheque No.</label>
                         <input type="text" class="form-control input-lg" id="neftchequeNo" placeholder="Enter Cheque No">
                     </div>
@@ -1242,28 +1239,6 @@ $('select option[value="1"]').attr("selected",true);
                     </div>
                   </div>
 </div>
-<div class="row">&nbsp;</div>
-                <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group">
-                      <label for="phone">Original App Status</label>
-                    <select data-clear-btn="true" name="appCheckStatus" id="appCheckStatus" required="true" class="form-control input-lg">
-										          <option <c:if test="${allMerchantDetails['checkStatus'] == 'No'}">Selected</c:if> value="No">No</option>
-												
-										         <option <c:if test="${allMerchantDetails['checkStatus'] == 'Yes'}">Selected</c:if> value="Yes">Yes</option>
-												</select> </div>
-                  </div>
-                  <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5">
-                    <div class="form-group">
-                      <label for="Password">Type Of Sale</label>
-                    <select data-clear-btn="true" name="typeOfSale" id="typeOfSale" required="true" class="form-control input-lg">
-										         <option <c:if test="${allMerchantDetails['typeOfSale'] == 'Distributor'}">Selected</c:if> value="Distributor">Distributor</option>
-												 <option <c:if test="${allMerchantDetails['typeOfSale'] == 'Direct'}">Selected</c:if> value="Direct">Direct</option>
-												</select></div>
-                  </div>
-</div>
-
 <div class="row">&nbsp;</div>
                 <div class="row">
                   <div class="col-md-5">
