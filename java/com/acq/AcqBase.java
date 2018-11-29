@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import antlr.StringUtils;
+
 public class AcqBase {
 	static ApplicationContext applicationContext;
 	public static ApplicationContext getAppContext(){
@@ -18,6 +20,7 @@ public class AcqBase {
 	{
 		try
 		{
+		
 			StringBuffer encryptStringBuffer;
 			MessageDigest encryptionScheme = MessageDigest.getInstance("SHA-256");
 			encryptionScheme.update(ClearText.getBytes());

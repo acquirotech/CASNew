@@ -3,13 +3,12 @@
 <jsp:include page="/jsp/head.jsp" />
 <jsp:include page="/jsp/topbar.jsp" />
 <jsp:include page="/jsp/sidebar.jsp" />
-
 <script type="text/javascript"> 
 function empProfile(profileid,user,email,phone,status,date,role){
 	document.body.innerHTML += '<form id="dynForm" action="<c:url value='empProfile' />" method="post"><input type="hidden" name="empId" value='+profileid+' /></form>';
 	document.getElementById("dynForm").submit();
 }
-$(document).ready(function (){
+/* $(document).ready(function (){
 	<c:if var="pg" test="${page!=null&&page!=''}">
 		$("#pageNo").val('<c:out value="${page}" />');
 	</c:if>
@@ -54,7 +53,7 @@ $(document).ready(function (){
 		document.body.innerHTML += '<form id="lastForm" action="<c:url value='list' />"><input type="hidden" name="txn" value="123" /><input type="hidden" name="page" value='+lastPage+' /></form>';
 		document.getElementById("lastForm").submit();
 	});
-	});
+	}); */
 
 function deleteEmp(empId){
 	if (confirm("Do you want to delete Employee ?") == true) {

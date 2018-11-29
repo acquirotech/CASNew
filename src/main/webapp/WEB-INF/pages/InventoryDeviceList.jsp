@@ -45,7 +45,7 @@
     }
 
     function updDeviceDetails(){
-    	$("#modal-body").html("<h2>In Process</h2>");
+    	$("#modal-body").html("In Process");
     	var modelName=$("#modelName").val();
     	var serialNo=$("#serialNo").val();
     	var status=$("#status").val();
@@ -57,19 +57,19 @@
     		return false;
     	}
     	if(modelName==null||modelName==""){
-    		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Model Name</p>');
+    		$("#modal-body").html('Validation Error<p>Enter Model Name</p>');
     		return false;
     	}else if(modelName.length<2||modelName.length>40){
-    		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Name</p></n>Length should be min 2 and max 40 char');
+    		$("#modal-body").html('Validation Error<p>Enter Correct Name</p></n>Length should be min 2 and max 40 char');
     		return false;
     	}else if(serialNo==null||serialNo==''){
-    		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Device Serial No</p></n>Length should be min 8 and max 17 char');
+    		$("#modal-body").html('Validation Error<p>Enter Device Serial No</p></n>Length should be min 8 and max 17 char');
     		return false;
     	}else if(serialNo.length<8||serialNo.length>17){
-    		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Device Serial No</p></n>Length should be min 8 and max 17 char');
+    		$("#modal-body").html('Validation Error<p>Enter Correct Device Serial No</p></n>Length should be min 8 and max 17 char');
     		return false;
     	}else if(status==null||status==""){
-    		$("#modal-body").html('<h2>Validation Error</h2><p>Select Status</p>');
+    		$("#modal-body").html('Validation Error<p>Select Status</p>');
     		return false;
     	}
     	var sendvalue={inventoryDeviceId:id,modelName:modelName,inventorySerialNo:serialNo,status:status}
@@ -78,7 +78,7 @@
                 success: function (data) {
                     $(".loading").css("visibility","hidden");
                    	if (data.status==0&&data.message=='OK'){                   	                   	
-                        $("#modal-body").html("<h2>Inventory Terminal Updated Successfully</h2>");  
+                        $("#modal-body").html("Inventory Terminal Updated Successfully");  
                         location.reload(); 
                     } else if (data.status==111) {
                         $("body").attr("onload","noBack();");
@@ -86,18 +86,18 @@
                         $("body").attr("onunload","");
                         window.location.href="logout.jsp";
                     }else if (data.status==100) {
-                        $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+                        $("#modal-body").html("Server Side Validation Failed<p>"+data.message+"</p>");                    
                     } else {
                         $(".loading").css("visibility", "hidden");
-                        $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+                        $("#modal-body").html("Connection Error<p>Your Request Could Not Be Processed. Please Try Again Later</p>");
                     }
                 },
                 error: function (data, textStatus, errorThrown) {
                     $(".loading").css("visibility","hidden");
                     if(textStatus=="timeout"){
-                    	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+                    	$("#modal-body").html("Connection Error<p>Your Request Has Timed-Out. Please Try Again Later</p>");
                     }else{
-                    	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+                    	$("#modal-body").html("Connection Error<p>"+ textStatus+"</p>");  
                     }
                 },
                 url: "inventoryUpdateDevice",
@@ -143,7 +143,7 @@
     	            success: function (data) {
     	                $(".loading").css("visibility","hidden");
     	                if (data.status == 0&&data.message=='OK') {
-    	                    $("#modal-body").html("<h2>Inventory Terminal Deleted Successfully</h2>"); 
+    	                    $("#modal-body").html("Inventory Terminal Deleted Successfully"); 
     	                    location.reload(); 
     	                } else if (data.status==111) {
     	                    $("body").attr("onload","noBack();");
@@ -151,18 +151,18 @@
     	                    $("body").attr("onunload","");
     	                    window.location.href="logout.jsp";
     	                }else if (data.status==100) {
-    	                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+    	                    $("#modal-body").html("Server Side Validation Failed<p>"+data.message+"</p>");                    
     	                } else {
     	                    $(".loading").css("visibility", "hidden");
-    	                    $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+    	                    $("#modal-body").html("Connection Error<p>Your Request Could Not Be Processed. Please Try Again Later</p>");
     	                }
     	            },
     	            error: function (data, textStatus, errorThrown) {
     	                $(".loading").css("visibility","hidden");
     	                if(textStatus=="timeout"){
-    	                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+    	                	$("#modal-body").html("Connection Error<p>Your Request Has Timed-Out. Please Try Again Later</p>");
     	                }else{
-    	                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+    	                	$("#modal-body").html("Connection Error<p>"+ textStatus+"</p>");  
     	                }
     	            },
     	            url: "inventoryDeviceDelete",

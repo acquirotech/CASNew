@@ -3,6 +3,8 @@
 <jsp:include page="/jsp/topbar.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 
 <script type="text/javascript">
@@ -75,50 +77,6 @@ function updateMdr(){
 		$("#modal-body1").html("<h2>AcqMdr And BankMdr Can Not Be Blank</h2>");  
 		}
 	}
-
-
-
-
-function findReceipt(signImage){
-	var sendvalue={signImage:signImage}		
-	var opts = {
-		type: "GET",
-	    	success: function (data) {
-	        	$(".loading").css("visibility","hidden");
-	            if (data.status == 0&&data.message=='OK') {
-	            	$("#modal-body1").html("<h2>Transaction Receipt Not Found!</h2>");
-		            // alert("Txn Added Successfully In Risk");
-		            location.reload(); 	    
-	            } else if (data.status==111) {
-	                $("body").attr("onload","noBack();");
-	                $("body").attr("onpageshow","if (event.persisted) noBack();");
-	                $("body").attr("onunload","");
-	                window.location.href="logout.jsp";
-	            }else if (data.status==101) {
-	               	$("#modal-body1").html("<h2><p>"+data.message+"</p></h2>");
-		            //   alert(data.message);
-		            location.reload(); 
-	            } else {
-	                $(".loading").css("visibility", "hidden");
-	                $("#modal-body1").html("<h2><p>"+data.message+"</p></h2>");
-	                //  alert(data.message);
-	                location.reload(); 
-	           }
-	       },
-	       error: function (data, textStatus, errorThrown) {
-	       	  $(".loading").css("visibility","hidden");
-	          if(textStatus=="timeout"){
-	              $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
-	          }else{
-	            $("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
-	          }
-	       },
-	       url: "signReceipt",
-	       data: sendvalue
-	   }; 
-       $.ajax(opts);
-       return false;
-}
 function addRisk(txnId,txnType){
 	if (confirm("Do you want to hold txn ?") == true) {
 		$("#modal-body1").html("<h2>In Process</h2>");
@@ -167,239 +125,16 @@ function addRisk(txnId,txnType){
 		return false;
 	}
 }
-function searchClickedTns(){
-	var merchantname = $("#merchantName").val();
-	var orgname = $("#orgName").val();	
-	var fromDate = $("#fromDate").val();
-	var toDate = $("#toDate").val();
-	var loginId = $("#loginId").val();
-	var custPhone = $("#custPhone").val();
-	var txnId = $("#txnId").val();
-	var status = $("#status").val();
-	var walletEmail = $("#walletEmail").val();
-	var txnType = $("#txnType").val();
-	var account = $("#account").val();
-	var amount = $("#amount").val();
-	var authcode = $("#authcode").val();
-	
-	
-	var appendMe="";
-	var regEx = /^\d{2}\/\d{2}\/\d{4}$/;
-	
-
-	if(walletEmail!=null&&walletEmail!=""){
-		appendMe=appendMe.concat("&walletEmail="+walletEmail+"")
-	}
-	if(status!=null&&status!=""){
-		appendMe=appendMe.concat("&walletStatus="+status+"");
-	}
-	if(txnId!=null&&txnId!=""){
-		appendMe=appendMe.concat("&walletTxnId="+txnId+"");
-	}
-	
-	if(loginId!=null&&loginId!=""&&loginId.length==10){
-		appendMe=appendMe.concat("&userPhone="+loginId+"");
-	}
-	if(custPhone!=null&&custPhone!=""&&custPhone.length==10){
-		appendMe=appendMe.concat("&custPhone="+custPhone+"");
-	}
-	if(txnType!=null&&txnType!=""){
-		appendMe=appendMe.concat("&txnType="+txnType+"");
-	}
-	if(merchantname!=null&&merchantname!=""){
-		appendMe=appendMe.concat("&merchantName="+merchantname+"")
-	}
-	if(orgname!=null&&orgname!=""){
-		appendMe=appendMe.concat("&orgName="+orgname+"")
-	}
-	if(toDate!=null&&toDate!=""&&(fromDate==null||fromDate==""||fromDate.length<10)){
-		alert("Select From Date");
-		return false;
-	}if(fromDate!=null&&fromDate!=""&&(toDate==null||toDate=="")){
-		appendMe=appendMe.concat("&fromDateTime="+fromDate+"")
-	}
-	if(fromDate!=null&&fromDate!=""&&toDate!=null&&toDate!=""){
-		if(toDate.match(regEx) != null){
-			appendMe=appendMe.concat("&fromDateTime="+fromDate+"&toDateTime="+toDate+"")
-		}else{
-			return false;
-		}
-	}if(account!=null&&account!=""){
-		appendMe=appendMe.concat("&account="+account+"")
-	}if(amount!=null&&amount!=""){
-		appendMe=appendMe.concat("&amount="+amount+"")
-	}
-	if(authcode!=null&&authcode!=""){
-		appendMe=appendMe.concat("&authcode="+authcode+"")
-	}
-	document.location.href = "?page=1&txn=123654321"+appendMe;
-}
-function clearAllFillter(){
-	 $("#merchantName").val('');
-	 $("#orgName").val('');
-	 $("#txnId").val('');
-	 $("#walletEmail").val('');
-	 $("#status").val('');
-	 $("#loginId").val('');
-	 $("#custPhone").val('');
-	 $("#fromDate").val('');
-	 $("#toDate").val('');
-	 $("#txnType").val('');
-	 $("#account").val('');
-	 $("#amount").val('');
-	 $("#authcode").val('');
-	 document.location.href = "?page=1"		 
-}
-
 
 function setTxnDetails(orgName,userName,txnId,emailId,amount,status,datetime,phoneno,statusDesc,txnType,cardHolderName,cardPanNo,cardType,cardExpDate,rrNo,referenceNo,terminalId,batchNo,authCode,issuerAuthCode,ipAddress,imeiNo,latitude,longitude,stan,payoutStatus,payoutDateTime,merchantName,AcqMdr,bankMdr){
-	//console.log('111111111111111111111111');
 	if(txnType=='CARD'||txnType=='VOID'|| txnType=='CASHATPOS'|| txnType=='CVOID'){
 		$("#modal-body").html(" Merchant Name : "+merchantName+"<br> Store Name : "+orgName+"<br> Terminal Id : "+userName+"<br> Invoice No : "+txnId+"<br> Email Id : "+emailId+"<br> Amount : "+amount+"<br> Status : "+status+"<br> Description : "+statusDesc+"<br> Date Time : "+datetime+"<br> Phone No : "+phoneno+"<br> Txn Type : "+txnType+"<br> Card HolderName : "+cardHolderName+"<br> CardPanNo : "+cardPanNo+"<br> Card Type : "+cardType+"<br> RR No : "+rrNo+"<br> Terminal Id : "+terminalId+"<br> Batch No : "+batchNo+"<br> Auth Code : "+authCode+"<br> IP Address : "+ipAddress+"<br> IMEI No : "+imeiNo+"<br> Latitude : "+latitude+"<br> Longitude : "+longitude+"<br> Stan : "+stan+"<br> Payout Status : "+payoutStatus+"<br> Payout DateTime : "+payoutDateTime+"<br>MDR : "+AcqMdr+"<br>BankMDR : "+bankMdr+"<br>")
 	}else{
 		$("#modal-body").html(" Merchant Name : "+merchantName+"<br> Store Name : "+orgName+"<br> Terminal Id : "+userName+"<br> Invoice No : "+txnId+"<br> Email Id : "+emailId+"<br> Amount : "+amount+"<br> Status : "+status+"<br> Description : "+statusDesc+"<br> Date Time : "+datetime+"<br> Phone No : "+phoneno+"<br> Txn Type : "+txnType+"<br> Payout Status : "+payoutStatus+"<br> Payout DateTime : "+payoutDateTime+"<br>MDR : "+AcqMdr+"<br>BankMDR : "+bankMdr+"<br>")
 	}
 }
-
-$(document).ready(function (){
-	
-	<c:if var="msg" test="${message!=null}">
-		alert('<c:out value="${message}" />');
-	</c:if>
-	<c:if var="pg" test="${page!=null&&page!=''}">
-		$("#pageNo").val('<c:out value="${page}" />');
-	</c:if>
-	<c:if var="searchtx" test="${searchText!=null&&searchText!=''}">
-		$("#searchAll").val('<c:out value="${searchText}" />');
-	</c:if>
-	
-	<c:if var="lct" test="${location!=null&&location!=''}">	
-		//console.log('location '+${location});
-		//alert('<c:out value="${location}" />');
-		$("#storeLocation").val('<c:out value="${location}" />');
-	</c:if>
-
-	<c:if var="lct" test="${totalRows!=null&&totalRows!=''}">		
-		$("#totRows").val('<c:out value="${totalRows}" />');
-	</c:if>
-
-	<c:if test="${fromDate != null&&fromDate!=''}"> 
-		$("#dateUp").hide();
-		$("#dateDown").show();
-		$("#fromDate").show();
-		$("#fromDate").val('<c:out value="${fromDate}" />');
-	</c:if><c:if test="${toDate != null&&toDate!=''}"> 
-	$("#toDate").show();
-	$("#toDate").val('<c:out value="${toDate}" />');
-	</c:if>
-
-	var loginIddds = $("#loginIddd").val();
-	var custPhoneees=$("#custPhoneee").val();
-	var fromDateees=$("#fromDateee").val();
-	var toDateees=$("#toDateee").val();
-	var txnIddds=$("#txnIddd").val();
-	var statussss=$("#statusss").val();
-	var walletEmaillls=$("#walletEmailll").val();
-	var txnTypee=$("#txnTypee").val();
-	var merchantNameee = $("#merchantNamee").val();
-	var orgNameee=$("#orgNamee").val();
-	var amount11=$("#amount1").val();
-	var account11=$("#account1").val();
-	var authCode11=$("#authcode1").val();
-
-
-	if(amount11==undefined)
-		amount11='%41';
-	if(account11==undefined)
-		account11='%41';
-
-	if(authCode11==undefined)
-			authCode11='%41';
-	if(txnTypee==undefined)
-		txnTypee='%41';
-	if(loginIddds==undefined)
-		loginIddds='%41';
-	if(custPhoneees==undefined)
-		custPhoneees='%41';
-	if(fromDateees==undefined)
-		fromDateees='%41';
-	if(toDateees==undefined)
-		toDateees='%41';
-	if(txnIddds==undefined)
-		txnIddds='%41';
-	if(statussss==undefined)
-		statussss='%41';
-	if(walletEmaillls==undefined)
-		walletEmaillls='%41';
-	if(merchantNameee==undefined){
-		merchantNameee='%41';
-	}else{
-		  merchantNameee = encodeURI(merchantNameee)
-	  }
-	if(orgNameee==undefined){
-		orgNameee='%41';
-	}else{
-		orgNameee = encodeURI(orgNameee)
-	}	
-	$("#pageNo").change(function(){
-		var pageNo = $("#pageNo").val();
-				
-		if(pageNo!=null&&pageNo!=""){
-			document.body.innerHTML += '<form id="pageForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value='+pageNo+' /><input type="hidden" name="txn" value="123654321" /><input type="hidden" name="userPhone" value='+loginIddds+' /><input type="hidden" name="merchantName" value='+merchantNameee+' /><input type="hidden" name="orgName" value='+orgNameee+' /><input type="hidden" name="custPhone" value='+custPhoneees+' /><input type="hidden" name="fromDateTime" value='+fromDateees+' /><input type="hidden" name="toDateTime" value='+toDateees+' /><input type="hidden" name="walletTxnId" value='+txnIddds+' /><input type="hidden" name="walletStatus" value='+statussss+' /><input type="hidden" name="walletEmail" value='+walletEmaillls+' /><input type="hidden" name="txnType" value='+txnTypee+' /><input type="hidden" name="amount" value='+amount11+' /><input type="hidden" name="account" value='+account11+' /><input type="hidden" name="authcode" value='+authCode11+' /></form>';
-			
-			//document.body.innerHTML += '<form id="pageForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value='+pageNo+' /></form>';
-			document.getElementById("pageForm").submit();
-		}
-	});	
-	$("#first").click(function () {
-		var page=1;
-		$("#pageNo").val(page);
-		var location = $("#storeLocation").val();
-	
-		document.body.innerHTML += '<form id="firstForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value="1" /><input type="hidden" name="txn" value="123654321" /><input type="hidden" name="userPhone" value='+loginIddds+' /><input type="hidden" name="merchantName" value='+merchantNameee+' /><input type="hidden" name="orgName" value='+orgNameee+' /><input type="hidden" name="custPhone" value='+custPhoneees+' /><input type="hidden" name="fromDateTime" value='+fromDateees+' /><input type="hidden" name="toDateTime" value='+toDateees+' /><input type="hidden" name="walletTxnId" value='+txnIddds+' /><input type="hidden" name="walletStatus" value='+statussss+' /><input type="hidden" name="walletEmail" value='+walletEmaillls+' /><input type="hidden" name="txnType" value='+txnTypee+' /><input type="hidden" name="amount" value='+amount11+' /><input type="hidden" name="account" value='+account11+' /><input type="hidden" name="authcode" value='+authCode11+' /></form>';
-		//document.body.innerHTML += '<form id="firstForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value="1" /></form>';
-		document.getElementById("firstForm").submit();	
-	});
-	$("#previous").click(function () {
-		var page=$("#pageNo").val();
-		if(page>1){
-			$("#pageNo").val(page-1);
-		}
-		var previousPage=$("#pageNo").val();
-	
-		document.body.innerHTML += '<form id="previousForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value='+previousPage+' /><input type="hidden" name="txn" value="123654321" /><input type="hidden" name="userPhone" value='+loginIddds+' /><input type="hidden" name="merchantName" value='+merchantNameee+' /><input type="hidden" name="orgName" value='+orgNameee+' /><input type="hidden" name="custPhone" value='+custPhoneees+' /><input type="hidden" name="fromDateTime" value='+fromDateees+' /><input type="hidden" name="toDateTime" value='+toDateees+' /><input type="hidden" name="walletTxnId" value='+txnIddds+' /><input type="hidden" name="walletStatus" value='+statussss+' /><input type="hidden" name="walletEmail" value='+walletEmaillls+' /><input type="hidden" name="txnType" value='+txnTypee+' /><input type="hidden" name="amount" value='+amount11+' /><input type="hidden" name="account" value='+account11+' /><input type="hidden" name="authcode" value='+authCode11+' /></form>';
-		//document.body.innerHTML += '<form id="previousForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value='+previousPage+' /></form>';
-		document.getElementById("previousForm").submit();		
-	});
-	$("#next").click(function () {
-		var page=parseInt($("#pageNo").val());
-		var lastPage=$("#totRows").val();
-		if(page<lastPage){
-			$("#pageNo").val(page+1);
-		}
-		var nextPage=parseInt($("#pageNo").val());		
-		document.body.innerHTML += '<form id="nextForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value='+nextPage+' /><input type="hidden" name="txn" value="123654321" /><input type="hidden" name="userPhone" value='+loginIddds+' /><input type="hidden" name="merchantName" value='+merchantNameee+' /><input type="hidden" name="orgName" value='+orgNameee+' /><input type="hidden" name="custPhone" value='+custPhoneees+' /><input type="hidden" name="fromDateTime" value='+fromDateees+' /><input type="hidden" name="toDateTime" value='+toDateees+' /><input type="hidden" name="walletTxnId" value='+txnIddds+' /><input type="hidden" name="walletStatus" value='+statussss+' /><input type="hidden" name="walletEmail" value='+walletEmaillls+' /><input type="hidden" name="txnType" value='+txnTypee+' /><input type="hidden" name="amount" value='+amount11+' /><input type="hidden" name="account" value='+account11+' /><input type="hidden" name="authcode" value='+authCode11+' /></form>';
-		document.getElementById("nextForm").submit();
-		
-	});
-	$("#last").click(function () {
-		var lastPage=$("#totRows").val();
-		/*if(page=100){
-			$("#pageNo").val(page);
-		}
-		var lastPage=parseInt($("#pageNo").val());	*/
-		document.body.innerHTML += '<form id="lastForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value='+lastPage+' /><input type="hidden" name="txn" value="123654321" /><input type="hidden" name="userPhone" value='+loginIddds+' /><input type="hidden" name="merchantName" value='+merchantNameee+' /><input type="hidden" name="orgName" value='+orgNameee+' /><input type="hidden" name="custPhone" value='+custPhoneees+' /><input type="hidden" name="fromDateTime" value='+fromDateees+' /><input type="hidden" name="toDateTime" value='+toDateees+' /><input type="hidden" name="walletTxnId" value='+txnIddds+' /><input type="hidden" name="walletStatus" value='+statussss+' /><input type="hidden" name="walletEmail" value='+walletEmaillls+' /><input type="hidden" name="txnType" value='+txnTypee+' /><input type="hidden" name="amount" value='+amount11+' /><input type="hidden" name="account" value='+account11+' /><input type="hidden" name="authcode" value='+authCode11+' /></form>';
-				
-		//document.body.innerHTML += '<form id="lastForm" action="<c:url value='walletList' />"><input type="hidden" name="page" value='+lastPage+' /></form>';
-		document.getElementById("lastForm").submit();
-	});
-
-	$("#buttonClass").click(function() {
-	    getValueUsingClass();
-	});
-		
-});
 </script>
+
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
 
@@ -460,6 +195,14 @@ $(document).ready(function (){
 												<button type="button" data-toggle="modal" data-target=".bs-example-modal-sm" class="btn btn-success btn-xs" onclick='return addRisk("${allRowData.id}","${allRowData.txnType}")'>Hold</button><button type="button" data-toggle="modal" data-target=".update_mdr_popup" class="btn btn-success btn-xs" onclick='return setupdateMdr("${allRowData.id}","${allRowData.AcqMdr}","${allRowData.bankMdr}")'>Update</button></td>	
 											</tr>
 											</c:forEach>
+											<tr id="pagingTd">
+											<td colspan="9" align="right"><a href="#" id="first">First</a>&nbsp;
+												<a style="cursor: pointer;" id="previous">Previous</a>&nbsp;
+												<input type="text" size="1.5" id="pageNo" style="height:20px;" maxlength="5" name="pageNo" onkeypress="return isNumber(event)" />&nbsp;
+												<a style="cursor: pointer;" id="next">Next</a>&nbsp;
+												<a style="cursor: pointer;" id="last">Last</a><input type="hidden" id="totRows"/>
+												</td>
+											</tr>
                   <?php } ?>
                   </tbody>
                 </table>

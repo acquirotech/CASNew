@@ -11,6 +11,309 @@
 <script src="<c:url value="/resources/js/Acqcitystate.js" />"></script>
 <!----------------------------------------------jsFunction----------------------------------------------------------->
 <script type="text/javascript">
+var srNo;
+function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pendingRent,penaltyAmount,discount,avgTxnAmount,userName,userPhoneNo,rmn,userEmail,mdrDebit1,mdrDebit2,mdrCreditPre,mdrCreditNpre,mdrAmex,other,mdrCashAtPos,amexCreated,amexTID,amexMID,bankAccName,bankAccNo,bankName,bankIfsc,bankMicr,bankBranch,mdrMobiKwik,userType,userStatus,benefName,penaltyReason,discountReason,loyaltyStatus,closeWalletStatus,txnSmsStatus,integrationKey,empRole1,loanstatus,loantype,loandedAmount,loanBankName,loanBankAcc,loanBankIfsc,mdrzero,mdrDebit0,activationDate,planName,feeMode,feeAmount,feeDate,feeRemark,switchType,midTidEntryDate,wlcmLtrSendDate,settlementCharges,rechargeServiceEnable,rechargeBal,rechargeIncentive,rechargeMonthlyRental,ppcServiceEnable,dmtServiceEnable,dthMobileServiceEnable
+		){
+
+	srNo =serialNo;
+	$("#userStatus").val(userStatus);
+	if(rechargeServiceEnable=="0"){
+		  $("#rechargeServiceEnable").prop( "checked", false );		
+		  $("#div_rechargeServiceDetails").hide();
+	}else{
+		  $("#rechargeServiceEnable").prop( "checked", true );	
+		  $("#div_rechargeServiceDetails").show();	
+	}
+	$('#rechargeBal').val(rechargeBal);
+	$('#rechargeIncentive').val(rechargeIncentive);
+	$('#rechargeMonthlyRental').val(rechargeMonthlyRental);
+	if(mdrzero=="0"){
+		  $("#mdrZero").prop( "checked", false );			  
+	}else{
+		  $("#mdrZero").prop( "checked", true );		
+	}
+
+	if(ppcServiceEnable=="0"){
+		  $("#ppcServiceEnable").prop( "checked", false );			  
+	}else{
+		  $("#ppcServiceEnable").prop( "checked", true );		
+	}if(dmtServiceEnable=="0"){
+		  $("#dmtServiceEnable").prop( "checked", false );			  
+	}else{
+		  $("#dmtServiceEnable").prop( "checked", true );		
+	}if(dthMobileServiceEnable=="0"){
+		  $("#dthMobileServiceEnable").prop( "checked", false );			  
+	}else{
+		  $("#dthMobileServiceEnable").prop( "checked", true );		
+	}if(userType=="notCredit"){
+		  $("#userType").prop( "checked", false );			  
+	}else{
+		  $("#userType").prop( "checked", true );		
+	}
+	var d=$('#userStatus').val();
+	if($('#userStatus').val()=="0"){
+		  $("#userStatus").prop( "checked", true );			  
+	}else{
+		  $("#userStatus").prop( "checked", false );		
+	}
+	if(loanstatus=="0"){
+		  $("#loanStatus").prop( "checked", false );
+		  $("#div_loanDetails").hide();
+	}else{
+		  $("#loanStatus").prop( "checked", true );
+		  $("#div_loanDetails").show();
+		  if(loantype == "fixed"){
+		  	$("#div_loanAmount").show();
+		  	$("#div_loanAmount1").show();
+		  	$("#div_loanPercentage").hide();
+		  }else if(loantype == "percentage"){
+		  	$("#div_loanAmount").show();
+		  	$("#div_loanAmount1").hide();
+		  	$("#div_loanPercentage").show();
+		  }else{
+		  	$("#div_loanPercentage").hide();
+		  	$("#div_loanAmount").hide();	
+		  }		
+	}
+
+	$("#settlementCharges").val(settlementCharges);
+	$("#settlementCharges1").val(settlementCharges);
+	$("#wlcmLtrSendDate").val(wlcmLtrSendDate);
+		$("#midTidEntryDate").val(midTidEntryDate);
+		
+	$("#loanType").val(loantype);
+	$("#loanDedAmount").val(loandedAmount);
+	//$("#loanAmountPayout").val(loanamountPayout);
+	$("#loanBankName").val(loanBankName);
+	$("#loanAccount").val(loanBankAcc);
+	$("#loanIfsc").val(loanBankIfsc);
+	$("#loyaltyStatus").val(loyaltyStatus);
+	$("#closeWalletStatus").val(closeWalletStatus);
+
+	$("#txnSmsStatus").val(txnSmsStatus);
+	if($('#loyaltyStatus').val()=="1"){
+		  $("#loyaltyStatus").prop( "checked", true );
+	}else{
+		  $("#loyaltyStatus").prop( "checked", false );
+	}
+	if($('#closeWalletStatus').val()=="1"){
+		  $("#closeWalletStatus").prop( "checked", true );
+	}else{
+		  $("#closeWalletStatus").prop( "checked", false );
+	}
+	if($('#txnSmsStatus').val()=="0"){
+		  $("#txnSmsStatus").prop( "checked", true );
+	}else{
+		  $("#txnSmsStatus").prop( "checked", false );
+	}
+	
+	$("#SerialNo").empty();
+	$("#DeviceID").val(deviceId);	
+	$("#penaltyReason").val(penaltyReason);
+	$("#discountReason").val(discountReason);
+	$("#penaltyReason1").val(penaltyReason);
+	$("#discountReason1").val(discountReason);	
+	$("#BankTid").val(bankTId);
+	$("#SerialNo").append($("<option>").attr("value", serialNo).text(serialNo));
+	$("#validTil").val(validTil);
+	$("#Rent").val(rent);
+	$('#PaymentMode option[value="' + paymentMode + '"]').prop('selected', true);
+	$("#pendingRent").val(pendingRent);
+	$("#penaltyAmount").val(penaltyAmount);
+	$("#discount").val(discount);
+	$("#avgTxnAmount").val(avgTxnAmount);
+	$("#validTil1").val(validTil);
+	$("#Rent1").val(rent);
+	$('#PaymentMode1 option[value="' + paymentMode + '"]').prop('selected', true);
+	$("#pendingRent1").val(pendingRent);
+	$("#penaltyAmount1").val(penaltyAmount);
+	$("#discount1").val(discount);
+	$("#avgTxnAmount1").val(avgTxnAmount);
+	$("#DName").val(userName);
+	$("#DLoginId").val(userPhoneNo);
+	$("#rmn").val(rmn);
+	$("#UserEmailId").val(userEmail);
+	$("#Password").val("password");
+	$("#MdrDebit00").val(mdrDebit0);
+	$("#MdrDebit11").val(mdrDebit1);
+	$("#MdrDebit21").val(mdrDebit2);
+	$("#MdrCreditPre1").val(mdrCreditPre);
+	$("#MdrCreditNpre1").val(mdrCreditNpre);
+	$("#mdrAmex1").val(mdrAmex);
+	$("#Other1").val(other);	
+	$("#mdrCashAtPos1").val(mdrCashAtPos);
+	$("#MdrDebit0").val(mdrDebit0);
+	$("#MdrDebit1").val(mdrDebit1);
+	$("#MdrDebit2").val(mdrDebit2);
+	$("#MdrCreditPre").val(mdrCreditPre);
+	$("#MdrCreditNpre").val(mdrCreditNpre);
+	$("#mdrAmex").val(mdrAmex);
+	$("#Other").val(other);	
+	$("#mdrCashAtPos").val(mdrCashAtPos);
+	$("#bankAccType1").val(bankAccName);
+	$("#bankAccNumber1").val(bankAccNo);
+	$("#bankName1").val(bankName);
+	$("#benefName1").val(benefName);
+	$("#bankIfsc1").val(bankIfsc);
+	$("#bankMicr1").val(bankMicr);
+	$("#bankBranch1").val(bankBranch);
+	$("#mobiKwik1").val(mdrMobiKwik);
+	$('#AmexActivated option[value="' + amexCreated + '"]').prop('selected', true);
+	$("#amexTID").val(amexTID);
+	$("#amexMID").val(amexMID);
+	$("#bankAccType").val(bankAccName);
+	$("#bankAccNumber").val(bankAccNo);
+	$("#bankName").val(bankName);
+	$("#benefName").val(benefName);
+	$("#bankIfsc").val(bankIfsc);
+	$("#bankMicr").val(bankMicr);
+	$("#bankBranch").val(bankBranch);
+	$("#mobiKwik").val(mdrMobiKwik);
+	$("#integrationKey").val(integrationKey);
+	$('#userType option[value="' + userType + '"]').prop('selected', true);
+	
+	$('#upPlanName option[value="' + planName + '"]').prop('selected', true);
+	$('#upFeeMode option[value="' + feeMode + '"]').prop('selected', true);
+	$("#upFeeAmount").val(feeAmount);
+	$("#upActivationDate").val(activationDate);
+	$("#upFeeDate").val(feeDate);
+	$("#upswitchType").val(switchType);
+	
+	if(userType=="wallet")
+	{
+		$("#div_bankTid").hide();
+		$("#div_MdrDebit0").hide();
+		$("#div_MdrDebit1").hide();
+		$("#div_MdrDebit2").hide();
+		$("#div_MdrCreditPre").hide();
+		$("#div_MdrCreditNpre").hide();
+		$("#div_Other").hide();	
+		$("#div_mdrCashAtPos").hide();
+		$("#div_mobiKwikMdr").show();	
+		$("#div_americanExpress").hide();	
+		$("#div_SerialNo").hide();
+		$("#div_bankTid1").hide();
+		$("#div_MdrDebit11").hide();
+		$("#div_MdrDebit21").hide();
+		$("#div_MdrCreditPre1").hide();
+		$("#div_MdrCreditNpre1").hide();
+		$("#div_Other1").hide();	
+		$("#div_mdrCashAtPos1").hide();
+		$("#div_mobiKwikMdr1").show();	
+		$("#div_americanExpress1").hide();	
+		$("#div_SerialNo1").hide();
+		
+	}
+	else if(userType=="credit")
+	{
+		$("#div_bankTid").show();
+		$("#div_MdrDebit1").show();
+		$("#div_MdrDebit2").show();
+		$("#div_MdrCreditPre").show();
+		$("#div_MdrCreditNpre").show();
+		$("#div_Other").show();	
+		$("#div_mdrCashAtPos").show();
+		$("#div_mobiKwikMdr").hide();	
+		$("#div_americanExpress").show();	
+		$("#div_SerialNo").show();
+		$("#div_MdrDebit0").show();
+		$("#div_bankTid1").show();
+		$("#div_MdrDebit11").show();
+		$("#div_MdrDebit21").show();
+		$("#div_MdrCreditPre1").show();
+		$("#div_MdrCreditNpre1").show();
+		$("#div_Other1").show();	
+		$("#div_mdrCashAtPos1").show();
+		$("#div_mobiKwikMdr1").hide();	
+		$("#div_americanExpress1").show();	
+		$("#div_SerialNo1").show();
+
+	}
+	else if(userType=="wallet/credit")
+	{
+		$("#div_bankTid").show();
+		$("#div_MdrDebit0").show();
+		$("#div_MdrDebit1").show();
+		$("#div_MdrDebit2").show();
+		$("#div_MdrCreditPre").show();
+		$("#div_MdrCreditNpre").show();
+		$("#div_Other").show();	
+		$("#div_mdrCashAtPos").show();
+		$("#div_mobiKwikMdr").show();	
+		$("#div_americanExpress").show();
+		$("#div_SerialNo").show();
+
+		$("#div_bankTid1").show();
+		$("#div_MdrDebit11").show();
+		$("#div_MdrDebit21").show();
+		$("#div_MdrCreditPre1").show();
+		$("#div_MdrCreditNpre1").show();
+		$("#div_Other1").show();	
+		$("#div_mdrCashAtPos1").show();
+		$("#div_mobiKwikMdr1").show();	
+		$("#div_americanExpress1").show();
+		$("#div_SerialNo1").show();
+	}
+	if(amexCreated=="NO")	
+		{
+		$("#div_mdrAmex").hide();
+		$("#div_amexTID").hide();
+		$("#div_amexMID").hide();
+		}
+	else if(amexCreated=="YES")	
+	{
+	$("#div_mdrAmex").show();
+	$("#div_amexTID").show();
+	$("#div_amexMID").show();
+	}	
+	$('#userType option[value="' + userType + '"]').prop('selected', true);
+	if($('#rmn').val()==$('#DLoginId').val()){
+		  $("#sameUserId").prop( "checked", true );
+	}else{
+		  $("#sameUserId").prop( "checked", false );
+	}
+	var sendvalue={accessKey:'dummy'}
+ 	var opts = {
+    	type: "POST",
+            success: function (data) {
+                $(".loading").css("visibility","hidden");
+                if (data.status == 0&&data.message=='OK') {
+                 var list =  data.result;
+                 for(var i=0;i<list.length;i++){
+                  var x = document.getElementById("SerialNo");
+                  var option = document.createElement("option");
+                 
+                  option.text = list[i];
+                  x.add(option);
+              }
+                } else if (data.status==111) {
+                    $("body").attr("onload","noBack();");
+                    $("body").attr("onpageshow","if (event.persisted) noBack();");
+                    $("body").attr("onunload","");
+                    window.location.href="logout.jsp";
+                }else if (data.status==100) {
+                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+                } else {
+                    $(".loading").css("visibility", "hidden");
+                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");
+                }
+            },
+            error: function (data, textStatus, errorThrown) {
+                $(".loading").css("visibility","hidden");
+                if(textStatus=="timeout"){
+                 $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+                }else{
+                 $("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+                }
+            },
+            url: "dEviceLst",
+            data: sendvalue
+        }; 
+        $.ajax(opts);
+        return false;
+}
+
+
 
 $(function () {
     $("#appCheckStatus").change(function () {
@@ -1441,17 +1744,14 @@ $('select option[value="1"]').attr("selected",true);
 												<th>${deviceDetails.bankTId}</th>
 												<td>${deviceDetails.userPhoneNo}</td>
 												<td>${deviceDetails.rmn}</td>
-												<td><button type="button" class="btn-delete"
-														onclick='return deleteDeviceConfirm("${deviceDetails.userId}","${orgDetails.orgId}")' <c:if test="${orgDetails.empRole != '1'}">style="display:none;"</c:if>>Delete</button>												
-													<button type="button" class="btn-submit"
+												<td><button type="button" class="btn btn-danger btn-xs"
+														onclick='return deleteDeviceConfirm("${deviceDetails.userId}","${orgDetails.orgId}")' <c:if test="${orgDetails.empRole != '1'}">style="display:none;"</c:if>><i class="fa fa-fw fa-remove"></i>Delete</button>												
+													<button type="button" class="btn btn-success btn-xs"
 														data-toggle="modal" data-target=".update_device_popup"
-														onclick='setDeviceDetails("${deviceDetails.userId}","${deviceDetails.bankTId}","${deviceDetails.serialNo}","${deviceDetails.validTil}","${deviceDetails.rent}","${deviceDetails.paymentMode}","${deviceDetails.pendingRent}","${deviceDetails.penaltyAmount}","${deviceDetails.discount}","${deviceDetails.avgTxnAmount}","${deviceDetails.userName}","${deviceDetails.userPhoneNo}","${deviceDetails.rmn}","${deviceDetails.userEmail}","${deviceDetails.mdrDebit1}","${deviceDetails.mdrDebit2}","${deviceDetails.mdrCreditPre}","${deviceDetails.mdrCreditNpre}","${deviceDetails.mdrAmex}","${deviceDetails.other}","${deviceDetails.mdrCashAtPos}","${deviceDetails.amexActivated}","${deviceDetails.amexTID}","${deviceDetails.amexMID}","${deviceDetails.bankAccName}","${deviceDetails.bankAccNo}","${deviceDetails.bankName}","${deviceDetails.bankIfsc}","${deviceDetails.bankMicr}","${deviceDetails.bankBranch}","${deviceDetails.mdrMobiKwik}","${deviceDetails.userType}","${deviceDetails.userStatus}","${deviceDetails.benefName}","${deviceDetails.penaltyReason}","${deviceDetails.discountReason}","${deviceDetails.loyaltyStatus}","${deviceDetails.closeWalletStatus}","${deviceDetails.txnSmsStatus}","${deviceDetails.integrationKey}","${deviceDetails.emprole2}","${deviceDetails.loanStatus}","${deviceDetails.loanType}","${deviceDetails.loanDedAmount}","${deviceDetails.loanBankName}","${deviceDetails.loanBankAcc}","${deviceDetails.loanBankIfsc}","${deviceDetails.mdrZero}","${deviceDetails.mdrDebit0}","${deviceDetails.activationDate}","${deviceDetails.planName}","${deviceDetails.feeMode}","${deviceDetails.feeAmount}","${deviceDetails.feeDate}","${deviceDetails.feeRemark}","${deviceDetails.switchType}","${deviceDetails.midTidEntryDate}","${deviceDetails.wlcmLtrSendDate}","${deviceDetails.settlementCharges}","${deviceDetails.rechargeService}","${deviceDetails.rechargeBal}","${deviceDetails.rechargeIncentive}","${deviceDetails.rechargeMonthlyRental}","${deviceDetails.ppcServiceEnable}","${deviceDetails.dmtServiceEnable}","${deviceDetails.dthMobileServiceEnable}");'<c:if test="${allMerchantDetails.emprole1 != '12'}">style="display:none;"</c:if>>View Details</button>
-											
-													<button type="button" class="btn-submit"
+														onclick='setDeviceDetails("${deviceDetails.userId}","${deviceDetails.bankTId}","${deviceDetails.serialNo}","${deviceDetails.validTil}","${deviceDetails.rent}","${deviceDetails.paymentMode}","${deviceDetails.pendingRent}","${deviceDetails.penaltyAmount}","${deviceDetails.discount}","${deviceDetails.avgTxnAmount}","${deviceDetails.userName}","${deviceDetails.userPhoneNo}","${deviceDetails.rmn}","${deviceDetails.userEmail}","${deviceDetails.mdrDebit1}","${deviceDetails.mdrDebit2}","${deviceDetails.mdrCreditPre}","${deviceDetails.mdrCreditNpre}","${deviceDetails.mdrAmex}","${deviceDetails.other}","${deviceDetails.mdrCashAtPos}","${deviceDetails.amexActivated}","${deviceDetails.amexTID}","${deviceDetails.amexMID}","${deviceDetails.bankAccName}","${deviceDetails.bankAccNo}","${deviceDetails.bankName}","${deviceDetails.bankIfsc}","${deviceDetails.bankMicr}","${deviceDetails.bankBranch}","${deviceDetails.mdrMobiKwik}","${deviceDetails.userType}","${deviceDetails.userStatus}","${deviceDetails.benefName}","${deviceDetails.penaltyReason}","${deviceDetails.discountReason}","${deviceDetails.loyaltyStatus}","${deviceDetails.closeWalletStatus}","${deviceDetails.txnSmsStatus}","${deviceDetails.integrationKey}","${deviceDetails.emprole2}","${deviceDetails.loanStatus}","${deviceDetails.loanType}","${deviceDetails.loanDedAmount}","${deviceDetails.loanBankName}","${deviceDetails.loanBankAcc}","${deviceDetails.loanBankIfsc}","${deviceDetails.mdrZero}","${deviceDetails.mdrDebit0}","${deviceDetails.activationDate}","${deviceDetails.planName}","${deviceDetails.feeMode}","${deviceDetails.feeAmount}","${deviceDetails.feeDate}","${deviceDetails.feeRemark}","${deviceDetails.switchType}","${deviceDetails.midTidEntryDate}","${deviceDetails.wlcmLtrSendDate}","${deviceDetails.settlementCharges}","${deviceDetails.rechargeService}","${deviceDetails.rechargeBal}","${deviceDetails.rechargeIncentive}","${deviceDetails.rechargeMonthlyRental}","${deviceDetails.ppcServiceEnable}","${deviceDetails.dmtServiceEnable}","${deviceDetails.dthMobileServiceEnable}");'<c:if test="${allMerchantDetails.emprole1 != '12'}">style="display:none;"</c:if>><i class="fa fa-fw fa-eye"></i>View Details</button>											
+													<button type="button" class="btn btn-success btn-xs"
 														data-toggle="modal" data-target=".update_device_popup"
-														onclick='setDeviceDetails("${deviceDetails.userId}","${deviceDetails.bankTId}","${deviceDetails.serialNo}","${deviceDetails.validTil}","${deviceDetails.rent}","${deviceDetails.paymentMode}","${deviceDetails.pendingRent}","${deviceDetails.penaltyAmount}","${deviceDetails.discount}","${deviceDetails.avgTxnAmount}","${deviceDetails.userName}","${deviceDetails.userPhoneNo}","${deviceDetails.rmn}","${deviceDetails.userEmail}","${deviceDetails.mdrDebit1}","${deviceDetails.mdrDebit2}","${deviceDetails.mdrCreditPre}","${deviceDetails.mdrCreditNpre}","${deviceDetails.mdrAmex}","${deviceDetails.other}","${deviceDetails.mdrCashAtPos}","${deviceDetails.amexActivated}","${deviceDetails.amexTID}","${deviceDetails.amexMID}","${deviceDetails.bankAccName}","${deviceDetails.bankAccNo}","${deviceDetails.bankName}","${deviceDetails.bankIfsc}","${deviceDetails.bankMicr}","${deviceDetails.bankBranch}","${deviceDetails.mdrMobiKwik}","${deviceDetails.userType}","${deviceDetails.userStatus}","${deviceDetails.benefName}","${deviceDetails.penaltyReason}","${deviceDetails.discountReason}","${deviceDetails.loyaltyStatus}","${deviceDetails.closeWalletStatus}","${deviceDetails.txnSmsStatus}","${deviceDetails.integrationKey}","${deviceDetails.emprole2}","${deviceDetails.loanStatus}","${deviceDetails.loanType}","${deviceDetails.loanDedAmount}","${deviceDetails.loanBankName}","${deviceDetails.loanBankAcc}","${deviceDetails.loanBankIfsc}","${deviceDetails.mdrZero}","${deviceDetails.mdrDebit0}","${deviceDetails.activationDate}","${deviceDetails.planName}","${deviceDetails.feeMode}","${deviceDetails.feeAmount}","${deviceDetails.feeDate}","${deviceDetails.feeRemark}","${deviceDetails.switchType}","${deviceDetails.midTidEntryDate}","${deviceDetails.wlcmLtrSendDate}","${deviceDetails.settlementCharges}","${deviceDetails.rechargeService}","${deviceDetails.rechargeBal}","${deviceDetails.rechargeIncentive}","${deviceDetails.rechargeMonthlyRental}","${deviceDetails.ppcServiceEnable}","${deviceDetails.dmtServiceEnable}","${deviceDetails.dthMobileServiceEnable}");'<c:if test="${allMerchantDetails.emprole1 == '10'||allMerchantDetails.emprole1 == '12'}">style="display:none;"</c:if>>Update</button>
-													
-													
+														onclick='setDeviceDetails("${deviceDetails.userId}","${deviceDetails.bankTId}","${deviceDetails.serialNo}","${deviceDetails.validTil}","${deviceDetails.rent}","${deviceDetails.paymentMode}","${deviceDetails.pendingRent}","${deviceDetails.penaltyAmount}","${deviceDetails.discount}","${deviceDetails.avgTxnAmount}","${deviceDetails.userName}","${deviceDetails.userPhoneNo}","${deviceDetails.rmn}","${deviceDetails.userEmail}","${deviceDetails.mdrDebit1}","${deviceDetails.mdrDebit2}","${deviceDetails.mdrCreditPre}","${deviceDetails.mdrCreditNpre}","${deviceDetails.mdrAmex}","${deviceDetails.other}","${deviceDetails.mdrCashAtPos}","${deviceDetails.amexActivated}","${deviceDetails.amexTID}","${deviceDetails.amexMID}","${deviceDetails.bankAccName}","${deviceDetails.bankAccNo}","${deviceDetails.bankName}","${deviceDetails.bankIfsc}","${deviceDetails.bankMicr}","${deviceDetails.bankBranch}","${deviceDetails.mdrMobiKwik}","${deviceDetails.userType}","${deviceDetails.userStatus}","${deviceDetails.benefName}","${deviceDetails.penaltyReason}","${deviceDetails.discountReason}","${deviceDetails.loyaltyStatus}","${deviceDetails.closeWalletStatus}","${deviceDetails.txnSmsStatus}","${deviceDetails.integrationKey}","${deviceDetails.emprole2}","${deviceDetails.loanStatus}","${deviceDetails.loanType}","${deviceDetails.loanDedAmount}","${deviceDetails.loanBankName}","${deviceDetails.loanBankAcc}","${deviceDetails.loanBankIfsc}","${deviceDetails.mdrZero}","${deviceDetails.mdrDebit0}","${deviceDetails.activationDate}","${deviceDetails.planName}","${deviceDetails.feeMode}","${deviceDetails.feeAmount}","${deviceDetails.feeDate}","${deviceDetails.feeRemark}","${deviceDetails.switchType}","${deviceDetails.midTidEntryDate}","${deviceDetails.wlcmLtrSendDate}","${deviceDetails.settlementCharges}","${deviceDetails.rechargeService}","${deviceDetails.rechargeBal}","${deviceDetails.rechargeIncentive}","${deviceDetails.rechargeMonthlyRental}","${deviceDetails.ppcServiceEnable}","${deviceDetails.dmtServiceEnable}","${deviceDetails.dthMobileServiceEnable}");'<c:if test="${allMerchantDetails.emprole1 == '10'||allMerchantDetails.emprole1 == '12'}">style="display:none;"</c:if>><i class="fa fa-fw fa-eye"></i>Update</button>
 												</td>
 											</tr>
 											</c:if>
@@ -1491,37 +1791,35 @@ $('select option[value="1"]').attr("selected",true);
 							</div>
 							<div class="x_content">
 								<br />
-								 <div class="form-group">
+								 		<div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="modelName"> Name<span class="required">*</span></label>
                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" class="form-control" data-clear-btn="true" name="updOrgName" id="updOrgName" required="true" minlength="8" maxlength="17" />
+                                                <input type="text" class="form-control" data-clear-btn="true" name="updOrgName" id="updOrgName" required="true"  />
                                            </div>
                                         </div>                                                            
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="serialNo">Address Line 1<span class="required">*</span> </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                               <input type="text" class="form-control" data-clear-btn="true" name="updOrgAddress1" id="updOrgAddress1" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                               <input type="text" class="form-control" data-clear-btn="true" name="updOrgAddress1" id="updOrgAddress1" required="true"  />
                                            </div>
                                         </div>
                                         
                                        <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Address Line 2<span class="required">*</span> </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                     <input type="text" class="form-control" data-clear-btn="true" name="updOrgAddress2" id="updOrgAddress2" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
-                                                                                              
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="updOrgAddress2" id="updOrgAddress2" required="true"  />                                                                                             
                                             </div>
                                         </div> 
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">State<span class="required">*</span> </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                     <input type="text" class="form-control" data-clear-btn="true" name="updOrgbusinessstate" id="updOrgbusinessstate" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
-                                                                                              
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="updOrgbusinessstate" id="updOrgbusinessstate" required="true"  />                                                                                            
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">City<span class="required">*</span> </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                     <input type="text" class="form-control" data-clear-btn="true" name="name="updOrgbusinessstate" id="updOrgbusinesscity" name="updOrgbusinesscity" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="name="updOrgbusinessstate" id="updOrgbusinesscity" name="updOrgbusinesscity" required="true"  />
                                                                                               
                                             </div>
                                         </div> 
@@ -1544,8 +1842,8 @@ $('select option[value="1"]').attr("selected",true);
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>	
-					<button type="button" class="btn btn-info pull-right"
+					<button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Close</button>	
+					<button type="button" class="btn btn-success btn-xs"
 										data-toggle="modal" data-target=".bs-example-modal-sm"
 										onclick="return updOrgDetails();" id="UpdDeviceDetails"
 										name="UpdDeviceDetails">Update Org</button>	
@@ -1557,6 +1855,412 @@ $('select option[value="1"]').attr("selected",true);
 
                 
 <!------------------------------ Update Device -------------------------------------------->
+
+<div class="modal fade update_device_popup" tabindex="-1" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Update Device</h4>
+					
+				</div>
+				<div class="modal-body1">
+					<form class="form-horizontal form-label-left">
+					<input type="hidden" id="id" name="id" value="">
+						<div class="x_panel">
+							<div class="x_title">
+								<div class="clearfix"></div>
+							</div>
+							<div class="x_content">
+								<br />
+								 <div class="form-group">
+                                        <div class="col-md-2 col-sm-2 col-xs-12">
+                                           <div class="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		           <input type="checkbox"
+		            style="margin: 0 !important; position: relative !important"
+		            id="userStatus" name="userStatus">User Enable
+		           </div>
+                                           </div>
+                                             <div class="col-md-2 col-sm-2 col-xs-12">
+                                           <div class="checkbox">
+	           <input type="checkbox"
+	            style="margin: 0 !important; position: relative !important"
+	            id="loyaltyStatus" name="loyaltyStatus" onclick="return setAcqLoyaltyStatus();">Loyalty Enable
+	           </div>
+                                            </div>
+                                             <div class="col-md-2 col-sm-2 col-xs-12">
+                                           <div class="checkbox">
+	           <input type="checkbox"
+	            style="margin: 0 !important; position: relative !important"
+	            id="closeWalletStatus" name="closeWalletStatus" onclick="return setAcqWalletStatus();">Closed Wallet Enable
+	           </div>
+	                                            </div>
+	                                             <div class="col-md-2 col-sm-2 col-xs-12">
+	                                           <div class="checkbox">
+	           <input type="checkbox"
+	            style="margin: 0 !important; position: relative !important"
+	            id="txnSmsStatus" name="txnSmsStatus" onclick="return setTxnSmsStatus();">SMS Enable
+	           </div>
+                                            </div>
+                    <div class="col-md-1 col-sm-1 col-xs-12">
+			         <div class="checkbox">
+			           <input type="checkbox"
+			            style="margin: 0 !important; position: relative !important"
+			            id="loanStatus" name="loanStatus"> Loan Enable
+			           </div>
+			        </div>
+			        <div class="col-md-2 col-sm-2 col-xs-12">
+	                                           <div class="checkbox">
+	           <input type="checkbox" style="margin: 0 !important; position: relative !important" id="mdrZero" name="mdrZero">MDR Zero Enable
+	           </div>
+	           </div>
+	           <div class="form-group percent-100">
+		                
+                   <div class="col-md-2 col-sm-2 col-xs-12">
+                                           <div class="checkbox">
+		           <input type="checkbox"
+		            style="margin: 0 !important; position: relative !important"
+		            id="rechargeServiceEnable" name="rechargeServiceEnable" onclick="return setRechargeServiceStatus();">Recharge Service Enable
+		           </div>
+                                           </div>   
+                      <div class="col-md-2 col-sm-2 col-xs-12">
+                                             <div class="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									           <input type="checkbox"
+									            style="margin: 0 !important; position: relative !important"
+									            id="dmtServiceEnable" name="dmtServiceEnable">DMT Service Enable
+									          </div>
+                                           </div>
+                                             <div class="col-md-2 col-sm-2 col-xs-12">
+                                             <div class="checkbox">
+									           <input type="checkbox"
+									            style="margin: 0 !important; position: relative !important"
+									            id="ppcServiceEnable" name="ppcServiceEnable">PPC Service Enable
+									          </div>
+                                           </div>
+                                             <div class="col-md-2 col-sm-2 col-xs-12">
+                                             <div class="checkbox">
+									           <input type="checkbox"
+									            style="margin: 0 !important; position: relative !important"
+									            id="dthMobileServiceEnable" name="dthMobileServiceEnable">DTH/Mobile Service Enable
+									          </div>
+                                           </div>
+                                             <div class="col-md-2 col-sm-2 col-xs-12">
+                                             <div class="checkbox">
+									           <input type="checkbox"
+									            style="margin: 0 !important; position: relative !important"
+									            id="userType" name="userType" onchange="return onchangeUserType();">Credit/Debit Service Enable
+									          </div>
+                                           </div>                      
+                                           
+                                        </div>   
+                                        </div>                                                            
+                                        <div class="form-group" id="div_SerialNo">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="serialNo">Device Serial No<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                               <input type="text" class="form-control" data-clear-btn="true" name="SerialNo" id="SerialNo" required="true" minlength="8" maxlength="25" />
+                                           </div>
+                                        </div>
+                                        
+                                       <div class="form-group" id="div_bankTid">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Bank Tid<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="BankTid" id="BankTid" required="true"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Terminal Id<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="number" class="form-control" data-clear-btn="true" name="DLoginId" id="DLoginId" required="true" />
+                                                                                              
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status"><input type="checkbox"
+												style="margin: 0 !important; position: relative !important"
+												id="sameUserId" name="sameUserId"
+												onchange="onOffSamePhone();"> RMN Same As TerminalId RMN<span class="required"><span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="number" class="form-control" data-clear-btn="true" name="rmn" id="rmn"  required="true" />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Email Id<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="email" class="form-control" data-clear-btn="true" name="UserEmailId" id="UserEmailId" required="true"  />
+                                                                                              
+                                            </div>
+                                        </div>                   
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Name Of User<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="DName" id="DName"  />
+                                                                                              
+                                            </div>
+                                        </div>  
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Valid till Date<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="validTil" id="validTil"  readonly="readonly"/>
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Rent<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="Rent" id="Rent"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Payment Mode<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <select name="PaymentMode" id="PaymentMode" required="true" class="form-control" readonly="readonly">
+                                            <option value="">select</option>
+                                            <option value="monthly">Monthly</option>
+                                            <option value="quaterly">Quaterly</option>
+                                            <option value="halfyearly">HalfYearly</option>
+                                            <option value="yearly">Yearly</option>
+                                        </select>
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Pending Rent<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" ame="pendingRent" id="pendingRent"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Penalty Amount<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="penaltyAmount" id="penaltyAmount"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Penalty Reason<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="penaltyReason" id="penaltyReason"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Discount<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="discount" id="discount"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Discount Reason<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="discountReason" id="discountReason"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Avg Txn Amt<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="avgTxnAmount" id="avgTxnAmount"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_MdrDebit0">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Mdr Debit <1000<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="MdrDebit0" id="MdrDebit0"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_MdrDebit1">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Mdr Debit (>1000 & <2000)<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="MdrDebit1" id="MdrDebit1"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_MdrDebit2">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Mdr Debit >2000<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="MdrDebit2" id="MdrDebit2"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_MdrCreditPre">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Mdr Credit Premium<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="MdrCreditPre" id="MdrCreditPre"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_MdrCreditNpre">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Mdr Credit Card Non-Premium<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="MdrCreditNpre" id="MdrCreditNpre"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_Other">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">International Card<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="Other" id="Other"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_mdrCashAtPos" style="display:none;">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">CASHATPOS MDR<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="mdrCashAtPos" id="mdrCashAtPos"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group" id="div_mobiKwikMdr">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Wallet MDR<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="mobiKwik" id="mobiKwik"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Fixed Settlement Charges<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="settlementCharges" id="settlementCharges"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Bank Account Type<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <select data-clear-btn="true" name="bankAccType"
+											id="bankAccType1" required="bankAccType" class="form-control" readonly="readonly">
+											<option value="">select</option>
+											<option <c:if test="${deviceDetails.bankAccName == 'current'}">Selected="Selected"</c:if> value="current">Current</option>
+											<option <c:if test="${deviceDetails.bankAccName == 'saving'}">Selected="Selected"</c:if> value="saving">Saving</option>
+											<option <c:if test="${deviceDetails.bankAccName == 'od'}">Selected="Selected"</c:if> value="od">OD</option>
+										</select>                                          
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Bank Account Number<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" nname="bankAccNumber" id="bankAccNumber"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Bank Name<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="bankName" id="bankName"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Benefciary Name<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="benefName" id="benefName"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                     <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Bank Branch<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="bankBranch" id="bankBranch"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Bank IFSC<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="bankIfsc" id="bankIfsc"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Bank MICR<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="bankMicr" id="bankMicr"  />
+                                                                                              
+                                            </div>
+                                        </div> <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Plan Name<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <select name="upPlanName" id="upPlanName" class="form-control">
+                                            	 	<option value="Life-Time(36Months)">Life-Time(36Months)</option>
+                                            	  	<option value="Yearly">Yearly</option>
+                                            	  	<option value="Half-Yearly">Half-Yearly</option>
+                                            	   	<option value="Quarterly">Quarterly</option>
+		                                            <option value="Monthly">Monthly</option>
+	                                            </select>                                            
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Fee Mode<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                  <select name="upFeeMode" id="upFeeMode" class="form-control">
+                                            		<option value="Free">Free</option>
+		                                            <option value="Neft">Neft</option>
+		                                            <option value="Cheque">Cheque</option>
+		                                            <option value="Cash">Cash</option>		                                            
+	                                            </select>                                            
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Fee Amount<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                      <input type="number" class="form-control" data-clear-btn="true" name="upFeeAmount" id="upFeeAmount"  />
+                                                                                        
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Fee Date<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="date-picker form-control" id="upFeeDate" />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Activation Date<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" name="upActivationDate" class="date-picker form-control" id="upActivationDate"  />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Fee Remarks<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="upFeeRemarks" id="upFeeRemarks"  />
+                                                                                              
+                                            </div>
+                                        </div>    
+                                                                                     
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>	
+					<button type="button" class="btn btn-info pull-right"
+										data-toggle="modal" data-target=".bs-example-modal-sm"
+										onclick="return updOrgDetails();" id="UpdDeviceDetails"
+										name="UpdDeviceDetails">Update Org</button>	
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+    
+
+
+
+
 
  <div class="modal fade bs-example-modal-sm" id="deleteConfirm">
   <div class="modal-dialog">
