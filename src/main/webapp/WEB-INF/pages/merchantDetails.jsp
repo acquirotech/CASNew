@@ -11,6 +11,543 @@
 <script src="<c:url value="/resources/js/Acqcitystate.js" />"></script>
 <!----------------------------------------------jsFunction----------------------------------------------------------->
 <script type="text/javascript">
+function updDeviceDetails(){
+	$("#modal-body").html("<h2>In Process</h2>");
+	if($("#mdrZero").is(":checked") == true) {
+		var mdrZero = "1";
+	}else{
+		var mdrZero = "0";
+	}
+	if($("#loanStatus").is(":checked") == true) {
+		var loanStatus = "1";
+	}else{
+		var loanStatus = "0";
+	}	
+	if($("#userStatus").is(":checked") == true) {
+		var userStatus = "0";
+	}else{
+		var userStatus = "1";
+	}
+	if($("#loyaltyStatus").is(":checked") == true) {
+		var loyaltyStatus = "1";
+	}else{
+		var loyaltyStatus = "0";
+	}
+	if($("#closeWalletStatus").is(":checked") == true) {
+		var closeWalletStatus = "1";
+	}else{
+		var closeWalletStatus = "0";
+	}
+	if($("#txnSmsStatus").is(":checked") == true) {
+		var txnSmsStatus = "0";
+	}else{
+		var txnSmsStatus = "1";
+	}	
+	if($("#ppcServiceEnable").is(":checked") == true) {
+		var ppcServiceEnable = "1";
+	}else{
+		var ppcServiceEnable = "0";
+	}
+	if($("#dmtServiceEnable").is(":checked") == true) {
+		var dmtServiceEnable = "1";
+	}else{
+		var dmtServiceEnable = "0";
+	}
+	if($("#dthMobileServiceEnable").is(":checked") == true) {
+		var dthMobileServiceEnable = "1";
+	}else{
+		var dthMobileServiceEnable = "0";
+	}
+	if($("#userType").is(":checked") == true) {
+		var userType = "credit";
+	}else{
+		var userType = "notCredit";
+	}
+	var bankAccountNo = $("#bankAccNumber").val();
+	var bankName = $("#bankName").val();
+	var benefName=$("#benefName").val();
+	var bankAccountType = $("#bankAccType").val();
+	var bankIfsc = $("#bankIfsc").val();
+	var bankMicr = $("#bankMicr").val();
+	var DeviceID = $("#DeviceID").val();
+	var BankTid = $("#BankTid").val();
+	var SerialNo = $("#SerialNo").val();
+	var validTil = $("#validTil").val();
+	var Rent = $("#Rent").val();
+	var PaymentMode = $("#PaymentMode").val();
+	var pendingRent = $("#pendingRent").val();
+	var Name = $("#DName").val();
+	var rmn = $("#rmn").val();
+	var loginId = $("#DLoginId").val();
+	var EmailId = $("#UserEmailId").val();
+	var MdrDebit0 = $("#MdrDebit0").val();
+	var MdrDebit1 = $("#MdrDebit1").val();
+	var MdrDebit2 = $("#MdrDebit2").val();
+	var MdrCreditPre = $("#MdrCreditPre").val();
+	var MdrCreditNpre = $("#MdrCreditNpre").val();
+	var MdrAmex = $("#mdrAmex").val();
+	var Other = $("#Other").val();
+	var mdrCashAtPos = $("#mdrCashAtPos").val();
+	var updateAmexActivated = $("#AmexActivated").val();
+	var updateAmexTID = $("#amexTID").val();
+	var updateAmexMID = $("#amexMID").val();
+	var bankBranch = $("#bankBranch").val();
+	//var userType=$("#userType").val();	
+	var mobiKwik=$("#mobiKwik").val();
+	var penaltyAmount=$("#penaltyAmount").val();
+	var discount=$("#discount").val();
+	var avgTxnAmount = $("#avgTxnAmount").val();
+	var integrationKey = $("#integrationKey").val();
+	var penaltyReason = $("#penaltyReason").val();
+	var discountReason = $("#discountReason").val();
+	var loanType = $("#loanType").val();
+	var loandedAmount = $("#loanDedAmount").val();
+//	var loanamountPayout = $("#loanAmountPayout").val();
+	var loanIfsc = $("#loanIfsc").val();
+	var loanBankName = $("#loanBankName").val();
+	var loanAccount = $("#loanAccount").val();
+	var activationDate = $("#upActivationDate").val();
+	var planName = $("#upPlanName").val();
+	var feeModel = $("#upFeeMode").val();
+	var feeDate = $("#upFeeDate").val();
+	var feeAmount = $("#upFeeAmount").val();
+	var feeRemarks = $("#upFeeRemarks").val();
+	var switchType = $("#upswitchType").val();
+	var midTidEntryDate = $("#midTidEntryDate").val();
+	var wlcmLtrSendDate = $("#wlcmLtrSendDate").val();
+	var settlementCharges=$("#settlementCharges").val();
+	
+	var maxValue = 100;
+	if($("#rechargeServiceEnable").is(":checked") == true) {
+		var rechargeServiceEnable = "1";
+	}else{
+		var rechargeServiceEnable = "0";
+	}
+	var rechargeBal=$("#rechargeBal").val();
+	var rechargeIncentive=$("#rechargeIncentive").val();
+	var rechargeMonthlyRental=$("#rechargeMonthlyRental").val();
+	
+	var regex="^[0-9]{1,8}[\\.]{1}[0-9]{0,2}?$";
+	
+	if(rechargeServiceEnable == "1"){
+	 if(rechargeBal==null||rechargeBal==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Recharge Balance</p>');
+			$("#AddDeviceDetails").show();
+			return false;
+		}
+	 if(rechargeIncentive==null||rechargeIncentive==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Recharge Incentive</p>');
+			$("#AddDeviceDetails").show();
+			return false;
+		}
+	 if(rechargeMonthlyRental==null||rechargeMonthlyRental==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Recharge Monthly Rental</p>');
+			$("#AddDeviceDetails").show();
+			return false;
+		}
+	}
+	if(loanStatus == "1"){
+		console.log("bbbbbbbbb::"+loanStatus);
+		if(loanType==null||loanType==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Select Loan Type</p>');
+			return false;
+		}else if(loandedAmount==null||loandedAmount==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Loan Deduction Amount/Percentage</p>');
+			return false;
+		}else if(loanType=="fixed"){
+		if(loandedAmount.length<1||loandedAmount.length>8){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Loan Deduction Amount </p></n>Length should be 8 digits');
+				return false;
+		}}else if(loanType=="percentage"){
+		if(loandedAmount>=maxValue){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Loan Deduction Percentage </p></n>Length should be not Greater Than 100');
+				return false;
+		}}
+		else if(loanAccount==null||loanAccount==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Loan Bank Account Number</p></n>Length should be min 6 max 30 char');
+			return false;
+		}else if(loanAccount.length<6||loanAccount.length>30){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Loan Bank Account Number</p></n>Length should be min 6 max 30 char');
+			return false;
+		}else if(loanBankName==null||loanBankName==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Loan Bank Name</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(loanBankName.length<1||loanBankName.length>50){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Loan  Bank Name</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(loanIfsc==null||loanIfsc==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Loan Bank IFSC</p></n>Length should be 11 char');
+			return false;
+		}else if(loanIfsc.length<11||loanIfsc.length>11){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Loan Correct Bank IFSC</p</n>Length should be 11 char>');
+			return false;
+		}
+		}
+		else if(loginId==null||loginId==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Login Id</p></n>Length should be 10 digits');
+			return false;
+		}else if(loginId.length<10||loginId.length>10){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Login Id</p></n>Length should be 10 digits');
+			return false;
+		}else if(rmn==null||rmn==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter RMN</p></n>Length should be 10 digits');
+			return false;
+		}else if(rmn.length<10||rmn.length>10){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct RMN</p></n>Length should be 10 digits');
+			return false;
+		}else if(UserEmailId!=null&&UserEmailId!=''&&UserEmailId.length>100){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct EmailId</p></n>Length less than 100 digits');
+			return false;
+		}else if(Name==null||Name==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Name</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(Name.length<1||Name.length>50){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Name</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(validTil==null||validTil==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Rent</p></n>Enter Valid till Date');
+			return false;
+		}else if(Rent==null||Rent==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Rent</p></n>Length should be min 1 max 8 char');
+			return false;
+		}else if(Rent.length<1||Rent.length>8){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Rent</p></n>Length should be min 1 max 8 char');
+			return false;
+		}else if(PaymentMode==null||PaymentMode==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Payment Mode</p>');
+			return false;
+		}else if(PaymentMode.length<=2||PaymentMode.length>100){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Payment Mode</p>');
+			return false;
+		}else if(pendingRent==null||pendingRent==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Rent</p></n>Length should be min 1 max 8 char');
+			return false;
+		}else if(pendingRent.length<1||pendingRent.length>8){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Rent</p></n>Length should be min 1 max 8 char');
+			return false;
+		}else if(avgTxnAmount==null|| avgTxnAmount==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter avgTxnAmount</p></n>Length should be min 1 max 8 char');
+			return false;
+		}else if(avgTxnAmount.length<1|| avgTxnAmount.length>8){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct avgTxnAmount</p></n>Length should be min 1 max 8 char');
+			return false;
+		}
+	if(userType=="wallet")
+	{
+	 if(mobiKwik==null||mobiKwik==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Wallet MDR</p></n>value must be less than 100');
+		return false;
+	}else if(mobiKwik>=maxValue){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Wallet MDR</p></n>value must be less than 100');
+		return false;
+	}
+	}
+	if(userType=="credit")
+	{
+		if(SerialNo==null||SerialNo==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Terminal Serial No</p></n>Length should be min 8 max 17 digits');
+			return false;
+		}else if(SerialNo.length<8||SerialNo.length>17){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Terminal Serial No</p></n>Length should be min 8 max 17 digits');
+			return false;
+		}else if(BankTid==null||BankTid==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank TID</p></n>Length should be 8 char');
+			return false;
+		}else if(BankTid.length<8||BankTid.length>8){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Bank Tid</p></n>Length should be 8 char');
+			return false;
+		}
+		else if(MdrDebit0==null||MdrDebit0==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Debit0</p></n>value must be less than 100');
+			return false;
+		}
+		else if(MdrDebit0>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Debit0</p></n>value must be less than 100');
+			return false;
+		}
+		else if(MdrDebit1==null||MdrDebit1==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Debit1</p></n>value must be less than 100');
+			return false;
+		}
+		else if(MdrDebit1>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Debit1</p></n>value must be less than 100');
+			return false;
+		}
+
+		else if(MdrDebit2==null||MdrDebit2==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Debit2</p></n>value must be less than 100');
+			return false;
+		}else if(MdrDebit2>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Debit2</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditPre==null||MdrCreditPre==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Credit Premium</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditPre>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Credit Premium</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditNpre==null||MdrCreditNpre==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Credit Non Premium</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditNpre>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Credit Non Premium</p></n>value must be less than 100');
+			return false;
+		}else if(Other==null||Other==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter International Card</p></n>value must be less than 100');
+			return false;
+		}else if(Other>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct International Card</p></n>value must be less than 100');
+			return false;
+		}else if(mdrCashAtPos==null||mdrCashAtPos==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter CashAtPos</p></n>value must be less than 100');
+			return false;
+		} if(mobiKwik==null||mobiKwik==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Wallet MDR</p></n>value must be less than 100');
+			return false;
+		}else if(mobiKwik>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Wallet MDR</p></n>value must be less than 100');
+			return false;
+		}else if(updateAmexActivated==null||updateAmexActivated==""){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Choose Amex Activated</p>');
+			return false;
+		}
+		if(updateAmexActivated=="YES"){
+			if(MdrAmex==null||MdrAmex==''){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Amex</p>');
+				return false;
+			}else if(MdrAmex>=maxValue){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Amex</p>');
+				return false;
+			}else if(updateAmexTID==null&&updateAmexTID==''){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Amex TID</p></n>Length should be 8 char');
+				return false;
+			}else if(updateAmexTID.length<8||updateAmexTID.length>8){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Amex TID</p></n>Length should be 8 char');
+				return false;
+			}else if(updateAmexMID==null&&updateAmexMID==''){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Amex MID</p></n>Length should be min 15 max 45 char');
+				return false;
+			}else if(updateAmexMID.length<10||updateAmexMID.length>45){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Amex MID</p></n>Length should be min 10 max 45 char');
+				return false;
+			}
+		}
+	}else if(userType=="wallet/credit"){
+	  if(MdrDebit0==null||MdrDebit0==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Debit0</p></n>value must be less than 100');
+			return false;
+		}
+		else if(MdrDebit0>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Debit0</p></n>value must be less than 100');
+			return false;
+		}
+		if(SerialNo==null||SerialNo==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Terminal Serial No</p></n>Length should be min 8 max 17 digits');
+			return false;
+		}else if(SerialNo.length<8||SerialNo.length>17){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Terminal Serial No</p></n>Length should be min 8 max 17 digits');
+			return false;
+		}else if(BankTid==null||BankTid==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank TID</p></n>Length should be 8 char');
+			return false;
+		}else if(BankTid.length<8||BankTid.length>8){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Bank Tid</p></n>Length should be 8 char');
+			return false;
+		}else if(MdrDebit1==null||MdrDebit1==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Debit1</p></n>value must be less than 100');
+			return false;
+		}else if(MdrDebit1>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Debit1</p></n>value must be less than 100');
+			return false;
+		}else if(MdrDebit2==null||MdrDebit2==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Debit2</p></n>value must be less than 100');
+			return false;
+		}else if(MdrDebit2>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Debit2</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditPre==null||MdrCreditPre==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Credit Premium</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditPre>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Credit Premium</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditNpre==null||MdrCreditNpre==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Credit Non Premium</p></n>value must be less than 100');
+			return false;
+		}else if(MdrCreditNpre>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Credit Non Premium</p></n>value must be less than 100');
+			return false;
+		}else if(Other==null||Other==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter International Card</p></n>value must be less than 100');
+			return false;
+		}else if(Other>=maxValue){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct International Card</p></n>value must be less than 100');
+			return false;
+		}else if(mdrCashAtPos==null||mdrCashAtPos==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter CashAtPos</p></n>value must be less than 100');
+			return false;
+		}else if(updateAmexActivated==null||updateAmexActivated==""){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Choose Amex Activated</p>');
+			return false;
+		}
+		if(updateAmexActivated=="YES")
+		{
+			if(MdrAmex==null||MdrAmex==''){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Mdr Amex</p>');
+				return false;
+			}else if(MdrAmex>=maxValue){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Mdr Amex</p>');
+				return false;
+			}else if(updateAmexTID==null&&updateAmexTID==''){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Amex TID</p></n>Length should be 8 char');
+				return false;
+			}else if(updateAmexTID.length<8||updateAmexTID.length>8){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Amex TID</p></n>Length should be 8 char');
+				return false;
+			}else if(updateAmexMID==null&&updateAmexMID==''){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Amex MID</p></n>Length should be min 15 max 45 char');
+				return false;
+			}else if(updateAmexMID.length<10||updateAmexMID.length>45){
+				$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Amex MID</p></n>Length should be min 10 max 45 char');
+				return false;
+			}
+		}
+	}else if(bankAccType==null||bankAccType==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank Account Type</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(bankAccType.length<1||bankAccType.length>50){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Bank Account Type</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(bankAccNumber==null||bankAccNumber==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank Account Number</p></n>Length should be min 6 max 30 char');
+			return false;
+		}else if(bankAccNumber.length<6||bankAccNumber.length>30){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Bank Account Number</p></n>Length should be min 6 max 30 char');
+			return false;
+		}else if(bankName==null||bankName==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank Name</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(bankName.length<1||bankName.length>50){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct  Bank Name</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(benefName==null||benefName==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Beneficiary Name</p></n>Length should be min 1 and max 45 char');
+			return false;
+		}else if(benefName.length<1||benefName.length>45){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Beneficiary Name</p></n>Length should be min 1 and max 45 char');
+			return false;
+		}else if(bankBranch==null||bankBranch==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank Branch</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(bankBranch.length<1||bankBranch.length>50){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct  Bank Branch</p></n>Length should be min 1 max 50 char');
+			return false;
+		}else if(bankIfsc==null||bankIfsc==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank IFSC</p></n>Length should be 11 char');
+			return false;
+		}else if(bankIfsc.length<11||bankIfsc.length>11){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Bank IFSC</p</n>Length should be 11 char>');
+			return false;
+		}else if(bankMicr==null||bankMicr==''){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Bank MICR</p></n>Length should be min 9 max 15 char');
+			return false;
+		}else if(bankMicr.length<9||bankMicr.length>15){
+			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Bank MICR</p></n>Length should be min 9 max 15 char');
+			return false;
+		}
+	if(penaltyAmount!=null&&penaltyAmount!=''){
+		 if(penaltyAmount.length<1||penaltyAmount.length>8){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct penalty Amount</p></n>Length should be min 1 and max 8 digits');
+		return false;
+	 }
+	}if(discount!=null&&discount!=''){
+		 if(discount.length<1||discount.length>8){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Discount</p></n>Length should be min 1 and max 8 digits');
+		return false;
+	}}
+	else if(integrationKey!=null&&integrationKey!=''&&integrationKey.length>100){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Integration Key</p></n>Length should be less than 100 char');
+		return false;
+	}
+	
+	var sendvalue={bankAccountNo:bankAccountNo,bankName:bankName,bankAccountType:bankAccountType,bankIfsc:bankIfsc,bankMicr:bankMicr,DeviceID:DeviceID,BankTid:BankTid,SerialNo:SerialNo,validTil:validTil,Rent:Rent,PaymentMode:PaymentMode,pendingRent:pendingRent,Name:Name,rmn:rmn,loginId:loginId,EmailId:EmailId,MdrDebit1:MdrDebit1,MdrDebit2:MdrDebit2,MdrCreditPre:MdrCreditPre,MdrCreditNpre:MdrCreditNpre,MdrAmex:MdrAmex,Other:Other,mdrCashAtPos:mdrCashAtPos,updateAmexActivated:updateAmexActivated,updateAmexTID:updateAmexTID,updateAmexMID:updateAmexMID,branchName:bankBranch,userType:userType,mdrMobiKwik:mobiKwik,penaltyAmount:penaltyAmount,discount:discount,avgTxnAmount:avgTxnAmount,userStatus:userStatus, benefName:benefName,penaltyReason:penaltyReason,discountReason:discountReason,loyaltyStatus:loyaltyStatus,closeWalletStatus:closeWalletStatus,txnSmsStatus:txnSmsStatus,integrationKey:integrationKey,
+	loanStatus:loanStatus,loanType:loanType,loanDedAmount:loandedAmount,loanBankName:loanBankName,loanBankAccNo:loanAccount,loanBankIfsc:loanIfsc,mdrZero:mdrZero,MdrDebit0:MdrDebit0,activationDate:activationDate,planName:planName,feeModel:feeModel,feeDate:feeDate,feeAmount:feeAmount,feeRemarks:feeRemarks, switchType:switchType,midTidEntryDate:midTidEntryDate,wlcmLtrSendDate:wlcmLtrSendDate,settlementCharges:settlementCharges,rechargeServiceEnable:rechargeServiceEnable,
+	rechargeBal:rechargeBal,rechargeIncentive:rechargeIncentive,rechargeMonthlyRental:rechargeMonthlyRental,ppcServiceEnable:ppcServiceEnable,dmtServiceEnable:dmtServiceEnable,dthMobileServiceEnable:dthMobileServiceEnable
+	}
+		var opts = {
+	            type: "POST",
+	            success: function (data) {
+	                $(".loading").css("visibility","hidden");
+	                if (data.status == 0&&data.message=='OK'){
+	                    $("#modal-body").html("<h2>Terminal Details Updated Successfully</h2>"); 
+	                    location.reload();
+	                } else if (data.status==111){
+	                    $("body").attr("onload","noBack();");
+	                    $("body").attr("onpageshow","if (event.persisted) noBack();");
+	                    $("body").attr("onunload","");
+	                    window.location.href="logout.jsp";
+	                }else if(data.status==100){
+	                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+	                } else {
+	                    $(".loading").css("visibility", "hidden");
+	                    $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+	                }
+	            },
+	            error: function (data, textStatus, errorThrown) {
+	                $(".loading").css("visibility","hidden");
+	                if(textStatus=="timeout"){
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+	                }else{
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+	                }
+	            },
+	            url: "updatedevicedetails",
+	            data: sendvalue
+	        }; 
+	        $.ajax(opts);
+	        return false;
+	}
+
+function deleteDeviceConfirm(userId,orgId){
+	if (confirm("Do you want to delete device details ?") == true) {
+		var sendvalue={userId:userId,orgId:orgId}
+		var opts = {
+	            type: "POST",
+	            success: function (data) {
+	                $(".loading").css("visibility","hidden");
+	                if (data.status == 0&&data.message=='OK') {
+	                    $("#modal-body").html("<h2>Terminal Details Deleted Successfully</h2>"); 
+	                    location.reload(); 
+	                } else if (data.status==111) {
+	                    $("body").attr("onload","noBack();");
+	                    $("body").attr("onpageshow","if (event.persisted) noBack();");
+	                    $("body").attr("onunload","");
+	                    window.location.href="logout.jsp";
+	                }else if (data.status==100) {
+	                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+	                } else {
+	                    $(".loading").css("visibility", "hidden");
+	                    $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+	                }
+	            },
+	            error: function (data, textStatus, errorThrown) {
+	                $(".loading").css("visibility","hidden");
+	                if(textStatus=="timeout"){
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+	                }else{
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+	                }
+	            },
+	            url: "devicedelete",
+	            data: sendvalue
+	        }; 
+	        $.ajax(opts);
+	        return false;
+	}else{
+		return false;
+	}
+}
+
 var srNo;
 function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pendingRent,penaltyAmount,discount,avgTxnAmount,userName,userPhoneNo,rmn,userEmail,mdrDebit1,mdrDebit2,mdrCreditPre,mdrCreditNpre,mdrAmex,other,mdrCashAtPos,amexCreated,amexTID,amexMID,bankAccName,bankAccNo,bankName,bankIfsc,bankMicr,bankBranch,mdrMobiKwik,userType,userStatus,benefName,penaltyReason,discountReason,loyaltyStatus,closeWalletStatus,txnSmsStatus,integrationKey,empRole1,loanstatus,loantype,loandedAmount,loanBankName,loanBankAcc,loanBankIfsc,mdrzero,mdrDebit0,activationDate,planName,feeMode,feeAmount,feeDate,feeRemark,switchType,midTidEntryDate,wlcmLtrSendDate,settlementCharges,rechargeServiceEnable,rechargeBal,rechargeIncentive,rechargeMonthlyRental,ppcServiceEnable,dmtServiceEnable,dthMobileServiceEnable
 		){
@@ -2232,24 +2769,92 @@ $('select option[value="1"]').attr("selected",true);
                                                                                               
                                             </div>
                                         </div> 
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Fee Remarks<span class="required">*</span> </label>
+                                           
+                                          <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Amex Activated<span class="required">*</span> </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                     <input type="text" class="form-control" data-clear-btn="true" name="upFeeRemarks" id="upFeeRemarks"  />
+                                                    <select data-clear-btn="true" name="AmexActivated" id="AmexActivated" onchange="return onChangeAmexActivated();" class="form-control">
+											<option value="">Select</option>
+											<option value="NO">NO</option>
+											<option value="YES">YES</option>
+										</select>                                          
+                                            </div>
+                                        </div>  
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Mdr Amex<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="mdrAmex" id="mdrAmex"  />
                                                                                               
                                             </div>
-                                        </div>    
-                                                                                     
+                                        </div> 
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Amex Tid<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="amexTID" id="amexTID" />
+                                                                                              
+                                            </div>
+                                        </div>  
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Amex Mid<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="amexMID" id="amexMID" />
+                                                                                              
+                                            </div>
+                                        </div>  
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">MID/TID Entry Date<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" class="date-picker form-control" id="midTidEntryDate" data-role="date" placeholder="MID/TID Entry Date" value="01/01/2018" readonly='true' onPaste="return false"/>
+                                                                                              
+                                            </div>
+                                        </div>  
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Welcome Letter Send Date<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="amexMID" id="wlcmLtrSendDate" />
+                                                                                              
+                                            </div>
+                                        </div>
+                                        <div id="div_rechargeServiceDetails" style="display: none"> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Recharge Balance<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="rechargeBal" id="rechargeBal" />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Recharge incentive<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="rechargeIncentive" id="rechargeIncentive" />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                          <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Recharge Monthly Rental<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="rechargeMonthlyRental" id="rechargeMonthlyRental" />
+                                                                                              
+                                            </div>
+                                        </div> 
+                                        </div>
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Integration Key<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                     <input type="text" class="form-control" data-clear-btn="true" name="integrationKey" id="integrationKey" />
+                                                                                              
+                                            </div>
+                                        </div>                                                                                    
 							</div>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>	
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-fw fa-remove"></i>Close</button>	
 					<button type="button" class="btn btn-info pull-right"
 										data-toggle="modal" data-target=".bs-example-modal-sm"
 										onclick="return updOrgDetails();" id="UpdDeviceDetails"
-										name="UpdDeviceDetails">Update Org</button>	
+										name="UpdDeviceDetails">Update</button>	
 					
 				</div>
 			</div>
