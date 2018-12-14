@@ -57,8 +57,46 @@ public class PreBoardNewMerchantEntity {
 	@Column(name = "AQUIRER_CODE")
 	private String aquirerCode;
 	
+	private String salesType;
 	
+	private String employeeName;
+	private String nashNumber;
 	
+	private String nashBankNAme;
+	
+	private String nachDate;
+	
+	public String getNashNumber() {
+		return nashNumber;
+	}
+	public void setNashNumber(String nashNumber) {
+		this.nashNumber = nashNumber;
+	}
+	public String getNashBankNAme() {
+		return nashBankNAme;
+	}
+	public void setNashBankNAme(String nashBankNAme) {
+		this.nashBankNAme = nashBankNAme;
+	}
+	public String getNachDate() {
+		return nachDate;
+	}
+	public void setNachDate(String nachDate) {
+		this.nachDate = nachDate;
+	}
+	public String getSalesType() {
+		return salesType;
+	}
+	public void setSalesType(String salesType) {
+		this.salesType = salesType;
+	}
+	
+	public String getEmployeeName() {
+		return employeeName;
+	}
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
 	public String getCubBranch() {
 		return cubBranch;
 	}

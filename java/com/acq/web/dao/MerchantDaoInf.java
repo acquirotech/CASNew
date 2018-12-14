@@ -14,6 +14,7 @@ import com.acq.web.controller.model.AcqNewOrganization;
 import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
+import com.acq.web.controller.model.AcqPrepaidInventoryDeviceModel;
 import com.acq.web.controller.model.AcqSearchModel;
 import com.acq.web.controller.model.AcqSettingModel;
 import com.acq.web.controller.model.PreBoardNewMerchant;
@@ -68,6 +69,20 @@ public interface MerchantDaoInf {
 	DbDto<List<HashMap<String, String>>> downloadDeviceDetails(String fromDate, String toDate);
 
 	DbDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model);
+
+	DbDto<Object> preBoardNewMerchant(PreBoardNewMerchant model);
+
+	DbDto<List<HashMap<String, String>>> empexecutivesList();
+
+	DbDto<String> deletePreBoard(String id);
+
+	DbDto<List<HashMap<String, String>>> merchantListPagination(String id);
+
+	DbDto<AcqPrepaidInventoryDeviceModel> addPrepaidInventory(AcqPrepaidInventoryDeviceModel model);
+
+	DbDto<List<HashMap<String, String>>> prepaidInventoryList(AcqSearchModel modell);
+
+	DbDto<AcqPrepaidInventoryDeviceModel> prepaidInventoryUpdateDevice(AcqPrepaidInventoryDeviceModel model);
 
 
 

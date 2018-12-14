@@ -6,10 +6,30 @@ public class AcqInventoryDeviceModel {
 	private String modelName;
 	private String inventorySerialNo;
 	private String status;
+	private String batterySerialNo;
+	private String adapterSerialNo;
+	private String dsaList;
 	
 	
 	
-	
+	public String getBatterySerialNo() {
+		return batterySerialNo;
+	}
+	public void setBatterySerialNo(String batterySerialNo) {
+		this.batterySerialNo = batterySerialNo;
+	}
+	public String getAdapterSerialNo() {
+		return adapterSerialNo;
+	}
+	public void setAdapterSerialNo(String adapterSerialNo) {
+		this.adapterSerialNo = adapterSerialNo;
+	}
+	public String getDsaList() {
+		return dsaList;
+	}
+	public void setDsaList(String dsaList) {
+		this.dsaList = dsaList;
+	}
 	public String getInventoryDeviceId() {
 		return inventoryDeviceId;
 	}

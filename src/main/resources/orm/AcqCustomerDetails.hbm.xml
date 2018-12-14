@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqCustomerDetails" table="acq_customer_summary" catalog="acquiro_ver1">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>     
+         <property name="callType" type="string">
+            <column name="CALL_TYPE" not-null="false" />
+        </property>   
+        <property name="callPurpose" type="string">
+            <column name="CALL_PURPOSE" not-null="false" />
+        </property>
+        <property name="callerName" type="string">
+            <column name="CALLER_NAME" length="70" not-null="false" />
+        </property>
+        <property name="merchantName" type="string">
+            <column name="MERCHANT_NAME" length="75" not-null="false" />
+        </property>
+        <property name="dateTime" type="java.util.Date">
+            <column name="DATETIME" length="20" not-null="true" />
+        </property>
+         <property name="userName" type="string">
+            <column name="CREATEDBY" not-null="true" />
+        </property>
+          <property name="updatedBy" type="string">
+            <column name="UPDATEDBY" not-null="true" />
+        </property>
+         <property name="callbackNo" type="string">
+            <column name="CALLBACK_NO" not-null="true" />
+        </property>
+      
+    </class>
+</hibernate-mapping>

@@ -17,7 +17,8 @@ function getemplock(){
 	var createdOn = $("#createdOn").val();
 	var emprole = $("#emprole").val();
 	var password=$("#password").val();
-
+	var reportManager=$("#reportManager").val();
+	
 	var regex ="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\\s).{8,20}$";
 
 	if(password!=null&&password!=''){
@@ -35,7 +36,7 @@ function getemplock(){
 		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct phone No</p></n>Length should be 10 digits');
 		return false;
 	}
-		var sendvalue={empid:empid,name:name,email:email,phone:phone,enabled:enabled,createdOn:createdOn,emprole:emprole,password:password}
+		var sendvalue={empid:empid,name:name,email:email,phone:phone,enabled:enabled,createdOn:createdOn,emprole:emprole,password:password,reportManager:reportManager}
 		var opts = {
 	            type: "POST",
 	            success: function (data) {
@@ -139,6 +140,18 @@ function getemplock(){
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                <input type="text" class="form-control" data-clear-btn="true" name="emprole" id="emprole" value="${empRole}" digits="true" readonly="readonly"/>
                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"for="emprole">Reporting Manager<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                               <select name="reportManager" id="reportManager" class="form-control input-lg">
+								  	  <c:if test="${allMerchantDetails['executiveName']==''}">
+								  	     <option value="NA">select</option> 	
+									  </c:if>
+									  <c:forEach var="RowData" items="${executiveList}">
+									  <option <c:if test="${RowData['executiveId'] == allMerchantDetails['executiveId']}">selected</c:if> value="<c:out value="${RowData['executiveId']}"/>"><c:out value="${RowData['executiveName']}"/></option> 									  
+								  	  </c:forEach>
+								   </select> </div>
                                         </div>
                                           <div class="form-group">
                                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

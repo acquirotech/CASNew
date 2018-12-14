@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class PreBoardNewMerchant {
  
-	@Pattern(regexp="^[0-9]{2,20}$",message="Invalid Preboard Merchant Id") 
+	@Pattern(regexp="^[0-9]{1,20}$",message="Invalid Preboard Merchant Id") 
 	private String id;
 	
 	@Pattern(regexp="^[a-zA-Z0-9\\s\\&]{0,50}$",message="Invalid CUB Branch")
@@ -18,8 +18,6 @@ public class PreBoardNewMerchant {
 	@Pattern(regexp="^[a-zA-Z0-9\\.\\&\\-\\s\\(\\)]{2,60}$",message="Invalid Name")
 	private String name;
 	
-	@NotNull
-	@Pattern(regexp="^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9_\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$|{0}$",message="Invalid ExecutiveName")
 	private String executiveName;
 	
 	@NotNull
@@ -45,7 +43,6 @@ public class PreBoardNewMerchant {
 	@Pattern(regexp="^[0-9]{2,10}$",message="Invalid Cheque No")
 	private String chequeNo;
 	
-	@Pattern(regexp="^[0-9]{1,2}$",message="Invalid KycCheck")
 	private String kycCheck;
 	
 	@NotNull
@@ -57,6 +54,46 @@ public class PreBoardNewMerchant {
 	@Pattern(regexp="^[0-9]{5,10}$",message="Invalid Request Token")
 	private String requestToken;
 	
+private String nashNumber;
+	
+	private String nashBankNAme;
+	private String nachDate;
+	
+	
+	private String salesType;
+	private String employeeName;
+	
+	public String getNashNumber() {
+		return nashNumber;
+	}
+	public void setNashNumber(String nashNumber) {
+		this.nashNumber = nashNumber;
+	}
+	public String getNashBankNAme() {
+		return nashBankNAme;
+	}
+	public void setNashBankNAme(String nashBankNAme) {
+		this.nashBankNAme = nashBankNAme;
+	}
+	public String getNachDate() {
+		return nachDate;
+	}
+	public void setNachDate(String nachDate) {
+		this.nachDate = nachDate;
+	}
+	public String getSalesType() {
+		return salesType;
+	}
+	public void setSalesType(String salesType) {
+		this.salesType = salesType;
+	}
+	
+	public String getEmployeeName() {
+		return employeeName;
+	}
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
 	public String getRequestToken() {
 		return requestToken;
 	} 

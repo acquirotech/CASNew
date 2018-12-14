@@ -1,6 +1,7 @@
 <jsp:include page="/jsp/head.jsp" />
 <jsp:include page="/jsp/topbar.jsp" />
 <jsp:include page="/jsp/sidebar.jsp" />
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript">
 function getorg()
 {
@@ -32,7 +33,7 @@ function gettermnl()
                     <div class="form-group">
                       <label for="exampleInputEmail1">Merchant Name</label>
                        <select name="merchantId" id="merchantId" onchange="return getorg();" class="form-control input-lg">
-										    	<option value=""></option>select</option>
+										    	<option value="">select</option>
 										 			<c:forEach var="RowData" items="${merchantList}">
 										 				<option value="<c:out value="${RowData['merchantId']}"/>" <c:if test="${RowData['merchantId'] == param.merchantId}">selected="selected"</c:if> ><c:out value="${RowData['merchantName']}"/></option> 
 										 			</c:forEach>
@@ -44,7 +45,7 @@ function gettermnl()
                     <div class="form-group">
                       <label for="exampleInputEmail1">Store Name</label>
                       <select name="orgId" id="orgId" onchange="return gettermnl();" class="form-control input-lg"> 
-													<option value=""></option>select</option>
+													<option value="">select</option>
 												 	<c:forEach var="RowData" items="${orgList}">
 												 		<option value="<c:out value="${RowData['orgId']}"/>" <c:if test="${RowData['orgId'] == param.orgId}">selected="selected"</c:if>><c:out value="${RowData['orgName']}"/></option> 
 												 	</c:forEach>
@@ -56,7 +57,7 @@ function gettermnl()
                     <div class="form-group">
                       <label for="exampleInputEmail1">Terminal Id</label>
                    <select name="StoreId" id="loginId" class="form-control input-lg">
-											  		<option value=""></option>select</option>
+											  		<option value="">select</option>
 												 	<c:forEach var="RowData" items="${terminalList}">
 												 		<option value="<c:out value="${RowData['userId']}"/>"><c:out value="${RowData['loginId']}"/></option> 
 												 	</c:forEach>

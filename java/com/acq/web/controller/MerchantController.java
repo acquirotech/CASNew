@@ -46,6 +46,7 @@ import com.acq.web.controller.model.AcqNewOrganization;
 import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
+import com.acq.web.controller.model.AcqPrepaidInventoryDeviceModel;
 import com.acq.web.controller.model.AcqSearchModel;
 import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dto.ResponseInf;
@@ -76,6 +77,174 @@ public class MerchantController {
 	public String getPreBoardLocation() {
 		return preBoardLocation;
 	}
+	@RequestMapping(value = { "/addPrepaidInventory" }, method = RequestMethod.GET)
+	 public ModelAndView addPrepaidInventory(HttpServletRequest request) {
+		ModelAndView model = new ModelAndView();  
+		 if (AcqAuthToken.getAuthToken().getName().length()!=13&&AcqAuthToken.getAuthToken().getName() != "anonymousUser" ){
+			model.setViewName("addPrepaidInventory");
+	    }else{
+	    	logger.info("you are logged out");
+	    	model.setViewName("index");
+	    }
+		return model;
+	}
+	 @RequestMapping(value = { "/prepaidInventoryUpdateDevice" }, method = RequestMethod.POST)
+	 public @ResponseBody ResponseInf<Object> prepaidInventoryUpdateDevice(@ModelAttribute AcqPrepaidInventoryDeviceModel model,HttpServletRequest request) {
+		 ControllerResponse<Object> response = new ControllerResponse<Object>();
+		 logger.info("Request landing in inventory device update");
+		 try{
+			 ValidatorFactory vFactory = Validation.buildDefaultValidatorFactory();
+			 Validator validator = vFactory.getValidator();
+			 Set<ConstraintViolation<AcqPrepaidInventoryDeviceModel>> inputErrSet= validator.validate(model);
+			 if(inputErrSet.size()>0){
+				 Iterator<ConstraintViolation<AcqPrepaidInventoryDeviceModel>> itr = inputErrSet.iterator();
+				 while(itr.hasNext()){
+					 ConstraintViolation<AcqPrepaidInventoryDeviceModel> validate = (ConstraintViolation<AcqPrepaidInventoryDeviceModel>)itr.next();
+					 response.setStatus(100);
+					 response.setMessage(validate.getMessage());
+				 }
+			 }else{
+				 /*ServiceDto<Object> verifyTokenRes =  merchantHandler.verifyToken(Acq_AuthToken.getAuthToken().getName(), "inventoryUpdateDevice",model.getRequestToken());
+				 if(verifyTokenRes.getStatus()==Acq_StatusDefination.OK.getId()&&verifyTokenRes.getMessage().equals(Acq_StatusDefination.OK.getDescription())){*/
+					 ServiceDto<AcqPrepaidInventoryDeviceModel> handerResponse = merchantHandler.prepaidInventoryUpdateDevice(model);
+					 response.setStatus(handerResponse.getStatus());
+					 response.setMessage(handerResponse.getMessage());
+					 response.setResult(handerResponse.getResult());
+				/*}else{
+					response.setStatus(verifyTokenRes.getStatus());
+					response.setMessage(verifyTokenRes.getMessage());
+				}*/
+			 }
+		}catch(Exception e){
+			logger.error("error to update Inventory Device in controller:"+e); 
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+		}
+		return response;
+	 }
+	
+	@RequestMapping(value = { "/addPrepaidInventory" }, method = RequestMethod.POST)
+	 public @ResponseBody ResponseInf<Object> addPrepaidInventory(@ModelAttribute AcqPrepaidInventoryDeviceModel model,HttpServletRequest request) {
+		 logger.info("request landing in add prepaid inventory Device");  
+		 ControllerResponse<Object> response = new ControllerResponse<Object>();
+		 try{
+			 ValidatorFactory vFactory = Validation.buildDefaultValidatorFactory();
+			 Validator validator = vFactory.getValidator();
+			 Set<ConstraintViolation<AcqPrepaidInventoryDeviceModel>> inputErrSet= validator.validate(model);
+			 if(inputErrSet.size()>0){
+				 Iterator<ConstraintViolation<AcqPrepaidInventoryDeviceModel>> itr = inputErrSet.iterator();
+				 while(itr.hasNext()){
+					 ConstraintViolation<AcqPrepaidInventoryDeviceModel> validate = (ConstraintViolation<AcqPrepaidInventoryDeviceModel>)itr.next();
+					 response.setStatus(100);
+					 response.setMessage(validate.getMessage());
+				 }    
+			 }else{
+				 /*ServiceDto<Object> verifyTokenRes =  merchantHandler.verifyToken(Acq_AuthToken.getAuthToken().getName(), "inventoryAddDevice",model.getRequestToken());
+				if(verifyTokenRes.getStatus()==Acq_StatusDefination.OK.getId()&&verifyTokenRes.getMessage().equals(Acq_StatusDefination.OK.getDescription())){*/
+				
+				 ServiceDto<AcqPrepaidInventoryDeviceModel> handerResponse = merchantHandler.addPrepaidInventory(model);
+				 response.setStatus(handerResponse.getStatus());
+				 response.setMessage(handerResponse.getMessage());
+				 response.setResult(handerResponse.getResult());
+				/*}else{
+					response.setStatus(verifyTokenRes.getStatus());
+					response.setMessage(verifyTokenRes.getMessage());
+				}*/
+				return response;
+			 }
+		 }catch(Exception e){
+			 logger.error("error to add prepaid inventory Device in controller:"+e); 
+			 response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			 response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+		 }
+		 return response;
+	 }
+	
+	@RequestMapping(value = { "/prepaidInventoryList" }, method = RequestMethod.GET)
+	public ModelAndView prepaidInventoryList(AcqSearchModel modell,HttpServletRequest request){
+		ModelAndView model = new ModelAndView();
+		List<HashMap<String,String>> list = null; 	    
+	     if (AcqAuthToken.getAuthToken().getName().length()!=13&&AcqAuthToken.getAuthToken().getName() != "anonymousUser" ){
+	    	if(AcqNumericValidator.checkId(modell.getPage())!=true){
+			modell.setPage("1");
+			}
+			try{
+				HttpSession session = request.getSession();
+		   		modell.setEmpId((String)session.getAttribute("empRole"));
+				modell.setWalletEmail(AcqAuthToken.getAuthToken().getName());
+				ServiceDto<List<HashMap<String,String>>> globleMap = merchantHandler.prepaidInventoryList(modell);
+	    		list = globleMap.getResult();
+	    		HashMap<String,String> map = list.get(0);
+	    		model.addObject("totalRows", map.get("rows"));
+	    		list.remove(0);
+	    		if(modell.getModelName()==null||modell.getModelName()==""||modell.getModelName().equals("%41")){
+	    			model.addObject("Name", "");
+	    		}else{
+	    			model.addObject("Name", modell.getModelName());
+	    		}
+	    		if(modell.getSerialNo()==null||modell.getSerialNo()==""||modell.getSerialNo().equals("%41")){
+	    			model.addObject("SrNo", "");
+	    		}else{
+	    			model.addObject("SrNo", modell.getSerialNo());
+	    		}
+	    		if(modell.getTid()==null||modell.getTid()==""||modell.getTid().equals("%41")){
+	    			model.addObject("Tid", "");
+	    		}else{
+	    			model.addObject("Tid", modell.getTid());
+	    		}
+	    		if(modell.getStatus()==null||modell.getStatus()==""||modell.getStatus().equals("%41")){
+	    			model.addObject("Status", "");
+	    		}else{
+	    			model.addObject("Status", modell.getStatus());
+	    		}
+	    		model.addObject("page",modell.getPage());
+	    		model.addObject("deviceList", list);
+	    		model.addObject("empRole",modell.getEmpId());
+	    		model.setViewName("prepaidInventoryDeviceList");
+	    		logger.info("response returned from Inventory Device List controller");
+			}catch(Exception e){
+				logger.info("Error to select enventory device list controller "+e);		
+			}
+		 }else{
+			logger.info("you are logged out");
+			model.setViewName("index");
+		}
+		return model;
+	}
+	
+	
+	
+	@RequestMapping(value = { "/merchantListPagination" }, method = RequestMethod.POST)
+	public @ResponseBody ResponseInf<Object> merchantListPagination(@RequestParam String id ,HttpServletRequest request) {
+		ControllerResponse<Object> response = new ControllerResponse<Object>();
+		try{
+			ServiceDto<List<HashMap<String, String>>> handerResponse = merchantHandler.merchantListPagination(id);
+			response.setStatus(handerResponse.getStatus());
+			response.setMessage(handerResponse.getMessage());
+			response.setResult(handerResponse.getResult());
+		}catch(Exception e){
+				logger.error("error to delete preboard in controller:"+e);	
+				response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+				response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			}
+			return response;
+	}
+	
+	@RequestMapping(value = { "/deletePreBoard" }, method = RequestMethod.POST)
+	public @ResponseBody ResponseInf<Object> deletePreBoard(@RequestParam String id ,HttpServletRequest request) {
+		ControllerResponse<Object> response = new ControllerResponse<Object>();
+		try{
+			ServiceDto<String> handerResponse = merchantHandler.deletePreBoard(id);
+			response.setStatus(handerResponse.getStatus());
+			response.setMessage(handerResponse.getMessage());
+			response.setResult(handerResponse.getResult());
+		}catch(Exception e){
+				logger.error("error to delete preboard in controller:"+e);	
+				response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+				response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			}
+			return response;
+	}
 	
 	@RequestMapping(value = { "/updatePreBoardMerchant" }, method = RequestMethod.POST)
 	public @ResponseBody ResponseInf<Object> updatePreBoardMerchant(PreBoardNewMerchant model,HttpServletRequest request) {
@@ -90,20 +259,13 @@ public class MerchantController {
 					ConstraintViolation<PreBoardNewMerchant> validate = (ConstraintViolation<PreBoardNewMerchant>)itr.next();
 					response.setStatus(100);
 					response.setMessage(validate.getMessage());
-					//System.out.println("validate.getMessage(): "+validate.getMessage());
+					System.out.println("validate.getMessage(): "+validate.getMessage());
 				}
 			}else{
-				/*ServiceDto<Object> verifyTokenRes =  merchantHandler.verifyToken(Acq_AuthToken.getAuthToken().getName(), "preBoardMerchant",model.getRequestToken());
-				if(verifyTokenRes.getStatus()==Acq_StatusDefination.OK.getId()&&verifyTokenRes.getMessage().equals(Acq_StatusDefination.OK.getDescription())){*/
-				
 					ServiceDto<Object> handerResponse = merchantHandler.updatePreBoardMerchant(model);
 					response.setStatus(handerResponse.getStatus());
 					response.setMessage(handerResponse.getMessage());
 					logger.info("successfully updated and return from update pre board merchant controller:");	
-				/*}else{
-					response.setStatus(verifyTokenRes.getStatus());
-					response.setMessage(verifyTokenRes.getMessage());
-				}*/
 			}
 		}catch(Exception e){
 			logger.error("error to update Pre Board merchant in controller:"+e);	
@@ -221,6 +383,46 @@ public class MerchantController {
 		return response;
 	}
 	
+	@RequestMapping(value = { "/preBoardNewMerchantPost" }, method = RequestMethod.POST)
+	public @ResponseBody ResponseInf<Object> preBoardNewMerchant(PreBoardNewMerchant model,HttpServletRequest request) {
+		logger.info("request is landing pre Board merchant");
+		//System.out.println("kyc check:::"+model.getKycCheck());
+		ControllerResponse<Object> response = new ControllerResponse<Object>();
+		try{
+			ValidatorFactory vFactory = Validation.buildDefaultValidatorFactory();
+			Validator validator = vFactory.getValidator();
+			Set<ConstraintViolation<PreBoardNewMerchant>> inputErrSet= validator.validate(model);
+			if(inputErrSet.size()>0){
+				Iterator<ConstraintViolation<PreBoardNewMerchant>> itr = inputErrSet.iterator();
+				while(itr.hasNext()){
+					ConstraintViolation<PreBoardNewMerchant> validate = (ConstraintViolation<PreBoardNewMerchant>)itr.next();
+					response.setStatus(100);
+					response.setMessage(validate.getMessage());
+				}
+			}else{			
+				/*ServiceDto<Object> verifyTokenRes =  merchantHandler.verifyToken(Acq_AuthToken.getAuthToken().getName(), "preBoardMerchant",model.getRequestToken());
+				if(verifyTokenRes.getStatus()==Acq_StatusDefination.OK.getId()&&verifyTokenRes.getMessage().equals(Acq_StatusDefination.OK.getDescription())){*/
+			
+				ServiceDto<Object> handlerResponse = merchantHandler.preBoardNewMerchant(model);
+				response.setStatus(handlerResponse.getStatus());
+				response.setMessage(handlerResponse.getMessage());
+				//System.out.println(handlerResponse.getStatus()+"11111:::::"+handlerResponse.getMessage());
+				response.setResult(handlerResponse.getResult());
+				logger.info("response returned for pre board merchant");
+				/*}else{
+					response.setStatus(verifyTokenRes.getStatus());
+					response.setMessage(verifyTokenRes.getMessage());
+				}*/
+				return response;
+			}
+		}catch(Exception e){
+			response.setStatus(100);
+			response.setMessage("error in add pre board merchant controller");
+			response.setResult(null);
+			logger.error("Error in add pre board merchant controller "+e);
+		}
+		return response;
+	}
 	
 	
 	@RequestMapping(value = { "/updatedevicedetails" }, method = RequestMethod.POST)
@@ -448,12 +650,16 @@ public class MerchantController {
 		res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		res.setDateHeader("Expires", 0);
 		List<HashMap<String,String>> list = null;
+		List<HashMap<String,String>> emplist = null;
 		ModelAndView model = new ModelAndView();
 		HttpSession ses = request.getSession();
 		 if (AcqAuthToken.getAuthToken().getName().length()!=13&&AcqAuthToken.getAuthToken().getName() != "anonymousUser" ){
 			ServiceDto<List<HashMap<String, String>>> global= merchantHandler.executivesList();
 			list = global.getResult();
-			model.addObject("executiveList", list);
+			model.addObject("empList", list);
+			ServiceDto<List<HashMap<String, String>>> globalempList= merchantHandler.empexecutivesList();
+			emplist = globalempList.getResult();
+			model.addObject("executiveListDsa", emplist);
 			model.addObject("employeeName",(String)ses.getAttribute("userName"));
 			model.setViewName("PreBoardMerchant");
 	    }else{

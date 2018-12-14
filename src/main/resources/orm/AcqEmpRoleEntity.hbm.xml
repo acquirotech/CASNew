@@ -28,8 +28,9 @@
         <property name="password" type="string">
             <column name="PASSWORD" length="20" />
         </property>               
-           <property name="aquirerCode" type="string">
-            <column name="AQUIRER_CODE" length="50" />
+         
+        <property name="reportManager" type="string">
+            <column name="REPORT_MANAGER" length="50" />
         </property>               
     </class>
 </hibernate-mapping>

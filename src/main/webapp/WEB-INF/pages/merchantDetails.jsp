@@ -11,6 +11,224 @@
 <script src="<c:url value="/resources/js/Acqcitystate.js" />"></script>
 <!----------------------------------------------jsFunction----------------------------------------------------------->
 <script type="text/javascript">
+function onchangeUserType() {
+	var userType;
+    if ($('#userType').is(":checked")){
+    	$("#userType").val('credit');
+    }else{
+    	$("#userType").val('notCredit');
+        }
+  	var userType = $("#userType").val();
+    if (userType == "credit"){
+    	$("#div_bankTid").show();
+    	$("#div_mobiKwikMdr").hide();
+    	$("#div_Other").show();
+    	$("#div_MdrCreditNpre").show();
+    	$("#div_MdrCreditPre").show();
+    	$("#div_MdrDebit2").show();
+    	$("#div_MdrDebit0").show();
+    	$("#div_MdrDebit1").show(); 
+    	$("#div_americanExpress").show();  
+    	$("#div_SerialNo").show(); 
+    	$("#div_mdrCashAtPos").show(); 	   	
+    }
+   	else if (userType == "wallet/credit") 
+    {
+   		$("#div_bankTid").show();
+   		$("#div_mobiKwikMdr").show();
+   		$("#div_Other").show();
+   		$("#div_MdrDebit0").show();
+   		$("#div_MdrCreditNpre").show();
+   		$("#div_MdrCreditPre").show();
+   		$("#div_MdrDebit2").show();
+   		$("#div_MdrDebit1").show();
+   		$("#div_americanExpress").show();
+   		$("#div_SerialNo").show(); 
+   		$("#div_mdrCashAtPos").show();  		
+   	}
+  	else if (userType == "wallet") 
+    {
+  		$("#div_bankTid").hide();
+  		$("#div_mobiKwikMdr").show();
+  		$("#div_Other").hide();
+  		$("#div_MdrCreditNpre").hide();
+  		$("#div_MdrCreditPre").hide();
+  		$("#div_MdrDebit2").hide();
+  		$("#div_MdrDebit1").hide();
+  		$("#div_MdrDebit0").hide();
+  		$("#div_americanExpress").hide();
+  		$("#div_SerialNo").hide(); 
+  		$("#div_mdrCashAtPos").hide();  		
+  	}else {
+   		$("#div_bankTid").hide();
+   		$("#div_MobiKwik").hide();
+   		$("#div_Other").hide();
+   		$("#div_mdrCashAtPos").hide();
+   		$("#div_MdrCreditNpre").hide();
+   		$("#div_MdrCreditPre").hide();
+   		$("#div_MdrDebit2").hide();
+   		$("#div_MdrDebit1").hide();
+   		$("#div_americanExpress").hide();
+   		$("#div_SerialNo").hide();
+   		$("#div_MdrDebit0").hide();
+   	}
+}
+
+function onChangeAmexActivated() {
+	 var AmexActivated = $("#AmexActivated").val();
+    if (AmexActivated == "NO") 
+    {
+    	$("#div_mdrAmex").hide();
+    	$("#div_amexTID").hide();
+    	$("#div_amexMID").hide();    	      
+   	}
+   	else 
+    {
+   		$("#div_mdrAmex").show();
+   		$("#div_amexTID").show();
+   		$("#div_amexMID").show();
+  	}
+}
+function onChangeDeviceIds(){
+	var SerialNo = $("#SerialNo").val();
+	var sendvalue={serialNo:SerialNo}
+	var acquirerCode = $("#acquirerCode").val();
+	console.log("11:::"+acquirerCode);
+	if(acquirerCode!="acquiro"){  
+		alert("Acquirer is not acquiro, Serial No cant be changed"); 
+		$("#SerialNo").val(srNo);
+		 return false;
+		  }
+	var opts = {
+            type: "POST",
+            success: function (data) {
+                $(".loading").css("visibility","hidden");
+                if (data.status == 0&&data.message=='OK') {
+                	var list =  data.result;               	
+	             //   $("#BankTid").val(list.bankTid);
+                } else if (data.status==111) {
+                    $("body").attr("onload","noBack();");
+                    $("body").attr("onpageshow","if (event.persisted) noBack();");
+                    $("body").attr("onunload","");
+                    window.location.href="logout.jsp";
+                }else if (data.status==100) {
+                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+                } else {
+                    $(".loading").css("visibility", "hidden");
+                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");
+                }
+            },
+            error: function (data, textStatus, errorThrown) {
+                $(".loading").css("visibility","hidden");
+                if(textStatus=="timeout"){
+                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+                }else{
+                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+                }
+            },
+            url: "getBankTid",
+            data: sendvalue
+        }; 
+        $.ajax(opts);
+        return false;	
+	}
+function deleteDeviceConfirm(userId,orgId){
+	if (confirm("Do you want to delete device details ?") == true) {
+		var sendvalue={userId:userId,orgId:orgId}
+		var opts = {
+	            type: "POST",
+	            success: function (data) {
+	                $(".loading").css("visibility","hidden");
+	                if (data.status == 0&&data.message=='OK') {
+	                    $("#modal-body").html("<h2>Terminal Details Deleted Successfully</h2>"); 
+	                    location.reload(); 
+	                } else if (data.status==111) {
+	                    $("body").attr("onload","noBack();");
+	                    $("body").attr("onpageshow","if (event.persisted) noBack();");
+	                    $("body").attr("onunload","");
+	                    window.location.href="logout.jsp";
+	                }else if (data.status==100) {
+	                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+	                } else {
+	                    $(".loading").css("visibility", "hidden");
+	                    $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+	                }
+	            },
+	            error: function (data, textStatus, errorThrown) {
+	                $(".loading").css("visibility","hidden");
+	                if(textStatus=="timeout"){
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+	                }else{
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+	                }
+	            },
+	            url: "devicedelete",
+	            data: sendvalue
+	        }; 
+	        $.ajax(opts);
+	        return false;
+	}else{
+		return false;
+	}
+}
+function deleteOrgConfirm(orgId){
+	if (confirm("Do you want to delete Store details ?") == true) {
+		var sendvalue={orgId:orgId}
+		var opts = {
+	            type: "POST",
+	            success: function (data) {
+	                $(".loading").css("visibility","hidden");
+	                if (data.status == 0&&data.message=='OK') {
+	                    $("#modal-body").html("<h2>Store Details Deleted Successfully</h2>"); 
+	                    location.reload(); 
+	                } else if (data.status==111) {
+	                    //onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload=""
+	                    $("body").attr("onload","noBack();");
+	                    $("body").attr("onpageshow","if (event.persisted) noBack();");
+	                    $("body").attr("onunload","");
+	                    window.location.href="logout.jsp";
+	                }else if (data.status==100) {
+	                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+data.message+"</p>");                    
+	                } else {
+	                    $(".loading").css("visibility", "hidden");
+	                    $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+	                }
+	            },
+	            error: function (data, textStatus, errorThrown) {
+	                $(".loading").css("visibility","hidden");
+	                if(textStatus=="timeout"){
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+	                }else{
+	                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+	                }
+	            },
+	            url: "deleteorg",
+	            data: sendvalue
+	        }; 
+	        $.ajax(opts);
+	        return false;
+
+	}else{
+		return false;
+	}
+}
+function onOffSamePhone() {
+	if($("#sameUserId").is(":checked") == true) {
+	  var devicephone=$("#DLoginId").val();
+		$("#rmn").val(devicephone);
+		
+	}else{
+	 	$("#rmn").val('');
+	}
+}
+function setRechargeServiceStatus(){
+	if ($('#rechargeServiceEnable').is(":checked")){
+		$("#div_rechargeServiceDetails").show();
+	}else{
+		$("#div_rechargeServiceDetails").hide();
+		}
+}
+
 function updDeviceDetails(){
 	$("#modal-body").html("<h2>In Process</h2>");
 	if($("#mdrZero").is(":checked") == true) {
@@ -644,7 +862,7 @@ function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pe
 		  $("#txnSmsStatus").prop( "checked", false );
 	}
 	
-	$("#SerialNo").empty();
+	$("#SerialNo").val(serialNo);
 	$("#DeviceID").val(deviceId);	
 	$("#penaltyReason").val(penaltyReason);
 	$("#discountReason").val(discountReason);
@@ -707,8 +925,7 @@ function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pe
 	$("#bankBranch").val(bankBranch);
 	$("#mobiKwik").val(mdrMobiKwik);
 	$("#integrationKey").val(integrationKey);
-	$('#userType option[value="' + userType + '"]').prop('selected', true);
-	
+	$('#userType option[value="' + userType + '"]').prop('selected', true);	
 	$('#upPlanName option[value="' + planName + '"]').prop('selected', true);
 	$('#upFeeMode option[value="' + feeMode + '"]').prop('selected', true);
 	$("#upFeeAmount").val(feeAmount);
@@ -764,7 +981,6 @@ function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pe
 		$("#div_mobiKwikMdr1").hide();	
 		$("#div_americanExpress1").show();	
 		$("#div_SerialNo1").show();
-
 	}
 	else if(userType=="wallet/credit")
 	{
@@ -779,7 +995,6 @@ function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pe
 		$("#div_mobiKwikMdr").show();	
 		$("#div_americanExpress").show();
 		$("#div_SerialNo").show();
-
 		$("#div_bankTid1").show();
 		$("#div_MdrDebit11").show();
 		$("#div_MdrDebit21").show();
@@ -819,7 +1034,6 @@ function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pe
                  for(var i=0;i<list.length;i++){
                   var x = document.getElementById("SerialNo");
                   var option = document.createElement("option");
-                 
                   option.text = list[i];
                   x.add(option);
               }
@@ -849,9 +1063,6 @@ function setDeviceDetails(deviceId,bankTId,serialNo,validTil,rent,paymentMode,pe
         $.ajax(opts);
         return false;
 }
-
-
-
 $(function () {
     $("#appCheckStatus").change(function () {
           var checkStatus = $("#appCheckStatus").val();
@@ -1468,6 +1679,113 @@ if((merchantType=="credit"|| merchantType=="wallet/credit")&&verificationStatus=
         $.ajax(opts);
         return false;
 }
+	 function changeModeOfPayments(){
+	 var modeofpayment = $("#modeofpayment").val();
+     if (modeofpayment == "Swipe") {
+     	$("#div_swipeAmount").show();
+     	$("#div_SwipeDate").show();
+     	$("#div_swipeTerminal").show();
+     	$("#div_chequeNo").hide();
+     	$("#div_chequeAmount").hide();
+     	$("#div_chequeDate").hide();
+     	$("#div_chequeDepositDate").hide();
+     	$("#div_chequeBank").hide();  
+     	$("#div_cashAmount").hide();
+     	$("#div_cashDate").hide();  
+     	$("#div_neft").hide();
+     	$("#div_neftDate").hide();  
+     	$("#div_neftchequeNo").hide();
+     	$("#div_neftRefNo").hide();       
+     	$("#neftRefNo").val('');
+     	$("#neftchequeNo").val('');
+     	$("#neftDate").val('');
+     	$("#neftAmount").val('');  
+         $("#cashDate").val('');
+         $("#cashAmount").val('');
+         $("#chequeBank").val('');   
+         $("#chequeDepositDate").val('');
+         $("#chequeDate").val('');
+         $("#chequeAmount").val('');
+         $("#chequeNo").val('');
+		}else if (modeofpayment == "Cheque") {
+    		$("#div_swipeAmount").hide();
+     	$("#div_SwipeDate").hide();
+     	$("#div_swipeTerminal").hide();
+     	$("#div_chequeNo").show();
+    		$("#div_chequeAmount").show();
+    		$("#div_chequeDate").show();
+    		$("#div_chequeDepositDate").show();
+    		$("#div_chequeBank").show();
+    		$("#div_cashAmount").hide();
+    		$("#div_cashDate").hide();
+
+    		$("#div_neft").hide();
+     	$("#div_neftDate").hide();  
+     	$("#div_neftchequeNo").hide();
+     	$("#div_neftRefNo").hide();
+     	$("#neftRefNo").val('');$("#neftchequeNo").val('');$("#neftDate").val('');$("#neftAmount").val('');  
+         $("#cashDate").val('');$("#cashAmount").val('');$("#swipeTerminal").val('');$("#SwipeDate").val('');  
+         $("#swipeAmount").val('');
+   	}else if (modeofpayment == "Cash"){
+   		$("#div_swipeAmount").hide();
+     	$("#div_SwipeDate").hide();
+     	$("#div_swipeTerminal").hide();
+     	$("#div_chequeNo").hide();
+   		$("#div_chequeAmount").hide();
+   		$("#div_chequeDate").hide();
+   		$("#div_chequeDepositDate").hide();
+   		$("#div_chequeBank").hide();
+   		$("#div_cashAmount").show();
+   		$("#div_cashDate").show();
+   		$("#div_neft").hide();
+     	$("#div_neftDate").hide();  
+     	$("#div_neftchequeNo").hide();
+     	$("#div_neftRefNo").hide();
+     	$("#chequeBank").val('');$("#chequeDepositDate").val('');$("#chequeDate").val('');   
+         $("#chequeAmount").val('');$("#chequeNo").val('');$("#neftRefNo").val('');$("#neftchequeNo").val('');  
+         $("#neftDate").val('');$("#neftAmount").val('');$("#swipeTerminal").val('');$("#SwipeDate").val('');  
+         $("#swipeAmount").val(''); 
+   	}else if (modeofpayment == "NEFT"){
+   		$("#div_swipeAmount").hide();
+     	$("#div_SwipeDate").hide();
+     	$("#div_swipeTerminal").hide();
+     	$("#div_chequeNo").hide();
+   		$("#div_chequeAmount").hide();
+   		$("#div_chequeDate").hide();
+   		$("#div_chequeDepositDate").hide();
+   		$("#div_chequeBank").hide();
+   		$("#div_cashAmount").hide();
+   		$("#div_cashDate").hide();
+   		$("#div_neft").show();
+     	$("#div_neftDate").show();  
+     	$("#div_neftchequeNo").show();
+     	$("#div_neftRefNo").show();
+     	$("#cashDate").val('');$("#cashAmount").val('');$("#chequeBank").val('');   
+         $("#chequeDepositDate").val('');$("#chequeDate").val('');$("#chequeAmount").val('');$("#chequeNo").val('');
+         $("#swipeTerminal").val('');$("#SwipeDate").val('');$("#swipeAmount").val('');             
+   	}else if (modeofpayment == "Free"){
+ 		$("#div_swipeAmount").hide();
+     	$("#div_SwipeDate").hide();
+     	$("#div_swipeTerminal").hide();
+     	$("#div_chequeNo").hide();
+   		$("#div_chequeAmount").hide();
+   		$("#div_chequeDate").hide();
+   		$("#div_chequeDepositDate").hide();
+   		$("#div_chequeBank").hide();
+   		$("#div_cashAmount").hide();
+   		$("#div_cashDate").hide();
+   		$("#div_neft").hide();
+     	$("#div_neftDate").hide();  
+     	$("#div_neftchequeNo").hide();
+     	$("#div_neftRefNo").hide();
+     	$("#neftRefNo").val('');$("#neftchequeNo").val('');$("#neftDate").val('');   
+         $("#neftAmount").val('');$("#cashDate").val('');$("#cashAmount").val('');$("#chequeBank").val('');   
+         $("#chequeDepositDate").val('');$("#chequeDate").val('');$("#chequeAmount").val('');
+         $("#chequeNo").val('');$("#swipeTerminal").val('');$("#SwipeDate").val('');$("#swipeAmount").val('');
+    }
+	 }
+
+
 
 
 </script>
@@ -1515,7 +1833,6 @@ $('select option[value="1"]').attr("selected",true);
 
 <!----------------------------------------- page content ------------------------------------------------------------------------------------------>
   <div class="content-wrapper">
-  
     <section class="content">
       <div class="row">
         <div class="col-md-12">
@@ -1526,8 +1843,7 @@ $('select option[value="1"]').attr("selected",true);
             <form role="form">
             <input type="hidden" name="merchantId" id="merchantId"
 					value="${allMerchantDetails['merchantId']}" />
-					<input type="hidden" name="acquirerCode" id="acquirerCode" class="form-control input-lg"  value="${allMerchantDetails['acquirerCode']}" />
-					
+					<input type="hidden" name="acquirerCode" id="acquirerCode" class="form-control input-lg"  value="${allMerchantDetails['acquirerCode']}" />					
               <div class="box-body">
                 <div class="row">
                   <div class="col-md-5">
@@ -1574,13 +1890,12 @@ $('select option[value="1"]').attr("selected",true);
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="Password">Authorized Signatory</label>
-                      <input type="text" class="form-control input-lg" name="AuthorizedSignatory" id="AuthorizedSignatory"
-										value="${allMerchantDetails['authorizedSignatory']}">
+                      <input type="text" class="form-control input-lg" name="AuthorizedSignatory" id="AuthorizedSignatory" value="${allMerchantDetails['authorizedSignatory']}">
                     </div>
                   </div>
-</div>
+				</div>
 
-<div class="row">&nbsp;</div>
+			<div class="row">&nbsp;</div>
                 <div class="row">
                   <div class="col-md-5">
                     <div class="form-group">
@@ -1901,7 +2216,7 @@ $('select option[value="1"]').attr("selected",true);
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="phone">Mode Of Payment Collection</label>
-                       <select name="modeofpayment" id="modeofpayment1" class="form-control input-lg" readonly="readonly">
+                       <select name="modeofpayment" id="modeofpayment" onchange="changeModeOfPayments();" class="form-control input-lg" readonly="readonly">
 														<option <c:if test="${allMerchantDetails['modeOfPayment'] == 'Free'}">Selected</c:if> value="Free">Free</option>
 														<option <c:if test="${allMerchantDetails['modeOfPayment'] == 'Swipe'}">Selected</c:if> value="Swipe">Swipe</option>
 					                                    <option <c:if test="${allMerchantDetails['modeOfPayment'] == 'Cheque'}">Selected</c:if> value="Cheque">Cheque</option>
@@ -1911,33 +2226,36 @@ $('select option[value="1"]').attr("selected",true);
                     </div>
                   </div>
 
-                   <div class="col-md-1">&nbsp;</div>
+                   
                   <div class="col-md-5"  id="div_swipeAmount" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                  <div class="col-md-1">&nbsp;</div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="swipeAmount" placeholder="Enter Amount" step=".01">
                     </div>
                   </div>
                 </div>
-               <div class="row">&nbsp;</div>
-                <div class="row">
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_SwipeDate" >
+               <div class="row">
+                  <div class="col-md-5" id="div_SwipeDate" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
+                  <div class="row">&nbsp;</div>
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="SwipeDate" id="SwipeDate" readonly='true'/>
                                            
                     </div>
                   </div>
+                  
+                  <div class="col-md-5" id="div_swipeTerminal" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_swipeTerminal" >
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Swiped on the terminal of</label>
                         <input type="text" class="form-control input-lg" id="swipeTerminal" placeholder="Enter swipe Terminal">
                     </div>
                   </div>
+                  
+                  <div class="col-md-5" id="div_swipeCardType" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Swipe'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_swipeCardType" >
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Card Type</label>
                          <select data-clear-btn="true" name="cardType" id="cardType" required="true" class="form-control input-lg">
 										         	<option value="Rupay">Rupay</option>
@@ -1949,100 +2267,109 @@ $('select option[value="1"]').attr("selected",true);
                   </div>
                   
                 </div>
-            <div class="row">&nbsp;</div>
+            
                 <div class="row">
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_chequeNo" >
+                  <div class="col-md-5" id="div_chequeNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="row">&nbsp;</div>
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Cheque No</label>
                      <input type="number" class="form-control input-lg" id="chequeNo" placeholder="Enter cheque No"> </div>
                   </div>
-                  <div class="col-md-1">&nbsp;</div>
+                  
                   <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="col-md-1">&nbsp;</div>
                     <div class="form-group" id="div_chequeAmount" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="chequeAmount" placeholder="Enter cheque Amount" step=".01">
                     </div>
                   </div>
                 </div>
-                <div class="row">&nbsp;</div>
+               
                 <div class="row">
                   <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                   <div class="row">&nbsp;</div>
                     <div class="form-group" id="div_chequeDate" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="chequeDate" id="chequeDate" readonly='true'/>
                       </div>
                   </div>
-                  <div class="col-md-1">&nbsp;</div>
+                  
                   <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                  <div class="col-md-1">&nbsp;</div>
                     <div class="form-group" id="div_chequeDepositDate" >
                       <label for="exampleInputEmail1">Cheque Deposit Date</label>
                           <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="chequeDepositDate" id="chequeDepositDate" readonly='true'/>
                       </div>
                   </div>
                 </div>
-                <div class="row">&nbsp;</div>
+               
                 <div class="row">
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_chequeBank" >
+                  <div class="col-md-5" id="div_chequeBank"<c:if test="${allMerchantDetails['modeOfPayment'] != 'Cheque'}">style="display:none;"</c:if>>
+                   <div class="row">&nbsp;</div>
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Bank Name</label>
                         <input type="text" class="form-control input-lg" id="chequeBank" placeholder="Enter Cheque Bank">
                     </div>
                   </div>
-                  <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5"<c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_cashAmount" >
+                 
+                  <div class="col-md-5" id="div_cashAmount" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
+                   <div class="col-md-1">&nbsp;</div>
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="number" class="form-control input-lg" id="cashAmount" placeholder="Enter Amount" step=".01">
                     </div>
                   </div>
                 </div>
-                <div class="row">&nbsp;</div>
+               
                 <div class="row">
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_cashDate" >
+                  <div class="col-md-5" id="div_cashDate"  <c:if test="${allMerchantDetails['modeOfPayment'] != 'Cash'}">style="display:none;"</c:if>>
+                   <div class="row">&nbsp;</div>
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="cashDate" id="cashDate" readonly='true'/>
                     </div>
                   </div>
-                  <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_neft" >
+               
+                  <div class="col-md-5"  id="div_neft" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                     <div class="col-md-1">&nbsp;</div>
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Amount</label>
                         <input type="text" class="form-control input-lg" id="neftAmount" placeholder="Enter Amount" step=".01">
                     </div>
                   </div>
                 </div>
-                <div class="row">&nbsp;</div>
+               
                 <div class="row">
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_neftDate" >
+                  <div class="col-md-5"  id="div_neftDate"  <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                   <div class="row">&nbsp;</div>
+                    <div class="form-group">
                       <label for="exampleInputEmail1">Date</label>
                             <input type="text" class="date-picker form-control input-lg" data-role="date" data-clear-btn="true" name="neftDate" id="neftDate" readonly='true'/>
                                            
                     </div>
                   </div>
-                  <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFTt'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_neftchequeNo">
+                 
+                  <div class="col-md-5" id="div_neftchequeNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFTt'}">style="display:none;"</c:if>>
+                   <div class="col-md-1">&nbsp;</div>
+                    <div class="form-group" >
                       <label for="exampleInputEmail1">Cheque No.</label>
                         <input type="text" class="form-control input-lg" id="neftchequeNo0" placeholder="Enter Cheque No">
                     </div>
                   </div>
                 </div>
             
-            
-            <div class="row">&nbsp;</div>
                 <div class="row">
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_neftRefNo" >
+                  <div class="col-md-5" id="div_neftRefNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
+                   <div class="row">&nbsp;</div>
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Ref/UTR. No.</label>
-                            <input type="number" class="form-control input-lg" data-role="date" data-clear-btn="true" name="neftRefNo" id="neftRefNo" />
-                                           
+                            <input type="number" class="form-control input-lg" data-role="date" data-clear-btn="true" name="neftRefNo" id="neftRefNo" />                                           
                     </div>
                   </div>
+                  
+                  <div class="col-md-5" id="div_neftchequeNo" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
                   <div class="col-md-1">&nbsp;</div>
-                  <div class="col-md-5" <c:if test="${allMerchantDetails['modeOfPayment'] != 'NEFT'}">style="display:none;"</c:if>>
-                    <div class="form-group" id="div_neftchequeNo" >
+                    <div class="form-group"  >
                       <label for="exampleInputEmail1">Cheque No.</label>
                         <input type="text" class="form-control input-lg" id="neftchequeNo" placeholder="Enter Cheque No">
                     </div>
@@ -2321,6 +2648,7 @@ $('select option[value="1"]').attr("selected",true);
 				</div>
 				<div class="modal-body1">
 					<form class="form-horizontal form-label-left">
+					  <input type="hidden" id="UpdOrgId" name="UpdOrgId" value="">
 					<input type="hidden" id="id" name="id" value="">
 						<div class="x_panel">
 							<div class="x_title">
@@ -2407,7 +2735,7 @@ $('select option[value="1"]').attr("selected",true);
 				</div>
 				<div class="modal-body1">
 					<form class="form-horizontal form-label-left">
-					<input type="hidden" id="id" name="id" value="">
+					<input type="hidden" id="DeviceID" name="DeviceID" value="">
 						<div class="x_panel">
 							<div class="x_title">
 								<div class="clearfix"></div>
@@ -2517,11 +2845,12 @@ $('select option[value="1"]').attr("selected",true);
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status"><input type="checkbox"
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status"> RMN<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="checkbox"
 												style="margin: 0 !important; position: relative !important"
 												id="sameUserId" name="sameUserId"
-												onchange="onOffSamePhone();"> RMN Same As TerminalId RMN<span class="required"><span class="required">*</span> </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
+												onchange="onOffSamePhone();"> RMN Same As TerminalId
                                                      <input type="number" class="form-control" data-clear-btn="true" name="rmn" id="rmn"  required="true" />
                                                                                               
                                             </div>
@@ -2853,7 +3182,7 @@ $('select option[value="1"]').attr("selected",true);
 					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-fw fa-remove"></i>Close</button>	
 					<button type="button" class="btn btn-info pull-right"
 										data-toggle="modal" data-target=".bs-example-modal-sm"
-										onclick="return updOrgDetails();" id="UpdDeviceDetails"
+										onclick="return updDeviceDetails();" id="UpdDeviceDetails"
 										name="UpdDeviceDetails">Update</button>	
 					
 				</div>

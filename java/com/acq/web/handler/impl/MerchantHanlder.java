@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.acq.web.controller.model.AcqPrepaidInventoryDeviceModel;
 import com.acq.AcqImageFunctions;
 import com.acq.AcqNumericValidator;
 import com.acq.AcqSmsUtility;
@@ -56,14 +57,37 @@ public class MerchantHanlder implements MerchantHanlderInf{
 	public String getAdminUptEmail() {
 		return adminUptEmail;
 	}
+		
 	 @Value("#{AcqConfig['preBoard.location']}")
 	  private String preBoardLocation;
 	 public String getPreBoardLocation() {
 	  return preBoardLocation;
-	 }	
+	 }
+	 
+	 
 	 	
 	@Autowired
 	EmailServiceHandler emailServiceHandler;
+	public ServiceDto<Object> preBoardNewMerchant(PreBoardNewMerchant model) {
+		logger.info("request landing in pre board merchant handler");
+		ServiceDto<Object> response = new ServiceDto<Object>();
+		try{
+			DbDto<Object> daoResponse = merchantDao.preBoardNewMerchant(model);
+			 if(model.getFile()!=null&&!model.getFile().isEmpty()){
+				String location = preBoardLocation+File.separator+model.getPhoneNo()+".pdf";			
+				if(AcqImageFunctions.savePdf(model.getFile(),location) == false) {
+					logger.warn("pdf not uploaded");				
+				}
+			} 
+			response.setStatus(daoResponse.getStatus());
+			response.setMessage(daoResponse.getMessage());
+			response.setResult(daoResponse.getResult());	
+		}catch(Exception e){
+			logger.info("error in pre board merchant handler "+e);
+		}
+		return response;
+	}
+	
 	public ServiceDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model) {
 		ServiceDto<Object>  response = new ServiceDto<Object>();
 		try{
@@ -114,6 +138,19 @@ public class MerchantHanlder implements MerchantHanlderInf{
 		try{
 			logger.info("request in sale executive list handler");
 			DbDto<List<HashMap<String, String>>> daoResponse = merchantDao.executivesList();
+			response.setStatus(daoResponse.getStatus());
+			response.setMessage(daoResponse.getMessage());
+			response.setResult(daoResponse.getResult());
+		}catch(Exception e){
+			logger.info("error in sale executive list handler "+e);
+		}
+		return response;
+	}
+	public ServiceDto<List<HashMap<String, String>>> empexecutivesList() {
+		ServiceDto<List<HashMap<String, String>>> response = new ServiceDto<List<HashMap<String, String>>>();
+		try{
+			logger.info("request in sale executive list handler");
+			DbDto<List<HashMap<String, String>>> daoResponse = merchantDao.empexecutivesList();
 			response.setStatus(daoResponse.getStatus());
 			response.setMessage(daoResponse.getMessage());
 			response.setResult(daoResponse.getResult());
@@ -518,7 +555,31 @@ public ServiceDto<String> merchantDelete(String merchantId) {
 		}
 		return response;
 	}
-		
+public ServiceDto<String> deletePreBoard(String id) {
+	ServiceDto<String>  response = new ServiceDto<String> ();
+	try{
+		DbDto<String> daoResponse = merchantDao.deletePreBoard(id);
+		response.setStatus(daoResponse.getStatus());
+		response.setMessage(daoResponse.getMessage());
+		response.setResult(daoResponse.getResult());
+	}catch(Exception e){
+		logger.info("error in Delete Merchant handler "+e);
+	}
+	return response;
+}	
+
+public ServiceDto<List<HashMap<String, String>>> merchantListPagination(String id) {
+	ServiceDto<List<HashMap<String, String>>>  response = new ServiceDto<List<HashMap<String, String>>> ();
+	try{
+		DbDto<List<HashMap<String, String>>> daoResponse = merchantDao.merchantListPagination(id);
+		response.setStatus(daoResponse.getStatus());
+		response.setMessage(daoResponse.getMessage());
+		response.setResult(daoResponse.getResult());
+	}catch(Exception e){
+		logger.info("error in Delete Merchant handler "+e);
+	}
+	return response;
+}
 	public ServiceDto<String> deleteorg(String orgId) {
 		ServiceDto<String>  response = new ServiceDto<String> ();
 		try{
@@ -707,7 +768,49 @@ public ServiceDto<String> merchantDelete(String merchantId) {
 		}
 		return response;
 	 }
+	 public ServiceDto<AcqPrepaidInventoryDeviceModel> prepaidInventoryUpdateDevice(
+			 AcqPrepaidInventoryDeviceModel model) {
+				ServiceDto<AcqPrepaidInventoryDeviceModel>  response = new ServiceDto<AcqPrepaidInventoryDeviceModel>();
+				try{
+					DbDto<AcqPrepaidInventoryDeviceModel> daoResponse = merchantDao.prepaidInventoryUpdateDevice(model);
+					response.setStatus(daoResponse.getStatus());
+					response.setMessage(daoResponse.getMessage());
+					response.setResult(daoResponse.getResult());
+				}catch(Exception e){
+					logger.info("error in Update Inventory Device handler "+e);
+				}
+				return response;
+			 }
 	
+	 public ServiceDto<List<HashMap<String, String>>> prepaidInventoryList(
+			   AcqSearchModel modell) {
+				logger.info("request landing in inventory device list");
+				ServiceDto<List<HashMap<String,String>>> response = new ServiceDto<List<HashMap<String,String>>>();
+				try{
+					DbDto<List<HashMap<String,String>>> daoResponse = merchantDao.prepaidInventoryList(modell);
+					response.setStatus(daoResponse.getStatus());
+					response.setMessage(daoResponse.getMessage());
+					response.setResult(daoResponse.getResult());
+				}catch(Exception e){
+					logger.info("error in inventory device list handler "+e);
+				}
+				return response;
+			 }
+
+	
+	public ServiceDto<AcqPrepaidInventoryDeviceModel> addPrepaidInventory(AcqPrepaidInventoryDeviceModel model) {
+		logger.info("request landing in add prepaid inventory device handler");
+		ServiceDto<AcqPrepaidInventoryDeviceModel> response = new ServiceDto<AcqPrepaidInventoryDeviceModel>();
+		try{
+			DbDto<AcqPrepaidInventoryDeviceModel> daoResponse = merchantDao.addPrepaidInventory(model);
+			response.setStatus(daoResponse.getStatus());
+			response.setMessage(daoResponse.getMessage());
+			response.setResult(daoResponse.getResult()); 
+		}catch(Exception e){
+			logger.info("error in add prepaid inventory device handler "+e);
+		}
+		return response;
+	 }
 	@Override
 	public ServiceDto<Object> getBankTid(String serialNo) {
 		ServiceDto<Object>  response = new ServiceDto<Object> ();

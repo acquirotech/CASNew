@@ -29,21 +29,6 @@ $(document).ready(function (){
 </c:if>	
 });
 
-function addressValidation(evt) {
-	try {
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 || charCode==8|| charCode==32|| charCode==33||charCode==35||charCode==38||charCode==40||charCode==41||charCode==44||charCode==45||charCode==46||charCode==47||charCode==58||charCode==95) {
-		   	return true;
-		}else{
-			return false;
-		}
-	}catch (err) {
-		alert('error');
-		alert(err.Description);
-	}
-}
-
 function setFinanceCheck(){
 	console.log("1111");
 	if($("#kycCheck").is(":checked") == true) {
@@ -53,17 +38,20 @@ function setFinanceCheck(){
 		return false;
 	}	
 	}
-
-function tinNoValidate(evt){
-	evt = (evt) ? evt : window.event;
-	var charCode = (evt.which) ? evt.which : evt.keyCode;
-	if ((charCode >= 48 && event.charCode <= 57)||charCode==8||charCode==37||charCode==39){
- 	   return true;
- 	}else{
- 	   return false;
- 	}
-}
-
+function changeSalesType(){
+    var salesType = $("#salesType").val();
+   if (salesType == "1") 
+   {
+   	$("#employee_List").show();
+   	$("#distributor_List").hide();
+   	  
+  	}else  if (salesType == "2") 
+   {
+   	$("#employee_List").hide();
+   	$("#distributor_List").show();
+   	  
+  	}
+} 
 
 var selectedFileAdd;
 function onFileSelected(event) {
@@ -81,314 +69,111 @@ function onFileSelected(event) {
         alert("please select valid pdf.");
     }           
 }
-
- function updMerchant(){
-	 $("#modal-body").html("<h2>In Process</h2>");
+function updMerchant(){
+	$("#AddMerchantDetails").hide();
+	$("#modal-body").html("<h2>In Process</h2>");
 	var merchantId=$("#merchantId").val();
+	var employeeName=$("#employeeName").val();
+	var salesType=$("#salesType").val();
 	var merchantName=$("#Name").val();
-	var executiveName=$("#executiveName").val();
 	var marketingName=$("#MarketingName").val();
-	var businessState=$("#businessstate").val();
-	var businessCity=$("#businesscity").val();
+	var location = $("#businessstate").val();
+	var executiveName=$("#executiveName").val();
+	var chequeNo =$("#chequeNo").val();
+	var amount =$("#amount").val();
 	var phoneNo=$("#PhoneNo").val();
 	var note=$("#note").val();
 	var cubBranch="NA";
-	var location=$("#location").val();
-	var verificationStatus=$("#VerificationStatus").val();
-	var chequeNo =$("#chequeNo").val();
-	var amount =$("#amount").val();
+	var nashBankNAme=$("#nashBankNAme").val();
+	var nashNumber=$("#nashNumber").val();
+	var nachDate=$("#nachDate").val();	
+	var verificationStatus=$("#VerificationStatus").val();	
+	if($("#kycCheck").is(":checked") == true) {
+		var kycCheck = "1";
+	}else{
+		var kycCheck = "0";
+	}
 	var kycCheck =$("#kycCheck").val();
 	var financeCheck =$("#financeCheck").val();
 	if($("#kycCheck").is(":checked") == true) {
 		var kycCheck = "1";
 	}if($("#financeCheck").is(":checked") == true) {
 		var kycCheck = "2";
+	}else{
+		var kycCheck = "0";
 	}
 	var fileName;
 	if (selectedFileAdd != undefined) {
 		fileName=selectedFileAdd;
 	}
 	var regex="^[0-9]{1,8}[\\.]{1}[0-9]{0,2}?$";
-	if(merchantName==null||merchantName==""){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Merchant Name</p></n>Length should be min 2 and max 60 char');
-		return false;
-	}else if(merchantName.length<2||merchantName.length>60){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Merchant Correct Format</p></n>Length should be min 2 and max 60 char');
-		return false;
-	}
-	if(executiveName!=null&&executiveName!='' ){
-		if(executiveName.length<2||executiveName.length>100){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Executive Name</p></n>Length should be min 2 and max 100 char');
-		$("#AddMerchantDetails").show();
-		return false;
-	}}else if(MarketingName==null||MarketingName==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Marketing Name</p></n>Length should be min 2 and max 50 char');
-		return false;
-	}else if(MarketingName.length<2||MarketingName.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Marketing Name</p></n>Length should be min 2 and max 50 char');
-		return false;
-	}else if(location==null||location==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Location</p>');
-		return false;
-	}else if(location.length<2||location.length>50){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Location</p>');
-		return false;
-	}else if(phoneNo==null||phoneNo==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Phone No</p></n>Phone No Length should be 10 digits');
-		return false;
-	}else if(phoneNo.length<10||phoneNo.length>10){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Phone No</p></n>Phone No Length should be 10 digits');
-		return false;
-	}else if(note!=null&&note!=''&&note>200){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Note</p></n>Length should be less than 200 char');
-		return false;
-	}else if(verificationStatus==null||verificationStatus==''){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Select Verification Status</p>');
-		return false;
-	}else if(verificationStatus.length<3||verificationStatus.length>12){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Verification Status</p>');
-		return false;
-	}if(chequeNo==null||chequeNo==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter chequeNo</p></n>Length should be min 1 and max 45 char');
-			return false;
-		}else if(chequeNo.length<1||chequeNo.length>50){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Cheque No</p></n>Length should be min 1 and max 45 char');
-			return false;
-		}else if(amount==null||amount==''){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter cheque Amount</p></n>Length should be min 1 and max 11 char');
-			return false;
-		}else if(amount.length<1||amount.length>11){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct Cheque Amount</p></n>Length should be min 1 and max 11 char');
-			return false;
-		}else if(amount.match(regex) == null){
-			$("#modal-body").html('<h2>Validation Error</h2><p>Cheque Amount Should be in proper format (xxxxxxxx.xx)</p>');
-			return false;
-	}if(kycCheck!="2" && verificationStatus == "oktoboard"){
-		$("#modal-body").html('<h2>Validation Error</h2><p>Finance check is not completed</p>');
-		return false;
-	 }
- 	var frmData = new FormData();
- 	frmData.append("id", merchantId);
+	
+	
+	var frmData = new FormData();
+	frmData.append("id",merchantId);
+	frmData.append("kycCheck",kycCheck);
 	frmData.append("name", merchantName);
  	frmData.append("executiveName",executiveName);
+ 	frmData.append("salesType",salesType);
+ 	frmData.append("employeeName",employeeName);
  	frmData.append("marketingName",marketingName);
 	frmData.append("phoneNo",phoneNo);
 	frmData.append("note",note);
 	frmData.append("location",location);
 	frmData.append("status",verificationStatus);	
 	frmData.append("chequeNo",chequeNo);
-	frmData.append("amount",amount);	
-	frmData.append("kycCheck",kycCheck);	
+	frmData.append("amount",amount);
 	frmData.append("cubBranch",cubBranch);
+	frmData.append("nashBankNAme",nashBankNAme);
+	frmData.append("nashNumber",nashNumber);
+	frmData.append("nachDate",nachDate);
 	if (selectedFileAdd != undefined) {
 		frmData.append("file", selectedFileAdd);
 	}		
-	console.log("hello "+frmData);
 	var opts = {
-			type: "POST",
+            type: "POST",
             success: function (data) {
-               var obj = JSON.parse(data);
-               if (obj.status == 0&&obj.message=='OK') {
-                    $("#modal-body").html("<h2>Pre Merchant Boarded Updated Successfully</h2>");  
+            	 var obj = JSON.parse(data);
+                $(".loading").css("visibility","hidden");
+                if (obj.status == 0&&obj.message=='OK') {
+                    $("#modal-body").html("<h2>Merchant Boarded Successfully</h2>");
                     window.location.reload();
-                } else if (data.status==111) {
+                } else if (obj.status==111) {
                     $("body").attr("onload","noBack();");
                     $("body").attr("onpageshow","if (event.persisted) noBack();");
                     $("body").attr("onunload","");
                     window.location.href="logout.jsp";
                 }else if (obj.message.startsWith('Invalid')) {
-                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+obj.message+"</p>");                    
+                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+obj.message+"</p>");
+                    $("#AddMerchantDetails").show();                    
                 }else if (obj.status==100) {
-                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+obj.message+"</p>");                    
+                    $("#modal-body").html("<h2>Server Side Validation Failed</h2><p>"+obj.message+"</p>"); 
+                    $("#AddMerchantDetails").show();                   
                 } else {
                     $(".loading").css("visibility", "hidden");
                     $("#modal-body").html("<h2>Connection Error</h2><p>Your Request Could Not Be Processed. Please Try Again Later</p>");
+                    $("#AddMerchantDetails").show();
                 }
             },
             error: function (data, textStatus, errorThrown) {
                 $(".loading").css("visibility","hidden");
                 if(textStatus=="timeout"){
                 	$("#modal-body").html("<h2>Connection Error</h2><p>Your Request Has Timed-Out. Please Try Again Later</p>");
+                	$("#AddMerchantDetails").show();
                 }else{
                 	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
+                	$("#AddMerchantDetails").show();
                 }
-            },
+            },    
             mimeType:"multipart/form-data",
 		    contentType: false,
 	      	cache: false,
 	       	processData:false,
-	       	url: "updatePreBoardMerchant",
+	    	url: "updatePreBoardMerchant",
             data: frmData           
         }; 
         $.ajax(opts);
         return false;
-}
-function isDecimal(evt){
-	 evt = (evt) ? evt : window.event;
-	 var charCode = (evt.which) ? evt.which : evt.keyCode;
-	 if (!( charCode == 46 || (charCode >= 48 && charCode <= 57) || charCode==8 || charCode==37 || charCode==39)){
-	  return false;
-	 }
-	}
-	function isNumberKey(evt){
-	 evt = (evt) ? evt : window.event;
-	 var charCode = (evt.which) ? evt.which : evt.keyCode;
-	 if (!( (charCode >= 48 && charCode <= 57) || charCode==8 || charCode==37 || charCode==39)){
-	  return false;
-	 }
-	}
-
-function isAlphaNumericBankType(evt) {	
-	try {
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-    	if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 || charCode==8|| charCode==32|| charCode==37|| charCode==39|| charCode==46|| charCode==40|| charCode==41|| charCode==47){
-    	     return true;
-		}else{
-	    	 return false;
-		}
-    }catch (err) {
-    	alert(err.Description);
-   	}
-}
-function isAlphaNumeric(evt) {	
-	try {
-    	evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-    	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 || charCode==8|| charCode==32|| charCode==37|| charCode==39|| charCode==46|| charCode==40|| charCode==41||charCode==45||charCode==46||charCode==47||charCode==58||charCode==44||charCode==95||charCode==38)
-    	            return true;
-    	        else
-    	            return false;
-    }
-    catch (err) {
-    	alert(err.Description);
-   	}
-}
-function isAlphaNumericWithoutSpace(evt) {
-	try {
-    	evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-    	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58||charCode==8||charCode==37||charCode==39)
-    	            return true;
-    	        else
-    	            return false;
-    }
-    catch (err) {
-    	alert(err.Description);
-   	}
-}
-function isNumberKeyWithComa(evt){
-	evt = (evt) ? evt : window.event;
-	var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if ((charCode > 47 && charCode < 58 )|| charCode == 44||charCode==8||charCode==37||charCode==39){
-        return true;
-    }
-    return false;
-}
-function isAlphaNumericLocation(evt) {
-	try {
-			//console.log('aaaaaaaaa');
-			evt = (evt) ? evt : window.event;
-			var charCode = (evt.which) ? evt.which : evt.keyCode;
-			if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 ||charCode==8||charCode==32||charCode==46||charCode==38||charCode==45||charCode==40||charCode==41||charCode==44) {
-			   	return true;
-			}else{
-				return false;
-			}
-	    }catch (err) {
-	        console.log('errerrerr: '+err);
-	    	alert(err.Description);
-	   	}
-}
-function isAlphaNumericNote(evt) {
-try {
-		//console.log('aaaaaaaaa');
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 ||charCode==8||charCode==32||charCode==46||charCode==38||charCode==45||charCode==40||charCode==41||charCode==44||charCode==47||charCode==35||charCode==58||charCode==33||charCode==95) {
-		   	return true;
-		}else{
-			return false;
-		}
-    }catch (err) {
-        console.log('errerrerr: '+err);
-    	alert(err.Description);
-   	}
-}
-
-function isChequeNo(evt) {
-try {
-	evt = (evt) ? evt : window.event;
-	var charCode = (evt.which) ? evt.which : evt.keyCode;
-	if (charCode>47&&charCode<58 ) {
-	   	return true;
-	}else{
-		return false;
-	}
-	}catch (err) {
-		alert(err.Description);
-	}
-}
-function isMarketingName(evt){
-	try {
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 || charCode==8||charCode==32||charCode==38) {
-		   	return true;
-		}else{
-			return false;
-		}
-    }catch (err) {
-    	alert(err.Description);
-   	}
-}
-function isAmountNumeric(evt){
-try {
-	evt = (evt) ? evt : window.event;
-	var charCode = (evt.which) ? evt.which : evt.keyCode;
-	var str = $("#amount").val();		
-	
-	if ((charCode>47&&charCode<58)||charCode==46) {
-		if(charCode==46&&str.indexOf(".")>=0){
-			return false;	
-		}else{
-	   		return true;
-		}
-	}else{
-		return false;
-	}
-}catch (err) {
-	alert(err.Description);
-	}
-}
-function isNumeric(evt){
-	try {
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if (charCode>47&&charCode<58 ) {
-		   	return true;
-		}else{
-			return false;
-		}
-    }catch (err) {
-    	alert(err.Description);
-   	}
-}
-
-function isAlphaNumericName(evt) {
-	try {
-		//console.log('aaaaaaaaa');
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 ||charCode==8||charCode==32||charCode==46||charCode==38||charCode==45||charCode==40||charCode==41) {
-		   	return true;
-		}else{
-			return false;
-		}
-    }catch (err) {
-        console.log('errerrerr: '+err);
-    	alert(err.Description);
-   	}
 }
 
 	</script>
@@ -417,6 +202,30 @@ $('select option[value="1"]').attr("selected",true);
                <input type="hidden" name="merchantId" id="merchantId"
 					value="${allMerchantDetails['merchantId']}" />
               <div class="row">&nbsp;</div>
+              <div class="row">
+                  <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Sales Type</label>
+                      <select name="salesType" id="salesType" class="form-control input-lg" onchange="return changeSalesType();">
+										    	<option value="">select</option>
+										    	<option <c:if test="${allMerchantDetails['salesType'] == '1'}">Selected="Selected"</c:if> value="1">Direct sale</option>
+                                            	<option <c:if test="${allMerchantDetails['salesType'] == '2'}">Selected="Selected"</c:if> value="2">Distributor</option>
+                                            </select>
+                    </div>
+                  </div>
+                  <div class="col-md-5" id="employee_List" style="display: none;">
+                  <div class="col-md-1">&nbsp;</div>
+                   <div class="form-group">
+                      <label for="exampleInputEmail1">Employee Name</label>
+                       <select name="employeeName" id="employeeName" class="form-control input-lg">
+                      	<option value="">select</option>
+										        <c:forEach var="RowData" items="${empList}">
+										 				<option value="<c:out value="${RowData['executiveId']}"/>" <c:if test="${RowData['executiveId'] == param.executiveId}">selected="selected"</c:if> ><c:out value="${RowData['executiveName']}"/></option> 
+										 			</c:forEach>
+											</select>
+                    </div>
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-md-5">
                     <div class="form-group">
@@ -425,8 +234,8 @@ $('select option[value="1"]').attr("selected",true);
 								  	  <c:if test="${allMerchantDetails['executiveName']==''}">
 								  	     <option value="NA">select</option> 	
 									  </c:if>
-									  <c:forEach var="RowData" items="${executiveList}">
-									  <option <c:if test="${RowData['executiveEmail'] == allMerchantDetails['executiveName']}">selected</c:if> value="<c:out value="${RowData['executiveEmail']}"/>"><c:out value="${RowData['executiveName']}"/></option> 									  
+									  <c:forEach var="RowData" items="${executiveListDsa}">
+									  <option <c:if test="${RowData['executiveId'] == allMerchantDetails['executiveName']}">selected</c:if> value="<c:out value="${RowData['executiveId']}"/>"><c:out value="${RowData['executiveName']}"/></option> 									  
 								  	  </c:forEach>
 								   </select>	
                     </div>
@@ -476,7 +285,7 @@ $('select option[value="1"]').attr("selected",true);
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="Password">Nach Number</label>
-                      <input type="number" class="form-control input-lg" data-clear-btn="true" name="UserEmailId" placeholder="Enter Email" id="nachNumber" required="true" minlength="10" maxlength="10" digits="true" onPaste="return false"  />
+                      <input type="text" class="form-control input-lg" data-clear-btn="true"  placeholder="Nach Number" value="${allMerchantDetails['nachNo']}" id="nashNumber" required="true" minlength="10" maxlength="10" digits="true" onPaste="return false"  />
                         
                     </div>
                   </div>
@@ -484,14 +293,14 @@ $('select option[value="1"]').attr("selected",true);
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="Password">Nach Bank Name</label>
-                             <input type="text" class="form-control input-lg" data-clear-btn="true" name="nashBankNAme" id="nashBankNAme" minlength="0" maxlength=50 onkeypress="return isAlphaNumeric(event);" alphanumeric="true"/>
+                             <input type="text" class="form-control input-lg" data-clear-btn="true" name="nashBankNAme" value="${allMerchantDetails['nachBank']}" id="nashBankNAme" minlength="0" maxlength=50 onkeypress="return isAlphaNumeric(event);" alphanumeric="true"/>
                                            
                     </div>
                   </div>
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="Password">Nach Date</label>
-                           <input type="text" class="date-picker form-control input-lg" placeholder="Enter Valid Till Date" data-role="date" data-clear-btn="true" name="validTil" id="validTil" onkeypress='return false;' readonly='true'/>
+                           <input type="text" class="date-picker form-control input-lg" placeholder="Enter Valid Till Date" data-role="date" value="${allMerchantDetails['nashDate']}" data-clear-btn="true" name="nachDate" id="nachDate" onkeypress='return false;' readonly='true'/>
                                             
                     </div>
                   </div>
@@ -519,7 +328,7 @@ $('select option[value="1"]').attr("selected",true);
                    <div class="col-md-1">&nbsp;</div>
                   <div class="col-md-5">
                     <div class="form-group">
-                      <label for="Password">Update Document</label>
+                      <label for="text">Update Document</label>
                        	<input type="file" class="form-control input-lg" data-clear-btn="true" name="pdfFile" id="pdfFile" onchange="onFileSelected(event)" accept="application/pdf" />
                                
                     </div>
@@ -527,8 +336,8 @@ $('select option[value="1"]').attr("selected",true);
                    <div class="col-md-1">&nbsp;</div>
                   <div class="col-md-5">
                     <div class="form-group">
-                      <label for="Password">Comments/Remarks</label>
-                      <input type="text" class="form-control input-lg" id="note" >
+                      <label for="text">Comments/Remarks</label>
+                      <input type="text" class="form-control input-lg" id="note" value="${allMerchantDetails['note']}">
                     </div>
                   </div>
                    <div class="col-md-1">&nbsp;</div>
@@ -568,13 +377,35 @@ $('select option[value="1"]').attr("selected",true);
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">Submit</button>
+                <button type="submit" class="btn btn-info pull-right" data-toggle="modal" onclick="return updMerchant();" data-target=".bs-example-modal-sm">Submit</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <!-- /.row -->
+<!--------------------------------------------- Small modal ----------------------------------------->
+                                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel2">Your Request Status</h4>
+                                            </div>
+                                            <div id="modal-body" class="modal-body">
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn-cancel" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>      
+      
+      
+      
+      
+ <!---------------------------------------------- /row --------------------------------------------------------->
     </section>
     </div>
 				

@@ -33,6 +33,7 @@ import com.acq.AcqBase;
 import com.acq.AcqNumericValidator;
 import com.acq.AcqStatusDefination;
 import com.acq.users.entity.AcqAddNewMerchantEntity;
+import com.acq.users.entity.AcqDsaEntity;
 import com.acq.users.entity.AcqEmpRoleEntity;
 import com.acq.users.entity.AcqLoanDetails;
 import com.acq.users.entity.AcqSettingEntity;
@@ -103,11 +104,28 @@ public class AcqMerchantDaoImpl implements UserDaoInf{
 						AcqEmpRoleEntity txEntity = (AcqEmpRoleEntity)etr.next();
 						merchantMap.put("executiveEmail",""+txEntity.getEmailId()); 
 						merchantMap.put("executiveName",""+txEntity.getName()); 
+						merchantMap.put("executiveId",""+txEntity.getId());
 						globalMap.put(""+k,merchantMap);
 					}
 					k++;
+					/*if(merchant.getSalesType().equals("2")){
+				Criteria tx1= session.createCriteria(AcqDsaEntity.class);				
+						List list1 = tx1.list();
+						Iterator etr1 = list1.iterator();	
+						HashMap<String,String> merchantMapDsa=null;
+						int j=1;
+						while(etr1.hasNext()){
+							merchantMap = new HashMap<String, String>();
+							AcqDsaEntity txEntity = (AcqDsaEntity)etr.next();
+							merchantMapDsa.put("dsaId",""+txEntity.getId()); 
+							merchantMapDsa.put("dsaName",""+txEntity.getName()); 
+							globalMap.put(""+j,merchantMapDsa);
+						}
+						j++;
+					}*/
 				response.setResult(globalMap);	
 				merchantDetails.put("kycCheck", merchant.getKycCheck());
+				merchantDetails.put("salesType", merchant.getSalesType());
 				merchantDetails.put("merchantId", ""+merchant.getId());
 				merchantDetails.put("merchantName", merchant.getMerchantName());
 				merchantDetails.put("marketingName", merchant.getMarketingName());
@@ -117,14 +135,19 @@ public class AcqMerchantDaoImpl implements UserDaoInf{
 				}else{
 					merchantDetails.put("executiveName", "");
 				}
+				merchantDetails.put("salesType", merchant.getSalesType());
+				merchantDetails.put("employeeName", merchant.getEmployeeName());
 				merchantDetails.put("verificationStatus", merchant.getStatus());
 				merchantDetails.put("phoneNo", merchant.getPhoneNo());
-				merchantDetails.put("amount", ""+merchant.getAmount());//new DecimalFormat("#.##").format(Double.parseDouble(merchant.getAmount())));
+				merchantDetails.put("amount", ""+merchant.getAmount());
 				merchantDetails.put("chequeNo", merchant.getChequeNo());
 				merchantDetails.put("createdOn", merchant.getCreated_on());
 				merchantDetails.put("note", merchant.getNote());
 				merchantDetails.put("empRole", emp1.getEmpRole());
 				merchantDetails.put("cubBranch", merchant.getCubBranch());
+				merchantDetails.put("nachNo", merchant.getNashNumber());
+				merchantDetails.put("nachBank", merchant.getNashBankNAme());
+				merchantDetails.put("nashDate", merchant.getNachDate());
 			System.out.println("pre boarded merchant details is populated........");				
 			response.setStatus(AcqStatusDefination.OK.getIdentifier());
 			response.setMessage(AcqStatusDefination.OK.getDetails());

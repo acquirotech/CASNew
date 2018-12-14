@@ -9,9 +9,30 @@ public class AcqInventoryDeviceEntity {
 	private String dateTime;
 	private String status;
 	private String Acquirer;
+	private String batterySerialNo;
+	private String adapterSerialNo;
+	private String dsaList;
 	
 	
 	
+	public String getBatterySerialNo() {
+		return batterySerialNo;
+	}
+	public void setBatterySerialNo(String batterySerialNo) {
+		this.batterySerialNo = batterySerialNo;
+	}
+	public String getAdapterSerialNo() {
+		return adapterSerialNo;
+	}
+	public void setAdapterSerialNo(String adapterSerialNo) {
+		this.adapterSerialNo = adapterSerialNo;
+	}
+	public String getDsaList() {
+		return dsaList;
+	}
+	public void setDsaList(String dsaList) {
+		this.dsaList = dsaList;
+	}
 	public String getDateTime() {
 		return dateTime;
 	}

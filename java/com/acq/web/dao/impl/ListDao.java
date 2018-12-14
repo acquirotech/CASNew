@@ -1349,6 +1349,7 @@ public class ListDao implements ListDaoInf {
 							response.setStatus(AcqStatusDefination.OK.getIdentifier());
 							response.setMessage(AcqStatusDefination.OK.getDetails());
 							logger.info("Risk Status successfully added");
+							return response;
 						} else if(AcqRisk.getStatus().equals("0")){
 							AcqRisk.setStatus("1");
 							AcqRisk.setDateTime(""+currentTimestamp);
@@ -1366,7 +1367,7 @@ public class ListDao implements ListDaoInf {
 							return response;
 						}
 						response.setStatus(AcqStatusDefination.NotFound.getIdentifier());
-					    response.setMessage("Txn can't be add to risk");
+					    response.setMessage("Added to risk");
 					    logger.info("Txn can't be add to risk");
 					}
 				}
@@ -1383,7 +1384,6 @@ public class ListDao implements ListDaoInf {
 	public DbDto<Object> updateRiskStatus(String id,String txnType) {
 			DbDto<Object> response = new DbDto<Object>();
 			logger.info("request landing in update Risk status Dao");		
-			//Session session = null;
 			Date date= new Date();
 			Timestamp currentTimestamp= new Timestamp(date.getTime());
 			try {
@@ -1463,7 +1463,7 @@ public class ListDao implements ListDaoInf {
 			DbDto<List<HashMap<String,String>>> globleMap = new DbDto<List<HashMap<String,String>>>();
 			Session session = AcqMerchantDaoImpl.getSession();
 			List<Long> list = new ArrayList<Long>();
-			Map<Long,String> listIds = new HashMap<Long,String>();
+			Map<Integer,String> listIds = new HashMap<Integer,String>();
 			Map<Long,String> descriptionMap = new HashMap<Long,String>();
 			Criteria riskCriteria = (Criteria)  session.createCriteria(AcqRiskManagement.class).add(Restrictions.eq("status", "1"));
 			List riskList = riskCriteria.list();
@@ -1474,9 +1474,10 @@ public class ListDao implements ListDaoInf {
 				while(it.hasNext()){
 					AcqRiskManagement entit1 = (AcqRiskManagement)it.next();
 					list.add(Long.valueOf(""+entit1.getTxnId()));	
-					listIds.put(Long.valueOf(""+entit1.getTxnId()),""+entit1.getId());	
+					listIds.put(Integer.valueOf(""+entit1.getTxnId()),""+entit1.getId());	
 					descriptionMap.put(Long.valueOf(""+entit1.getTxnId()), entit1.getDescription());
 				}
+				System.out.println("List::::::::::::::::::"+listIds);
 				Criteria tot = session.createCriteria(AcqWalletListEntity.class);
 				tot.add(Restrictions.in("walletId",list));
 				tot.setProjection(Projections.rowCount());				
@@ -1663,6 +1664,7 @@ public class ListDao implements ListDaoInf {
 				    }else{
 				       singleMap.put("custEmail",entit.getWalletEmail());
 				    }
+				    singleMap.put("riskId",""+listIds.get(entit.getWalletId()));
 				    singleMap.put("statusDescription", entit.getStatusDescription());
 				    if(cardDetailMap.containsKey(""+entit.getWalletId())){
 				    	Map<String,String> cardDetail = cardDetailMap.get(""+entit.getWalletId());
@@ -1681,9 +1683,10 @@ public class ListDao implements ListDaoInf {
 				    	singleMap.put("latitude",cardDetail.get("latitude"));
 				    	singleMap.put("longitude",cardDetail.get("longitude"));
 				    	singleMap.put("stan",cardDetail.get("stan"));
-				    	singleMap.put("riskId",""+listIds.get(entit.getWalletId()));
+				    	
 				    	singleMap.put("riskDescription", descriptionMap.get(entit.getWalletId()));
 				    }
+				    
 				    globalList.add(singleMap);
 					i++;
 				}
@@ -1968,8 +1971,8 @@ public class ListDao implements ListDaoInf {
 				}
 				tx.add(Restrictions.in("walletStatus",statusList));
 				tx.addOrder(Order.desc("walletId"));
-				tx.setFirstResult((Integer.valueOf(modell.getPage()) - 1) * 20);
-				tx.setMaxResults(20);
+				/*tx.setFirstResult((Integer.valueOf(modell.getPage()) - 1) * 20);
+				tx.setMaxResults(20);*/
 				List criteriaList = tx.list();
 				Iterator etr1 = criteriaList.iterator();	
 				Iterator etr = criteriaList.iterator();	
@@ -2135,15 +2138,16 @@ public class ListDao implements ListDaoInf {
 				    }else{
 				    	singleMap.put("payoutStatus", "NA");
 				    	singleMap.put("payoutDateTime", "NA");
-				    }	   
+				    }	
+				    if(entit.getCardPanNo().equals("0000")||entit.getCardPanNo().equals("0")) {
+			            singleMap.put("cardPanNo","NA"); 
+			        }else{
+			         singleMap.put("cardPanNo",entit.getCardPanNo()); 
+			        }
 				    if(cardDetailMap.containsKey(""+entit.getWalletId())){
 				    	Map<String,String> cardDetail = cardDetailMap.get(""+entit.getWalletId());
 				    	singleMap.put("cardHolderName",cardDetail.get("cardHolderName"));
-				    	if(entit.getCardPanNo().equals("0000")||entit.getCardPanNo().equals("0")) {
-				            singleMap.put("cardPanNo","NA"); 
-				        }else{
-				         singleMap.put("cardPanNo",entit.getCardPanNo()); 
-				        }
+				    	
 				    	singleMap.put("terminalId",cardDetail.get("terminalId"));
 				    	
 				    	if(cardDetail.get("rrNo")==null||cardDetail.get("rrNo")==""){

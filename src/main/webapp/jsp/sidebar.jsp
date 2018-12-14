@@ -1,3 +1,4 @@
+
 <aside class="main-sidebar">
     <section class="sidebar">
       <!-- Sidebar user panel -->
@@ -61,8 +62,18 @@
             <li><a href="addDeviceDetail"><i class="fa fa-circle-o"></i>Add New Terminal</a></li>
           </ul>
         </li>
-
-
+ 		<li class="treeview">
+          <a href="#">
+            <i class="fa fa-list"></i> <span>Call Support Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="createTeleCustomer"><i class="fa fa-circle-o"></i>Log Complaint</a></li>
+            <li><a href="teleCustomerList"><i class="fa fa-circle-o"></i>Log Complaint List</a></li>
+           </ul>
+        </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-list"></i> <span>Transaction List</span>
@@ -76,7 +87,17 @@
             <li><a href="transactionList"><i class="fa fa-circle-o"></i>DMT</a></li>
           </ul>
         </li>
-
+<li class="treeview">
+          <a href="#">
+            <i class="fa fa-list"></i> <span>Risk Transaction List</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="riskManagementList"><i class="fa fa-circle-o"></i>Risk Transaction List</a></li>
+          </ul>
+        </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i>
@@ -90,15 +111,18 @@
             <li><a href="cardCommissionReportProcedure"><i class="fa fa-circle-o"></i> Commission Report</a></li>
           </ul>
         </li>
-
-
-        <li>
-          <a href="rptArchives.php">
-            <i class="fa fa-archive"></i>
-            <span>Archived Reports</span>
+          <li class="treeview">
+          <a href="#">
+            <i class="fa fa-list-ol"></i> <span>Card Prepaid Inventory</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
           </a>
+          <ul class="treeview-menu">
+            <li><a href="addPrepaidInventory"><i class="fa fa-circle-o"></i>Add New Card Prepaid</a></li>
+            <li><a href="prepaidInventoryList"><i class="fa fa-circle-o"></i>Card Prepaid Inventory List</a></li>
+          </ul>
         </li>
-
         <li class="treeview">
           <a href="#">
             <i class="fa fa-list-ol"></i> <span>Device Inventory</span>
@@ -111,7 +135,18 @@
             <li><a href="inventoryList"><i class="fa fa-circle-o"></i>Inventory List</a></li>
           </ul>
         </li>
-
+      <li class="treeview">
+          <a href="#">
+            <i class="fa fa-list-ol"></i> <span>DSA Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="addDSA"><i class="fa fa-circle-o"></i>Add New DSA</a></li>
+            <li><a href="dsaManagement"><i class="fa fa-circle-o"></i>DSA List</a></li>
+          </ul>
+        </li>
         <li>
           <a href="settingHome">
             <i class="fa fa-gears"></i> <span>Settings</span>

@@ -43,7 +43,9 @@ function gettermnl()
                                             <select name="merchantId" id="merchantId" onchange="return getorg();" class="form-control">
 										    	<option value=""></option>select</option>
 										 			<c:forEach var="RowData" items="${merchantList}">
-										 				<option value="<c:out value="${RowData['merchantId']}"/>" <c:if test="${RowData['merchantId'] == param.merchantId}">selected="selected"</c:if> ><c:out value="${RowData['merchantName']}"/></option> 
+										 				<option value="<c:out value="${RowData['merchantId']}"/>" <c:if test="${RowData['merchantId'] == param.merchantId}">selected="selected"</c:if> >
+										 				<c:out value="${RowData['merchantName']}"/>
+										 				</option> 
 										 			</c:forEach>
 											</select>										                                             
 										</div>

@@ -10,6 +10,7 @@ import com.acq.web.controller.model.AcqNewOrganization;
 import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
+import com.acq.web.controller.model.AcqPrepaidInventoryDeviceModel;
 import com.acq.web.controller.model.AcqSearchModel;
 import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dto.impl.ServiceDto;
@@ -55,6 +56,20 @@ public interface MerchantHanlderInf {
 	ServiceDto<List<HashMap<String, String>>> downloadDeviceDetails(String fromDate, String toDate);
 
 	ServiceDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model);
+
+	ServiceDto<Object> preBoardNewMerchant(PreBoardNewMerchant model);
+
+	ServiceDto<List<HashMap<String, String>>> empexecutivesList();
+
+	ServiceDto<String> deletePreBoard(String id);
+
+	ServiceDto<List<HashMap<String, String>>> merchantListPagination(String id);
+
+	ServiceDto<AcqPrepaidInventoryDeviceModel> addPrepaidInventory(AcqPrepaidInventoryDeviceModel model);
+
+	ServiceDto<List<HashMap<String, String>>> prepaidInventoryList(AcqSearchModel modell);
+
+	ServiceDto<AcqPrepaidInventoryDeviceModel> prepaidInventoryUpdateDevice(AcqPrepaidInventoryDeviceModel model);
 
 
 	

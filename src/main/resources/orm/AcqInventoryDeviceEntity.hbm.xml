@@ -22,5 +22,14 @@
         <property name="dateTime" type="string">
             <column name="DATETIME" length="50" not-null="true" />
         </property>
+         <property name="batterySerialNo" type="string">
+            <column name="batteryserialno" length="50" not-null="true" />
+        </property>
+         <property name="adapterSerialNo" type="string">
+            <column name="ADAPTERSERIALNO" length="50" not-null="true" />
+        </property>
+         <property name="dsaList" type="string">
+            <column name="dsalist" length="50" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -41,13 +41,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.acq.AcqBase;
 import com.acq.AcqNumericValidator;
 import com.acq.AcqStatusDefination;
 import com.acq.users.dao.AcqMerchantDaoImpl;
 import com.acq.users.entity.AcqAddNewMerchantEntity;
 import com.acq.users.entity.AcqDeviceAndUserEntity;
+import com.acq.users.entity.AcqDsaEntity;
 import com.acq.users.entity.AcqEmpPasswordEntity;
 import com.acq.users.entity.AcqEmpRoleEntity;
 import com.acq.users.entity.AcqGCMNotificationEntity;
@@ -55,7 +55,9 @@ import com.acq.users.entity.AcqInventoryDeviceEntity;
 import com.acq.users.entity.AcqLoanDetails;
 import com.acq.users.entity.AcqMobikwikEntity;
 import com.acq.users.entity.AcqNewOrganizationEntity;
+import com.acq.users.entity.AcqPrepaidInventoryDeviceEntity;
 import com.acq.users.entity.AcqUserEntity;
+import com.acq.users.entity.AcqWalletListEntity;
 import com.acq.users.entity.PreBoardNewMerchantEntity;
 import com.acq.users.model.AcqAppUser;
 import com.acq.users.model.AcqDevice;
@@ -71,6 +73,7 @@ import com.acq.web.controller.model.AcqNewOrganization;
 import com.acq.web.controller.model.AcqNewUpdateDeviceDetailModel;
 import com.acq.web.controller.model.AcqNewUpdateMerchantModel;
 import com.acq.web.controller.model.AcqNewUpdateOrgModel;
+import com.acq.web.controller.model.AcqPrepaidInventoryDeviceModel;
 import com.acq.web.controller.model.AcqSearchModel;
 import com.acq.web.controller.model.PreBoardNewMerchant;
 import com.acq.web.dao.MerchantDaoInf;
@@ -91,11 +94,343 @@ public class MerchantDao implements  MerchantDaoInf {
 	public String getMrchntDetails(){
 		return mrchntDetails;
 	}
+	@Transactional
+	public DbDto<AcqPrepaidInventoryDeviceModel> addPrepaidInventory(AcqPrepaidInventoryDeviceModel model) {
+		logger.info("Request landing in Add Prepaid inventory Device Dao");
+		DbDto<AcqPrepaidInventoryDeviceModel> response = new DbDto<AcqPrepaidInventoryDeviceModel>();
+		//Session session = null;
+		try{
+			Session session = AcqMerchantDaoImpl.getSession();
+			Transaction tx = session.beginTransaction();
+			String dbCardNo=null;
+			String banktid = null;			
+			if (model.getCardNo() != null && model.getCardNo() != "") {
+				dbCardNo = (String) session.createCriteria(AcqPrepaidInventoryDeviceEntity.class).setProjection(Projections.property("cardNo")).add(Restrictions.eq("cardNo",model.getCardNo())).uniqueResult();     
+			}
+			
+			if ( (dbCardNo != null && dbCardNo != "")) {
+				if (dbCardNo != null && dbCardNo != "") {
+					logger.info("Card No. already in use with other account");
+					response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+					response.setMessage("Card No. Already Exist");
+				}
+			}else{
+				AcqPrepaidInventoryDeviceEntity entity = new AcqPrepaidInventoryDeviceEntity();
+				entity.setKitNo(model.getKitNo());
+				entity.setCardNo(model.getCardNo());
+				entity.setCardType(model.getCardType());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				entity.setDateTime(sdf.format(new Date()));
+				entity.setStatus(model.getStatus());
+				session.save(entity);
+				tx.commit();
+				response.setStatus(AcqStatusDefination.OK.getIdentifier());
+				response.setMessage(AcqStatusDefination.OK.getDetails());
+				logger.info("Prepaid Inventory Device Added Successfully");
+			}   
+		}catch (Exception e) {
+		   response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+		   response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+		   logger.error("error to add prepoaid inventory device"+e);
+	   	}
+		return response;
+	}
+	@Transactional
+	public DbDto<List<HashMap<String, String>>> prepaidInventoryList(AcqSearchModel modell) {
+		logger.info("Request is landing in dao for Inventory list");	
+		List<HashMap<String,String>> globalList = new ArrayList<HashMap<String,String>>();
+		HashMap<String, String> map = new HashMap<String, String>();
+		try{
+			Session session = AcqMerchantDaoImpl.getSession();
+			DbDto<List<HashMap<String,String>>> globleMap = new DbDto<List<HashMap<String,String>>>();			
+			Criteria tot = session.createCriteria(AcqPrepaidInventoryDeviceEntity.class);
+			tot.setProjection(Projections.rowCount());
+			Criteria tx=session.createCriteria(AcqPrepaidInventoryDeviceEntity.class);
+			if(modell.getModelName()!=null&&modell.getModelName()!=""&&!(modell.getModelName()).equals("%41")){
+				tx.add(Restrictions.eq("modelName", modell.getModelName()));
+				tot.add(Restrictions.eq("modelName", modell.getModelName()));
+			}if(modell.getSerialNo()!=null&&modell.getSerialNo()!=""&&!(modell.getSerialNo()).equals("%41")){
+				tx.add(Restrictions.eq("inventorySerialNo", modell.getSerialNo()));
+				tot.add(Restrictions.eq("inventorySerialNo", modell.getSerialNo()));
+			}if(modell.getStatus()!=null&&modell.getStatus()!=""&&!(modell.getStatus()).equals("%41")){
+				tx.add(Restrictions.eq("status", modell.getStatus()));
+				tot.add(Restrictions.eq("status", modell.getStatus()));
+			}
+ 			tx.addOrder(Order.desc("id"));
+ 			tx.setFirstResult((Integer.valueOf(modell.getPage()) - 1) * 20);
+			tx.setMaxResults(20);
+			List criteriaList = tx.list();
+			if(criteriaList.isEmpty()){
+				map.put("1", "123");
+				globalList.add(map);
+				globleMap.setResult(globalList);
+				globleMap.setStatus(AcqStatusDefination.NotFound.getIdentifier());
+				globleMap.setMessage(AcqStatusDefination.NotFound.getDetails());
+				logger.info("Inventory list is empty");
+				return globleMap;			
+			}
+			System.out.println("modell.getWalletEmail()::"+modell.getWalletEmail());
+			AcqEmpRoleEntity emp1 = (AcqEmpRoleEntity)session.createCriteria(AcqEmpRoleEntity.class).add(Restrictions.eq("emailId",modell.getWalletEmail())).uniqueResult();
+			if(emp1==null){
+				map.put("1", "123");
+				globalList.add(map);
+				globleMap.setResult(globalList);
+				globleMap.setStatus(AcqStatusDefination.NotFound.getIdentifier());
+				globleMap.setMessage(AcqStatusDefination.NotFound.getDetails());
+				logger.info("employee not found");
+				return globleMap;
+			}
+			//System.out.println("modell.getWalletEmail()::"+modell.getWalletEmail());
+			Iterator etr = criteriaList.iterator();	
+			//Iterator<AcqInventoryDeviceEntity> itr2 = criteriaList.iterator();
+			Iterator<AcqPrepaidInventoryDeviceEntity> itr = criteriaList.iterator();
+			
+			HashMap<String,String> singleMap=null;
+			AcqPrepaidInventoryDeviceEntity entit = null;
+			while(etr.hasNext()){
+				entit = (AcqPrepaidInventoryDeviceEntity)etr.next();
+				singleMap = new HashMap<String,String>();
+				singleMap.put("id",""+entit.getId());
+				if(entit.getCardType().equals("1")){
+					singleMap.put("cardType","NFC/CHIP&MAG CARD");
+					   
+				}else if(entit.getCardType().equals("2")){
+					singleMap.put("cardType","CHIP CARD");
+					   
+				}else if(entit.getCardType().equals("3")){
+					singleMap.put("cardType","MAG CARD");
+					   
+				}else if(entit.getCardType().equals("4")){
+					singleMap.put("cardType","OTHERS");
+					   
+				}
+				singleMap.put("cardTypeNumber",entit.getCardType());
+			     singleMap.put("cardNo",""+entit.getCardNo());
+			    singleMap.put("kitNo",""+entit.getKitNo());
+			    singleMap.put("status",""+entit.getStatus());
+			    singleMap.put("empRole",""+emp1.getEmpRole());
+			    globalList.add(singleMap);
+			}
+			Long rows = (Long) tot.uniqueResult();
+			Long totalRows= rows/20;
+			Long modlus = rows%20;
+			HashMap<String,String> rowsMap = new HashMap<String,String>();
+			if(totalRows<=0){
+				rowsMap.put("rows","1");
+			}else{
+				if(modlus>0){
+					rowsMap.put("rows",totalRows+1+"");
+				}else{
+					rowsMap.put("rows",totalRows+"");
+				}
+			}
+			globalList.add(0,rowsMap);
+			globleMap.setResult(globalList);
+			globleMap.setStatus(AcqStatusDefination.OK.getIdentifier());
+			globleMap.setMessage(AcqStatusDefination.OK.getDetails());
+			logger.info("Prepaid Inventory List selected successfully");
+			return globleMap;			
+		}catch(Exception e){
+			logger.info("error to select Prepaid Inventory Device list"+e);
+			return null;
+		}
+	}
+	@Transactional
+	public DbDto<AcqPrepaidInventoryDeviceModel> prepaidInventoryUpdateDevice(
+			AcqPrepaidInventoryDeviceModel model) {
+		DbDto<AcqPrepaidInventoryDeviceModel> response = new DbDto<AcqPrepaidInventoryDeviceModel>();
+		logger.info("request landing in update Inventory Device Dao");		
+		try {
+			Session session = AcqMerchantDaoImpl.getSession();
+			AcqPrepaidInventoryDeviceEntity AcqDevice = (AcqPrepaidInventoryDeviceEntity) session.createCriteria(AcqPrepaidInventoryDeviceEntity.class).add(Restrictions.eq("id",Long.valueOf(model.getId()))).uniqueResult();
+			if (AcqDevice == null || AcqDevice + "" == "") {
+				response.setMessage(AcqStatusDefination.NotFound.getDetails());
+				logger.info("Device not found for update");
+			} else {
+				AcqDevice.setCardNo(model.getCardNo());
+				AcqDevice.setCardType(model.getCardType());
+				AcqDevice.setKitNo(model.getKitNo());	
+				AcqDevice.setStatus(model.getStatus());	
+				DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				AcqDevice.setDateTime(inputFormatter.format(new Date()));
+				Transaction tx = session.beginTransaction();
+				
+				session.saveOrUpdate(AcqDevice);
+				tx.commit();
+				response.setStatus(AcqStatusDefination.OK.getIdentifier());
+				response.setMessage(AcqStatusDefination.OK.getDetails());
+				logger.info("Device successfully updated");   
+			}   
+		} catch (Exception e) {
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			logger.error("Error in Update Inventory Device " + e);
+	 	}
+		return response;
+	 }
+	
+	@Transactional
+	public DbDto<String> deletePreBoard(String id) {
+		DbDto<String> response = new DbDto<String>();
+		try {
+			Session session = AcqMerchantDaoImpl.getSession();
+			PreBoardNewMerchantEntity AcqUser = (PreBoardNewMerchantEntity) session.get(PreBoardNewMerchantEntity.class,Integer.valueOf(id));
+			if(AcqUser==null||AcqUser+""==""){
+					logger.warn("device not found");
+				}else{
+				
+				Transaction tx = session.beginTransaction();
+				session.delete(AcqUser);
+				tx.commit();
+				response.setStatus(AcqStatusDefination.OK.getIdentifier());
+				response.setMessage(AcqStatusDefination.OK.getDetails());
+				logger.error("Organization is successfully deleted");
+			}
+		} catch (Exception e) {
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError
+					.getDetails());
+			logger.error("Error to delete pre board  and device :" + e);
+		}
+		return response;
+	}
+	
+	
+	@Transactional
+		public DbDto<List<HashMap<String, String>>> merchantListPagination(String id) {
+			logger.info("request in pre board mercCuhant list dao");
+			DbDto<List<HashMap<String, String>>> response = new DbDto<List<HashMap<String,String>>>();
+			List<HashMap<String,String>> merchantList = new ArrayList<HashMap<String,String>>();	
+			try{
+				Session session = AcqMerchantDaoImpl.getSession();
+			Criteria tx=session.createCriteria(AcqWalletListEntity.class);
+			Criteria tot=session.createCriteria(AcqWalletListEntity.class);	
+			tx.addOrder(Order.desc("id"));
+			tot.setProjection(Projections.rowCount());
+			if(id==null){
+				logger.info("Id is Null");
+				tx.setFirstResult(Integer.valueOf(10));
+			}if(id!=null){
+				logger.info("Id is Not Null::"+id);
+				tx.setFirstResult(Integer.parseInt(id));
+			}
+			List criteriaList = tx.list();
+			tx.setMaxResults(10);
+			tot.setMaxResults(10);
+			HashMap<String,String> merchantMap=null;
+			try{
+				Long rows = (Long) tot.uniqueResult();
+				Long totalRows= rows/10;
+				Long modlus = rows%10;
+				HashMap<String,String> rowsMap = new HashMap<String,String>();
+				if(totalRows<=0){
+					rowsMap.put("rows","1");
+				}else{
+					if(modlus>0){
+						rowsMap.put("rows",totalRows+1+"");
+					}else{
+						rowsMap.put("rows",totalRows+"");
+					}
+				}
+				merchantList.add(0,rowsMap);
+				Iterator<AcqWalletListEntity> itr2 = criteriaList.iterator();
+				while(itr2.hasNext()){
+					AcqWalletListEntity txEntity = (AcqWalletListEntity)itr2.next();
+					merchantMap = new HashMap<String,String>();
+					merchantMap.put("applicationNo",""+txEntity.getWalletId());
+			        /*merchantMap.put("merchantName",""+txEntity.getMerchantName());
+			        merchantMap.put("marketingName",""+txEntity.getMarketingName());
+			        merchantMap.put("location",txEntity.getLocation());
+			        merchantMap.put("executiveName",txEntity.getExecutiveName());
+			        merchantMap.put("phoneNo",txEntity.getPhoneNo());
+			        merchantMap.put("aquirerCode",txEntity.getAquirerCode());
+			        //merchantMap.put("empRole",emp1.getEmpRole());
+			        if(txEntity.getStatus().equalsIgnoreCase("oktoboard")){
+			        	merchantMap.put("varificationStatus","Ok To Board");
+			        }else{
+			        	merchantMap.put("varificationStatus",txEntity.getStatus());
+			        }*/
+			        merchantList.add(merchantMap);
+				}
+			}catch(Exception e){
+				logger.info("Error to generate map and pre boarding list "+e);
+			}
+			logger.info("pre boarding merchant list successfully selected");
+			}catch(Exception e){
+				logger.info("Error to create hibernate session: "+e);
+			}
+			response.setStatus(AcqStatusDefination.OK.getIdentifier());
+			response.setMessage(AcqStatusDefination.OK.getDetails());
+			response.setResult(merchantList);
+			return response;
+		}
+		
+	
+	
+	@Transactional
+	public DbDto<Object> preBoardNewMerchant(PreBoardNewMerchant model) {
+		DbDto<Object> response = new DbDto<Object>();
+		try {
+			Session session = AcqMerchantDaoImpl.getSession();
+			 
+				PreBoardNewMerchantEntity entity = new PreBoardNewMerchantEntity();
+				entity.setMerchantName(model.getName());	
+				entity.setKycCheck(model.getKycCheck());							
+				entity.setMarketingName(model.getMarketingName());  
+				entity.setPhoneNo(model.getPhoneNo());
+				entity.setStatus(model.getStatus());
+				entity.setLocation(model.getLocation());
+				entity.setChequeNo(model.getChequeNo());
+				entity.setAmount(model.getAmount());
+				entity.setNote(model.getNote());	
+				entity.setCubBranch(model.getCubBranch());
+				entity.setNashNumber(model.getNashNumber());
+				entity.setNashBankNAme(model.getNashBankNAme());
+				entity.setSalesType(model.getSalesType());
+				entity.setNachDate(model.getNachDate());
+				if(model.getExecutiveName()!=null && model.getExecutiveName() != ""){
+					entity.setExecutiveName(model.getExecutiveName());
+				}else{
+					entity.setExecutiveName("NA");
+				}
+				if(model.getEmployeeName()!=null && model.getEmployeeName() != ""){
+					entity.setEmployeeName(model.getEmployeeName());
+					
+				}else{
+					entity.setEmployeeName("NA");
+				}
+				SimpleDateFormat sdfSource = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdfSource.format(new Date());
+				entity.setCreated_on(date);
+				entity.setAquirerCode("Acquiro");
+				Transaction tx = session.beginTransaction();
+				session.save(entity);
+				tx.commit();
+				response.setStatus(AcqStatusDefination.OK.getIdentifier());
+				response.setMessage(AcqStatusDefination.OK.getDetails());
+				response.setResult(entity.getId());
+				logger.info("Pre b merchant added");
+		} catch (NumberFormatException e) {
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			logger.error("number format problem dao " + e);
+		} catch (NullPointerException e) {
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			logger.error("there is some value is null in dao " + e);
+		} catch (Exception e) {
+			response.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+			response.setMessage(AcqStatusDefination.RollBackError.getDetails());
+			logger.error("error "+ e);
+			//System.out.println("error to Pre Boarded merchant"+e);
+		}
+		return response;
+	}
 	
 	@Transactional
 	public DbDto<Object> updatePreBoardMerchant(PreBoardNewMerchant model) {
 		DbDto<Object> response = new DbDto<Object>();
-		//logger.info("request landing in pre board merchant update dao");
+		System.out.print("request landing in pre board merchant update dao");
 		boolean update = false;
 		try {
 			Session session = AcqMerchantDaoImpl.getSession();
@@ -115,6 +450,17 @@ public class MerchantDao implements  MerchantDaoInf {
 				entity.setAmount(model.getAmount());
 				entity.setNote(model.getNote());
 				entity.setCubBranch(model.getCubBranch());
+				entity.setSalesType(model.getSalesType());
+				entity.setNashNumber(model.getNashNumber());
+				entity.setNashBankNAme(model.getNashBankNAme());
+				entity.setSalesType(model.getSalesType());
+				entity.setNachDate(model.getNachDate());
+				if(model.getEmployeeName()!=null && model.getEmployeeName() != ""){
+					entity.setEmployeeName(model.getEmployeeName());
+					
+				}else{
+					entity.setEmployeeName("NA");
+				}
 				if(model.getExecutiveName()!=null && model.getExecutiveName() != ""){
 					entity.setExecutiveName(model.getExecutiveName());
 				}else{
@@ -825,7 +1171,7 @@ public class MerchantDao implements  MerchantDaoInf {
 			Session session = AcqMerchantDaoImpl.getSession();
 			 
 			List<HashMap<String,String>> globalList = new ArrayList<HashMap<String,String>>();
-		    Criteria tx= session.createCriteria(AcqEmpRoleEntity.class).add(Restrictions.eq("aquirerCode","Acquiro")).add(Restrictions.eq("empRole", "5"));				
+		    Criteria tx= session.createCriteria(AcqEmpRoleEntity.class).add(Restrictions.eq("empRole", "5"));				
 			List list = tx.list();
 			Iterator etr = list.iterator();	
 			HashMap merchantMap=null;
@@ -834,6 +1180,7 @@ public class MerchantDao implements  MerchantDaoInf {
 				AcqEmpRoleEntity txEntity = (AcqEmpRoleEntity)etr.next();
 				merchantMap.put("executiveEmail",""+txEntity.getEmailId()); 
 				merchantMap.put("executiveName",""+txEntity.getName()); 
+				merchantMap.put("executiveId",""+txEntity.getId()); 
 				globalList.add(merchantMap);  
 			}
 			global.setResult(globalList);
@@ -847,6 +1194,37 @@ public class MerchantDao implements  MerchantDaoInf {
 		return null;
 	}
 }
+
+	@Transactional
+	public DbDto<List<HashMap<String, String>>> empexecutivesList() {
+		DbDto<List<HashMap<String,String>>> global = new DbDto<List<HashMap<String,String>>>();
+		try{
+			Session session = AcqMerchantDaoImpl.getSession();
+			 
+			List<HashMap<String,String>> globalList = new ArrayList<HashMap<String,String>>();
+		    Criteria tx= session.createCriteria(AcqDsaEntity.class);				
+			List list = tx.list();
+			Iterator etr = list.iterator();	
+			HashMap merchantMap=null;
+			while(etr.hasNext()){
+				merchantMap = new HashMap<String, String>();
+				AcqDsaEntity txEntity = (AcqDsaEntity)etr.next();
+				merchantMap.put("executiveName",""+txEntity.getName()); 
+				merchantMap.put("executiveId",""+txEntity.getId());
+				globalList.add(merchantMap);  
+			}
+			global.setResult(globalList);
+			global.setStatus(AcqStatusDefination.OK.getIdentifier());
+			global.setMessage(AcqStatusDefination.OK.getDetails());
+			return global;
+	}catch(Exception e){
+		global.setStatus(AcqStatusDefination.RollBackError.getIdentifier());
+		global.setMessage(AcqStatusDefination.RollBackError.getDetails());
+		logger.error("error"+e);
+		return null;
+	}
+}
+
 	
 	@Transactional
 	public DbDto<Object> getBankTid(String serialNo) {
@@ -2577,7 +2955,22 @@ public class MerchantDao implements  MerchantDaoInf {
 						AcqDevice.setInventorySerialNo(model.getInventorySerialNo());
 					}
 				} 
+				if(model.getBatterySerialNo()!=null&&model.getBatterySerialNo()!=""){
+					AcqDevice.setBatterySerialNo(model.getBatterySerialNo());
+					
+				}else{
+					AcqDevice.setBatterySerialNo("NA");
+					
+				}
+				if(model.getAdapterSerialNo()!=null&&model.getAdapterSerialNo()!=""&&model.getAdapterSerialNo().length()>1){
+					AcqDevice.setAdapterSerialNo(model.getAdapterSerialNo());
+					
+				}else{
+					AcqDevice.setAdapterSerialNo("NA");
+					
+				}
 				
+				AcqDevice.setDsaList(model.getDsaList());
 				AcqDevice.setModelName(model.getModelName());
 				AcqDevice.setInventorySerialNo(model.getInventorySerialNo());
 				AcqDevice.setStatus(model.getStatus());	
@@ -2768,6 +3161,9 @@ public class MerchantDao implements  MerchantDaoInf {
 			    singleMap.put("modelName",""+entit.getModelName());
 			    singleMap.put("serialNo",""+entit.getInventorySerialNo());
 			    singleMap.put("status",""+entit.getStatus());
+			    singleMap.put("batrySerialNo",""+entit.getBatterySerialNo());
+			    singleMap.put("adapterSerialNo",""+entit.getAdapterSerialNo());
+			    singleMap.put("dsaList",""+entit.getDsaList());
 			    singleMap.put("empRole",""+emp1.getEmpRole());
 			    if(userSet.isEmpty()){
 			    	singleMap.put("merchantName","NA");
@@ -2843,6 +3239,22 @@ public class MerchantDao implements  MerchantDaoInf {
 				entity.setModelName(model.getModelName());
 				entity.setInventorySerialNo(model.getInventorySerialNo());
 				entity.setStatus(model.getStatus());
+				if(model.getBatterySerialNo()!=null&&model.getBatterySerialNo()!=""){
+					entity.setBatterySerialNo(model.getBatterySerialNo());
+					
+				}else{
+					entity.setBatterySerialNo("NA");
+					
+				}
+				if(model.getAdapterSerialNo()!=null&&model.getAdapterSerialNo()!=""&&model.getAdapterSerialNo().length()>1){
+					entity.setAdapterSerialNo(model.getAdapterSerialNo());
+					
+				}else{
+					entity.setAdapterSerialNo("NA");
+					
+				}
+				
+				entity.setDsaList(model.getDsaList());
 				entity.setAcquirer("Acquiro");
 				session.save(entity);
 				tx.commit();

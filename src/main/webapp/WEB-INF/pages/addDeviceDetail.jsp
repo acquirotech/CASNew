@@ -3,7 +3,7 @@
 <jsp:include page="/jsp/topbar.jsp" />
 <jsp:include page="/jsp/sidebar.jsp" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<<script type="text/javascript">
+<script type="text/javascript">
 function onChangeAmexActivated() {
     var AmexActivated = $("#AmexActivated").val();
     if (AmexActivated == "NO"){
@@ -1246,12 +1246,31 @@ function onchangeUserType(){
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">Submit</button>
+                <button type="submit" class="btn btn-info pull-right" data-toggle="modal" data-target=".bs-example-modal-sm" onclick="return submitDevice();">Submit</button>
               </div>
             </form>
           </div>
         </div>
       </div>
+            
+<!--------------------------------------------- Small modal ----------------------------------------->
+                                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel2">Your Request Status</h4>
+                                            </div>
+                                            <div id="modal-body" class="modal-body">
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn-cancel" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
       <!-- /.row -->
     </section>
     <!-- /.content -->

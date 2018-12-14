@@ -23,6 +23,8 @@ public class AcqCreateEmployeeModel {
 	
 	private String empEnabled;
 	
+	private String reportManager;
+	
 	@NotNull
 	private String empRole;
 
@@ -72,6 +74,14 @@ public class AcqCreateEmployeeModel {
 
 	public void setEmpRole(String empRole) {
 		this.empRole = empRole;
+	}
+
+	public String getReportManager() {
+		return reportManager;
+	}
+
+	public void setReportManager(String reportManager) {
+		this.reportManager = reportManager;
 	}
 	
 	

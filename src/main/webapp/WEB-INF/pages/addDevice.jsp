@@ -4,12 +4,13 @@
 <script type="text/javascript">
 function submitDevice(){
 	$("#modal-body").html("<h2>In Process</h2>");
-
 	var modelName=$("#modelName").val();
 	var serialNo=$("#serialNo").val();
 	var status=$("#status").val();
+	var adapterSerialNo=$("#adapterSerialNo").val();
+	var batterySerialNo=$("#batterySerialNo").val();
+	var dsaList=$("#dsaList").val();
 	
-
 	if(modelName==null||modelName==""){
 		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Model Name</p>');
 		return false;
@@ -30,6 +31,9 @@ function submitDevice(){
 	var sendvalue={
 			modelName:modelName,
 			inventorySerialNo:serialNo,
+			adapterSerialNo:adapterSerialNo,
+			batterySerialNo:batterySerialNo,
+			dsaList:dsaList,
 			status:status
 			
 			 }
@@ -106,24 +110,52 @@ function submitDevice(){
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
+                 <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Adapter Serial No</label>
+                      <input type="text" class="form-control input-lg" id="adapterSerialNo" placeholder="Enter Adapter SerialNo">
+                    </div>
+                  </div> 
+                  <div class="col-md-1">&nbsp;</div>
+                  <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Battery Serial No</label>
+                      <input type="text" class="form-control input-lg" id="batterySerialNo" placeholder="Enter Battery SerialNo">
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                 <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">DSA List</label>
+                        <select data-clear-btn="true" name="dsaList"
+											id="dsaList" required="true" class="form-control input-lg">
+											<option value="1"> Company Owned</option>
+											<option value="2"> Channel Partner</option>
+											<option value="3">DSA</option>
+											</select>
+                    </div>
+                  </div> 
+                  <div class="col-md-1">&nbsp;</div>
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Status</label>
-                    <select data-clear-btn="true" name="status"
+                     <select data-clear-btn="true" name="status"
 											id="status" required="true" class="form-control input-lg">
 											<option value="Available"> Available</option>
-											<option value="Unavailable"> Unavailable</option>
-											<option value="Damaged">Damaged</option>
-											<option value="Internaluse">Internal Use</option>
-											<option value="Inuse">Activated</option>
-											</select>  </div>
+											<option value="Allotted"> Allotted</option>
+											<option value="Defected">Defected</option>
+											</select> 
+                    </div>
                   </div>
                   
                 </div>
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right" data-target=".bs-example-modal-sm" onclick="return submitDevice();">Submit</button>
+                <button type="submit" class="btn btn-info pull-right" data-toggle="modal" data-target=".bs-example-modal-sm" onclick="return submitDevice();">Submit</button>
               </div>
             </form>
           </div>

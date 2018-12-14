@@ -54,7 +54,6 @@ public class ListController {
 	      // ServiceDto<List<HashMap<String,String>>> globleMap = walletHandler.walletList(modell);
 	       ServiceDto<List<HashMap<String,String>>> globleMap = walletHandler.rechargeList(modell);
 	       list = globleMap.getResult();
-	       System.out.println("11111111111111"+list);
 	       HashMap<String,String> map = list.get(0);
 	       model.addObject("totalRows", map.get("rows"));
 	       list.remove(0);
@@ -133,7 +132,6 @@ public class ListController {
 	      // ServiceDto<List<HashMap<String,String>>> globleMap = walletHandler.walletList(modell);
 	       ServiceDto<List<HashMap<String,String>>> globleMap = walletHandler.transactionList(modell);
 	       list = globleMap.getResult();
-	       System.out.println("11111111111111"+list);
 	       HashMap<String,String> map = list.get(0);
 	       model.addObject("totalRows", map.get("rows"));
 	       list.remove(0);

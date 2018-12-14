@@ -105,6 +105,23 @@ function submitMerchant(){
 	var agreementRcvdDate = $("#agreementRcvdDate").val();
 	
 	var appCheckStatus = $("#appCheckStatus").val();
+/* 	if(typeOfSale==null||typeOfSale==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Select Type Of Sale</p>');
+		$("#AddMerchantDetails").show();
+		return false;
+	}if(onBoardEmpName==null||onBoardEmpName==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Boarding Executive Name can empty, Contact to tech team</p>');
+		$("#AddMerchantDetails").show();
+		return false;
+	}if(onBoardingStatus==null||onBoardingStatus==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Select OnBoarding Status</p>');
+		$("#AddMerchantDetails").show();
+		return false;
+	}if(verificationEntryDate==null||verificationEntryDate==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Select Verification Entry Date</p>');
+		$("#AddMerchantDetails").show();
+		return false;
+	} */
 	
 	var regex="^[0-9]{1,8}[\\.]{1}[0-9]{0,2}?$";	
 	 if(merchantName==null||merchantName==""){
@@ -282,6 +299,7 @@ function submitMerchant(){
 			return false;
 		}
 	}else if(emailId!=null&&emailId!=''){
+		//var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 		console.log('re.test(emailId): '+re.test(emailId));
 		if(emailId.length>100){
@@ -425,6 +443,23 @@ function submitMerchant(){
 		$("#AddMerchantDetails").show();
 		return false;
 	}
+	
+	
+	
+	
+	/*else if(neftchequeNo==null||neftchequeNo==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter neft chequeNo</p></n>Length should be min 1 and max 10 char');
+		return false;
+	}else if(neftchequeNo.length<1||neftchequeNo.length>10){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct neft Cheque No</p></n>Length should be min 1 and max 10 char');
+		return false;
+	}else if(neftRefNo==null||neftRefNo==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter ref chequeNo</p></n>Length should be min 1 and max 10 char');
+		return false;
+	}else if(neftRefNo.length<1||neftRefNo.length>10){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Enter Correct ref Cheque No</p></n>Length should be min 1 and max 10 char');
+		return false;
+	}*/
 }
 
 
@@ -503,6 +538,19 @@ function submitMerchant(){
 	frmData.append("verificationEntryDate",verificationEntryDate);
 	frmData.append("agreementRcvdDate",agreementRcvdDate);
 	frmData.append("appCheckStatus",appCheckStatus);	
+	
+	/*var sendvalue={
+		Name:merchantName,BusinessType:businessType,DirectorsName:directorsName,
+		AuthorizedSignatory:authorizedSignatory,BusinessNature:businessNature,BusinessCode:businessCode,
+    	MarketingName:marketingName,BusinessAddress1:businessAddress1,BusinessAddress2:businessAddress2,
+    	BusinessState:businessState,BusinessCity:businessCity,BusinessPincode:businessPinCode,
+    	PersonalUserAddress1:personalAddress1,PersonalUserAddress2:personalAddress2,PersonalUserState:personalState,PersonalUserCity:personalCity,
+    	PersonalUserPincode:personalPinCode,Country:country,PhoneNo:phoneNo,WebsiteUrl:webSiteUrl,
+    	EmailId:emailId,TinNo:tinNo,ServiceTaxNo:serviceTaxNo,DeviceSerialNo:deviceSerialNo,
+    	Note:note,VerificatonStatus:verificationStatus,swipeAmount:swipeAmount,SwipeDate:SwipeDate,swipeTerminal:swipeTerminal,chequeNo:chequeNo,
+		chequeAmount:chequeAmount,chequeDate:chequeDate,chequeDepositDate:chequeDepositDate,chequeBank:chequeBank,
+	    cashAmount:cashAmount,cashDate:cashDate,modeofpayment:modeofpayment,merchantType:merchantType,file:pdfFile
+	}*/
 	var opts = {
             type: "POST",
             success: function (data) {
@@ -599,7 +647,23 @@ function addOrgSub(){
 	cell1.innerHTML = $("#AddOrgName").val();
 	cell2.innerHTML = "<a href='#'>Add Device/User</a>";
 	cell3.innerHTML = "Delete";
-}</script>
+}
+function isNumberKeyWithComa(evt){
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    if ((charCode > 47 && charCode < 58 )|| charCode == 44|| charCode==8){
+        return true;
+    }
+    return false;
+}
+
+function isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode > 47 && charCode < 58 || charCode==8){
+        return true;
+    }
+    return false;
+}
+</script>
 <script type="text/javascript">
     $(function () {
         $("#BusinessType").change(function () {
@@ -613,6 +677,17 @@ function addOrgSub(){
     });
 </script>
 <script type="text/javascript">
+    $(function () {
+        $("#BusinessType").change(function () {
+              var bsnsstype = $("#BusinessType").val();
+              if ($("#BusinessType").val() == "Others") {
+                $("#dvOther").show();
+             } else {
+                $("#dvOther").hide();
+            }
+        });
+    });
+
     $(function () {
         $("#appCheckStatus").change(function () {
               var checkStatus = $("#appCheckStatus").val();
@@ -642,9 +717,114 @@ function fillBilling(f) {
 	    f.UserPhoneNo.value = f.PhoneNo.value;
 	  }
 	}
+
+function passwordValidations(event){
+	try {
+   		if (window.event) {
+    	   	var charCode = window.event.keyCode;
+    	}else if (e) {
+    	     var charCode = e.which;
+    	}else { return true; }
+    	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58||charCode==33||charCode==35||charCode==36||charCode==40||charCode==41||charCode==46||charCode==63||charCode==64||charCode==95)
+    	            return true;
+    	        else
+    	            return false;
+    }
+    catch (err) {
+    	alert(err.Description);
+   	}
+}
+
+function isAlphaNumericWithoutSpace(evt) {
+	try {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 || charCode>45|| charCode==8|| charCode==37) {
+		   	return true;
+		}else{
+			return false;
+		}
+   		/*if (window.event) {
+    	   	var charCode = window.event.keyCode;
+    	}else if (e) {
+    	     var charCode = e.which;
+    	}else { return true; }
+    	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode>47&&charCode<58 || charCode>45)
+    	            return true;
+    	        else
+    	            return false;*/
+    }
+    catch (err) {
+    	alert(err.Description);
+   	}
+}
+
+
+
+function onlyAlphabets(e, t) {
+    try {
+        if (window.event) {
+            var charCode = window.event.keyCode;
+        }
+        else if (e) {
+            var charCode = e.which;
+        }
+        else { return true; }
+        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123 || charCode == 32))
+            return true;
+        else
+            return false;
+    }
+    catch (err) {
+        alert(err.Description);
+    }
+}
+
+
+function isDecimal(evt){
+	evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if(charCode == 46){
+		return true;
+    }
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+	/*evt = (evt) ? evt : window.event;
+	var charCode = (evt.which) ? evt.which : evt.keyCode;
+	if (!(evt.keyCode == 46 || (evt.keyCode >= 48 && evt.keyCode <= 57)))
+		return false;*/
+}
+function ValidatePhoneCSV(value)
+{
+    alert(/^(\d{10},)*\d{10}$/.PhoneNo(value));
+}
+function ValidateDeviceSerialNoCSV(value)
+{
+    alert(/^(\d{10},)*\d{10}$/.PhoneNo(value));
+}
 </script>
 <script type="text/javascript">
     $(function () {
+    	/*$("#merchantType").change(function () {
+            var merchantType = $("#merchantType").val();
+            if ($("#merchantType").val() == "wallet") {
+              $("#div_DeviceSerialNo").hide();
+           } else {
+              $("#div_DeviceSerialNo").show();
+          }
+      });*/
+        
+        $("#BusinessType").change(function () {
+              var bsnsstype = $("#BusinessType").val();
+              if ($("#BusinessType").val() == "Others") {
+                $("#dvOther").show();
+             } else {
+                $("#dvOther").hide();
+            }
+        });
+
         $("#modeofpayment").change(function () {
             var modeofpayment = $("#modeofpayment").val();
             if (modeofpayment == "Swipe") 
@@ -663,6 +843,7 @@ function fillBilling(f) {
             	$("#div_neftDate").hide();  
             	$("#div_neftchequeNo").hide();
             	$("#div_neftRefNo").hide();      
+            	$("#div_swipeCardType").show();
            	}
            	else if (modeofpayment == "Cheque") 
             {
@@ -680,6 +861,7 @@ function fillBilling(f) {
             	$("#div_neftDate").hide();  
             	$("#div_neftchequeNo").hide();
             	$("#div_neftRefNo").hide(); 
+            	$("#div_swipeCardType").hide();
           	}
           	else if (modeofpayment == "Cash") 
             {
@@ -697,6 +879,7 @@ function fillBilling(f) {
             	$("#div_neftDate").hide();  
             	$("#div_neftchequeNo").hide();
             	$("#div_neftRefNo").hide(); 
+            	$("#div_swipeCardType").hide();
           	}else if (modeofpayment == "NEFT") 
             {
           		$("#div_swipeAmount").hide();
@@ -730,9 +913,11 @@ function fillBilling(f) {
             	$("#div_neftDate").hide();  
             	$("#div_neftchequeNo").hide();
             	$("#div_neftRefNo").hide();
+            	$("#div_swipeCardType").hide();
            }
       });
     });
+</script> 
 </script> 
     <!-- Content Header (Page header) -->
 
@@ -757,7 +942,6 @@ function fillBilling(f) {
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Business Type</label>
-                      <div class="selectBox" onclick="showCheckboxes()">
 						        <select data-clear-btn="true" name="BusinessType"
 										id="BusinessType" required="true" class="form-control input-lg">
 											<option value="">Choose	option</option>	
@@ -1073,11 +1257,12 @@ function fillBilling(f) {
                       <input type="text" class="form-control input-lg" id="usercity1" placeholder="Enter User City">
                     </div>
                   </div>
+                  
                   <div class="col-md-1">&nbsp;</div>
                   <div class="col-md-5">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Country</label>
-                        <input type="text" class="form-control input-lg" id="Country" value="INDIA">
+                      <label for="exampleInputEmail1">Pincode</label>
+                        <input type="text" class="form-control input-lg" id="UserPinCode" >
                     </div>
                   </div>
                 </div>
@@ -1273,7 +1458,7 @@ function fillBilling(f) {
 										 			</c:forEach>
 						</select>
                     </div>
-                  </div>tr
+                  </div>
                 </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
@@ -1305,7 +1490,7 @@ function fillBilling(f) {
                 <div class="row">
                   <div class="col-md-5">
                     <div class="form-group" >
-                      <label for="exampleInputEmail1">>Original App Status</label>
+                      <label for="exampleInputEmail1">Original App Status</label>
                          	<select data-clear-btn="true" name="appCheckStatus" id="appCheckStatus"  class="form-control input-lg">
 										         	<option value="">Select</option>
 										         	<option value="Yes">Yes</option>
@@ -1403,12 +1588,30 @@ function fillBilling(f) {
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right" onclick="return submitMerchant();">Submit</button>
+                <button type="submit" class="btn btn-info pull-right" data-toggle="modal" data-target=".bs-example-modal-sm" onclick="return submitMerchant();">Submit</button>
               </div>
             </form>
           </div>
         </div>
       </div>
+      <!--------------------------------------------- Small modal ----------------------------------------->
+                                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel2">Your Request Status</h4>
+                                            </div>
+                                            <div id="modal-body" class="modal-body">
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn-cancel" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
       <!-- /.row -->
     </section>
     <!-- /.content -->

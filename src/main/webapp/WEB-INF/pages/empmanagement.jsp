@@ -7,7 +7,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <script type="text/javascript"> 
-function empProfile(profileid,user,email,phone,status,date,role){
+function empProfile(profileid,user,email,phone,status,date,role,manager){
 	document.body.innerHTML += '<form id="dynForm" action="<c:url value='empProfile' />" method="post"><input type="hidden" name="empId" value='+profileid+' /></form>';
 	document.getElementById("dynForm").submit();
 }
@@ -41,8 +41,7 @@ function empProfile(profileid,user,email,phone,status,date,role){
                   </tr>
                   </thead>
                   <tbody>
-                  <?php 
-                  for ($x = 0; $x <= 8; $x++) {?>
+                 
                     <c:forEach var="allRowData" items="${empList}">											
                                         	   <tr class="even pointer">
                                             		<td><c:out value="${allRowData['id']}"/></td>
@@ -52,12 +51,12 @@ function empProfile(profileid,user,email,phone,status,date,role){
 		                                            <td><c:out value="${allRowData['enabled']}"/></td>
 		                                            <td><c:out value="${allRowData['dateTime']}"/></td>
 		                                            <td><c:out value="${allRowData['empRole']}"/></td>
-		                                           <td><button type="button" class="btn btn-success btn-xs" onclick='return empProfile("${allRowData.id}","${allRowData.name}","${allRowData.emailId}","${allRowData.phone}","${allRowData.enabled}","${allRowData.dateTime}","${allRowData.empRole}")'><i class="fa fa-fw fa-eye"></i>View Details</button>
+		                                           <td><button type="button" class="btn btn-success btn-xs" onclick='return empProfile("${allRowData.id}","${allRowData.name}","${allRowData.emailId}","${allRowData.phone}","${allRowData.enabled}","${allRowData.dateTime}","${allRowData.empRole}","${allRowData.reportManager}")'><i class="fa fa-fw fa-eye"></i>View Details</button>
 		                                           <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteConfirm" data-id2del="${allRowData.id}"><i class="fa fa-fw fa-remove"></i>Delete</button>
 		                                           </td>											
 												</tr>	
 											</c:forEach>
-                  <?php } ?>
+                  
                   </tbody>
                 </table>
               </div>

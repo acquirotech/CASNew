@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="resources/bower_components/Ionicons/css/ionicons.min.css">
   <link rel="stylesheet" href="resources/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="resources/dist/css/skins/skin-blue.css">
-
+  <link rel="stylesheet" href="resources/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <script src="resources/bower_components/jquery/dist/jquery.min.js"></script>
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>

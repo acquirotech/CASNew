@@ -10,7 +10,15 @@ private String	enabled;
 private String	createdOn;
 private String	emprole;
 private String  password;
+private String reportManager;
 
+
+public String getReportManager() {
+	return reportManager;
+}
+public void setReportManager(String reportManager) {
+	this.reportManager = reportManager;
+}
 public String getPassword() {
 	return password;
 }

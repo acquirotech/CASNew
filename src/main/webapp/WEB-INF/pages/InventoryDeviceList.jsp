@@ -50,8 +50,11 @@
     	var serialNo=$("#serialNo").val();
     	var status=$("#status").val();
     	var id=$("#id").val();	
+    	var adapterSerialNo=$("#adapterSerialNo").val();
+    	var batterySerialNo=$("#batterySerialNo").val();
+    	var dsaList=$("#dsaList").val();
     	//console.log('deviceSerialNo update: '+deviceSerialNo+' ::::::::new :::::: '+serialNo);
-    	if(status=='Inuse'&&deviceSerialNo!=serialNo){
+    	if(status=='Inuse'||status=='Allotted'&&deviceSerialNo!=serialNo){
     		alert("Device Serial Alerady In Use, Can't Update");
     		location.reload();
     		return false;
@@ -72,7 +75,9 @@
     		$("#modal-body").html('Validation Error<p>Select Status</p>');
     		return false;
     	}
-    	var sendvalue={inventoryDeviceId:id,modelName:modelName,inventorySerialNo:serialNo,status:status}
+    	var sendvalue={inventoryDeviceId:id,modelName:modelName,inventorySerialNo:serialNo,status:status,adapterSerialNo:adapterSerialNo,
+    			batterySerialNo:batterySerialNo,
+    			dsaList:dsaList}
     	var opts = {
                 type: "POST",
                 success: function (data) {
@@ -108,17 +113,20 @@
     }
 
     var deviceSerialNo;
-    function setDeviceDetails(id,modelName,serialNo,status){
+    function setDeviceDetails(id,modelName,serialNo,status, batterySerialNo,adaptorSerialNo,dsaList){
     	deviceSerialNo = serialNo;	
     	$("#id").val(id);
     	$("#modelName").val(modelName);
     	$("#serialNo").val(serialNo);
-    	$("#status").val(status);	
+    	$("#status").val(status);
+    	$("#batterySerialNo").val(batterySerialNo);
+    	$("#adaptorSerialNo").val(adaptorSerialNo);
+    	$("#dsaList").val(dsaList);	
     	var status2 = $("#status").val();
     	$('#status').on('change', function() {
     		var status1= $('#status').val();
-    	  	if(status2=="Inuse"){
-    	  		if ( $('#status').val() == "Available" || $('#status').val() == "Unavailable" || $('#status').val() == "Internaluse") {
+    	  	if(status2=="Inuse"||status2=="Allotted"){
+    	  		if ( $('#status').val() == "Available" || $('#status').val() == "Defected" ) {
     	          	alert ( 'Device Already in Use');
     	          	$("#status").val(status2);
     	          	return false;
@@ -130,14 +138,14 @@
     }
 
     function deleteDeviceConfirm(status,id){
-    	if(status=="Inuse"){
+    	if(status=="Inuse"||status=="Allotted"){
     		 alert("Device is in use, Can't delete");
     		 return false;
     	}else{
 
     		
     	if (confirm("Do you want to delete device details ?") == true) {
-    		var sendvalue={deviceId:id}
+    		var sendvalue={id2Delete:id}
     		var opts = {
     	            type: "POST",
     	            success: function (data) {
@@ -176,94 +184,7 @@
     	}}
     }
     	 
-    $(document).ready(function (){
-    	
-    	<c:if var="msg" test="${message!=null}">	
-    		alert('<c:out value="${message}" />');
-    	</c:if>
-    	<c:if var="pg" test="${page!=null&&page!=''}">
-    		$("#pageNo").val('<c:out value="${page}" />');
-    	</c:if>
-    	<c:if var="searchtx" test="${searchText!=null&&searchText!=''}">
-    		$("#searchAll").val('<c:out value="${searchText}" />');
-    	</c:if>
-    	
-    	<c:if var="lct" test="${location!=null&&location!=''}">	
-    		$("#storeLocation").val('<c:out value="${location}" />');
-    	</c:if>
-
-    	<c:if var="lct" test="${totalRows!=null&&totalRows!=''}">		
-    		$("#totRows").val('<c:out value="${totalRows}" />');
-    	</c:if>
-
-    	<c:if test="${fromDate != null&&fromDate!=''}"> 
-    		$("#dateUp").hide();
-    		$("#dateDown").show();
-    		$("#fromDate").show();
-    		$("#fromDate").val('<c:out value="${fromDate}" />');
-    	</c:if><c:if test="${toDate != null&&toDate!=''}"> 
-    	$("#toDate").show();
-    	$("#toDate").val('<c:out value="${toDate}" />');
-    	</c:if>
-    	
-    	var Namee = $("#Namee").val();
-    	var Statuss=$("#Statuss").val();
-    	var srNoo=$("#srNoo").val();
-    	
-    	if(Namee==undefined)
-    		Namee='%41';
-    	if(Statuss==undefined)
-    		Statuss='%41';
-    	if(srNoo==undefined)
-    		srNoo='%41';
-    	
-    	$("#pageNo").change(function(){
-    		var pageNo = $("#pageNo").val();
-    				
-    		if(pageNo!=null&&pageNo!=""){
-    			document.body.innerHTML += '<form id="pageForm" action="<c:url value='InventoryDeviceList' />"><input type="hidden" name="page" value='+pageNo+' /><input type="hidden" name="modelName" value='+Namee+' /><input type="hidden" name="status" value='+Statuss+' /><input type="hidden" name="serialNo" value='+srNoo+' /></form>';
-    			document.getElementById("pageForm").submit();
-    		}
-    	});	
-    	$("#first").click(function () {
-    		var page=1;
-    		$("#pageNo").val(page);
-    		var location = $("#storeLocation").val();
-    		document.body.innerHTML += '<form id="firstForm" action="<c:url value='InventoryDeviceList' />"><input type="hidden" name="page" value="1" /><input type="hidden" name="modelName" value='+Namee+' /><input type="hidden" name="status" value='+Statuss+' /><input type="hidden" name="serialNo" value='+srNoo+' /></form>';
-    		document.getElementById("firstForm").submit();	
-    	});
-    	$("#previous").click(function () {
-    		var page=$("#pageNo").val();
-    		if(page>1){
-    			$("#pageNo").val(page-1);
-    		}
-    		var previousPage=$("#pageNo").val();
-    	
-    		document.body.innerHTML += '<form id="previousForm" action="<c:url value='InventoryDeviceList' />"><input type="hidden" name="page" value='+previousPage+' /><input type="hidden" name="modelName" value='+Namee+' /><input type="hidden" name="status" value='+Statuss+' /><input type="hidden" name="serialNo" value='+srNoo+' /></form>';
-    		document.getElementById("previousForm").submit();		
-    	});
-    	$("#next").click(function () {
-    		var page=parseInt($("#pageNo").val());
-    		var lastPage=$("#totRows").val();
-    		if(page<lastPage){
-    			$("#pageNo").val(page+1);
-    		}
-    		var nextPage=parseInt($("#pageNo").val());		
-    		document.body.innerHTML += '<form id="nextForm" action="<c:url value='InventoryDeviceList' />"><input type="hidden" name="page" value='+nextPage+' /><input type="hidden" name="modelName" value='+Namee+' /><input type="hidden" name="status" value='+Statuss+' /><input type="hidden" name="serialNo" value='+srNoo+' /></form>';
-    		document.getElementById("nextForm").submit();
-    		
-    	});
-    	$("#last").click(function () {
-    		var lastPage=$("#totRows").val();
-    		document.body.innerHTML += '<form id="lastForm" action="<c:url value='InventoryDeviceList' />"><input type="hidden" name="page" value='+lastPage+' /><input type="hidden" name="modelName" value='+Namee+' /><input type="hidden" name="status" value='+Statuss+' /><input type="hidden" name="serialNo" value='+srNoo+' /></form>';
-    		document.getElementById("lastForm").submit();
-    	});
-
-    	$("#buttonClass").click(function() {
-    	    getValueUsingClass();
-    	});	
-    	
-    });
+   
 </script>
     <!-- Main content -->
     <section class="content">
@@ -289,6 +210,7 @@
                     <tr>
                    								<th>Model Name</th>
                                               	<th>Serial No</th>
+                                              	<th>Merchant Name</th>
                                               	<th>Status</th>
 												<th class=" no-link last"><span class="nobr">Action</span></th>       
                   </tr>
@@ -299,10 +221,11 @@
                     <c:forEach var="allRowData" items="${deviceList}">											
                                         	<tr class="even pointer">
                                             	<td class=" "><c:out value="${allRowData['modelName']}"/></td>
-                                            	<td class=" "><c:out value="${allRowData['serialNo']}"/></td>                                            		
+                                            	<td class=" "><c:out value="${allRowData['serialNo']}"/></td>  
+                                            	<td class=" "><a href="merchantdetails?MerchantId=${allRowData.mid}" target="_blank" /><u><c:out value="${allRowData['merchantName']}"/></u></a></td>                                          		
 												<td class=" "><c:out value="${allRowData['status']}"/></td>
 												<td class=" ">
-													<button type="submit" class="btn btn-success btn-xs" data-toggle="modal" data-target=".update_device_popup" onclick='setDeviceDetails("${allRowData.id}","${allRowData.modelName}","${allRowData.serialNo}","${allRowData.status}");' <c:if test="${empRole == '12'}">style="display:none;"</c:if>><i class="fa fa-fw fa-eye"></i>Update</button>
+													<button type="submit" class="btn btn-success btn-xs" data-toggle="modal" data-target=".update_device_popup" onclick='setDeviceDetails("${allRowData.id}","${allRowData.modelName}","${allRowData.serialNo}","${allRowData.status}","${allRowData.batrySerialNo}","${allRowData.adapterSerialNo}","${allRowData.dsaList}");' <c:if test="${empRole == '12'}">style="display:none;"</c:if>><i class="fa fa-fw fa-eye"></i>Update</button>
 													<button type="submit" class="btn btn-danger btn-xs" onclick='return deleteDeviceConfirm("${allRowData.status}","${allRowData.id}")'<c:if test="${allRowData.empRole != '1'}">style="display:none;" </c:if>><i class="fa fa-fw fa-remove"></i>Delete</button>
 												</td>
 											</tr>
@@ -372,7 +295,7 @@
 								 <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="modelName">Model Name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                            	<select data-clear-btn="true" name="modelName" id="modelName" required="true" class="form-control">
+                                            	<select data-clear-btn="true" name="modelName" id="modelName" required="true" class="form-control input-lg">
                                             	<option <c:if test="${modelName == 'WizarPosQ1'}">Selected="Selected"</c:if> value="WizarPosQ1">WizarPos Q1</option>
                                             	<option <c:if test="${modelName == 'NewlandN910'}">Selected="Selected"</c:if> value="NewlandN910">Newland N910</option>
                                             	<option <c:if test="${modelName == 'PaxA920'}">Selected="Selected"</c:if> value="PaxA920">Pax A920</option>
@@ -385,20 +308,40 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="serialNo">Serial No<span class="required">*</span> </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                               <input type="text" class="form-control" data-clear-btn="true" name="serialNo" id="serialNo" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                               <input type="text" class="form-control input-lg" data-clear-btn="true" name="serialNo" id="serialNo" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
                                            </div>
                                         </div>
-                                        
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="serialNo">Battery Serial No<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                               <input type="text" class="form-control input-lg"" data-clear-btn="true" name="batterySerialNo" id="batterySerialNo" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                           </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="serialNo">Adapter Serial No<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                               <input type="text" class="form-control input-lg"" data-clear-btn="true" name="adaptorSerialNo" id="adaptorSerialNo" required="true" minlength="8" maxlength="17" onkeypress='return event.charCode >= 48 && event.charCode <= 57' digits="true" />
+                                           </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="serialNo">DSA List<span class="required">*</span> </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                           <select data-clear-btn="true" name="dsaList"
+											id="dsaList" required="true" class="form-control input-lg">
+											<option <c:if test="${dsaList == '1'}">Selected="Selected"</c:if> value="1">Company Owned</option>
+                                            <option <c:if test="${dsaList == '2'}">Selected="Selected"</c:if> value="2">Channel Partner</option>
+                                            <option <c:if test="${dsaList == '3'}">Selected="Selected"</c:if> value="3">DSA</option>
+                                            </select> </div>
+                                        </div>
                                        <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status<span class="required">*</span> </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                  <select data-clear-btn="true" name="status"
-											id="status" required="true" class="form-control">
+											id="status" required="true" class="form-control input-lg">
 											<option value="Available"> Available</option>
-											<option value="Unavailable"> Unavailable</option>
-											<option value="Damaged">Damaged</option>
-											<option value="Internaluse">Internal Use</option>
-											<option value="Inuse"> InUse</option></select>                                                    
+											<option value="Allotted"> Allotted</option>
+											<option value="Defected">Defected</option>   
+											</select>                                              
                                             </div>
                                         </div>                              
 							</div>

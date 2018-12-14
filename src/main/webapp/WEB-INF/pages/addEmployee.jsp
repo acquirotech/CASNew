@@ -14,6 +14,7 @@ function getaddEmp(){
 	var phone=$("#phone").val();
 	var password=$("#password").val();
 	var emprole=$("#emprole").val();
+	var reportManager=$("#reportManager").val();
 	
 	var regex ="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\\s).{8,20}$";
 
@@ -45,8 +46,12 @@ function getaddEmp(){
 		$("#modal-body").html('<h2>Validation Error</h2><p>Select Employee Role</p>');
 		return false;
 	}
-	
-	var sendvalue={employeeName:name,empEmailId:email,empPhone:phone,empPassword:password,empRole:emprole}
+	else if(reportManager==null||reportManager==''){
+		$("#modal-body").html('<h2>Validation Error</h2><p>Select Reporting Manager</p>');
+		return false;
+	}
+		
+	var sendvalue={employeeName:name,empEmailId:email,empPhone:phone,empPassword:password,empRole:emprole,reportManager:reportManager}
 	var opts = {
             type: "POST",
             success: function (data) {
@@ -145,16 +150,27 @@ function getaddEmp(){
 											<option value="6">PreBoarding</option>
 											<option value="7">Senior Support</option>
 											<option value="8">HR </option>
-											<option value="10">CUB</option>
 											<option value="11">TeleCaller</option>
 						</select>  
+                    </div>
+                  </div>
+                  <div class="col-md-1">&nbsp;</div>
+                  <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="emprole">Reporting Manager</label>
+                      <select name="reportManager" id="reportManager" class="form-control input-lg">
+										    	<option value="">select</option>
+										 			<c:forEach var="RowData" items="${executiveList}">
+										 				<option value="<c:out value="${RowData['executiveId']}"/>" <c:if test="${RowData['executiveId'] == param.executiveEmail}">selected="selected"</c:if> ><c:out value="${RowData['executiveName']}"/></option> 
+										 			</c:forEach>
+						</select>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" data-target=".bs-example-modal-sm" class="btn btn-info pull-right" onclick="return getaddEmp();">Submit</button>
+                <button type="submit" data-toggle="modal" data-target=".bs-example-modal-sm" class="btn btn-info pull-right" onclick="return getaddEmp();">Submit</button>
               </div>
             </form>
           </div>
@@ -178,8 +194,7 @@ function getaddEmp(){
                                                 
       </div>
       <div class="modal-footer">
-       
-          <button type="submit" class="btn btn-danger"><i class="fa fa-fw fa-remove"></i>Close</button>
+       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
        
       </div>
     </div>

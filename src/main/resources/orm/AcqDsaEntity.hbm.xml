@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.acq.users.entity.AcqDsaEntity" table="acq_dsa_details" catalog="acquiro_ver1">
+    	
+    	<id name="id" type="java.lang.Long">
+			<column name="	ID" />
+			 <generator class="identity" />
+		</id>       
+        <property name="name" type="string">
+            <column name="NAME" length="70" not-null="true" />
+        </property>      
+        <property name="deviceRental" type="string">
+            <column name="DEVICE_RENTAL" length="50" not-null="true" />
+        </property>
+        <property name="cashatposIncentive" type="string">
+            <column name="CASHATPOSINCENTIVE" length="20" not-null="true" />
+        </property>
+          <property name="mdrDebit0" type="java.math.BigDecimal">
+    		<column name="MDTATZERO" not-null="false" />
+ 		</property>
+ 		  <property name="mdrDebit1" type="java.math.BigDecimal">
+            <column name="mdr_debit1" not-null="true" />
+        </property>
+          <property name="mdrDebit2" type="java.math.BigDecimal">
+            <column name="mdr_debit2" not-null="true" />
+        </property>
+        <property name="mdrCreditNpre" type="java.math.BigDecimal">
+            <column name="mdr_credit_npre" not-null="true" />
+        </property>
+        <property name="walletMdr" type="java.math.BigDecimal">
+            <column name="MDR_WALLET" not-null="true" />
+        </property>
+         <property name="mdrCreditPre" type="java.math.BigDecimal">
+            <column name="mdr_credit_pre" not-null="true" />
+        </property>
+        <property name="address" type="string">
+            <column name="ADDRESS" not-null="true" />
+        </property>
+        <property name="other" type="java.math.BigDecimal">
+            <column name="other" not-null="true" />
+        </property>
+        <property name="mdrCashAtPos" type="java.math.BigDecimal">
+            <column name="MDRCASHATPOS" not-null="true" />
+        </property>
+        
+ 		  <property name="date" type="string">
+    		<column name="DATE" not-null="false" />
+ 		</property>
+ 		
+    </class>
+</hibernate-mapping>

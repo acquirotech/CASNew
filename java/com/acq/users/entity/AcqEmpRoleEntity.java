@@ -12,16 +12,16 @@ public class AcqEmpRoleEntity {
 	private Date createdOn;
 	private String empRole;
 	private String password;
-	private String aquirerCode;
+	private String reportManager;
 	
 	
-	
-	public String getAquirerCode() {
-		return aquirerCode;
+	public String getReportManager() {
+		return reportManager;
 	}
-	public void setAquirerCode(String aquirerCode) {
-		this.aquirerCode = aquirerCode;
+	public void setReportManager(String reportManager) {
+		this.reportManager = reportManager;
 	}
+	
 	public String getPassword() {
 		return password;
 	}

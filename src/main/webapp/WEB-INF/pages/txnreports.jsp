@@ -1,6 +1,8 @@
 <jsp:include page="/jsp/head.jsp" />
 <jsp:include page="/jsp/topbar.jsp" />
 <jsp:include page="/jsp/sidebar.jsp" />
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <script type="text/javascript">
 function getorg()
 {
@@ -33,11 +35,12 @@ function gettermnl()
                       <label for="exampleInputEmail1">Merchant Name</label>
                        <select name="merchantId" id="merchantId" onchange="return getorg();" class="form-control input-lg">
                        <option value="">Merchant Name</option>	                         
-										    	<option value=""></option>select</option>
-										 			<c:forEach var="RowData" items="${merchantList}">
-										 			<!-- 	<option value="<c:out value="${RowData['merchantId']}"/>" <c:if test="${RowData['merchantId'] == param.merchantId}">selected="selected"</c:if> ><c:out value="${RowData['merchantName']}"/></option> --> 
-										 			<option value="<c:out value="${RowData['merchantId']}"/>">
-													<c:out value="${RowData['merchantName']}"/></option> 
+										    		<c:forEach var="RowData" items="${merchantList}">
+										 			 	<option value="<c:out value="${RowData['merchantId']}"/>" <c:if test="${RowData['merchantId'] == param.merchantId}">selected="selected"</c:if> >
+										 			 	
+										 			 	<c:out value="${RowData['merchantName']}"/>
+										 			 	
+										 			 	</option> 
 										 			</c:forEach>
 						</select>	
             		</div>
@@ -49,7 +52,12 @@ function gettermnl()
                       <select name="orgId" id="orgId" onchange="return gettermnl();" class="form-control input-lg"> 
 													<option value=""></option>select</option>
 												 	<c:forEach var="RowData" items="${orgList}">
-												 		<option value="<c:out value="${RowData['orgId']}"/>" <c:if test="${RowData['orgId'] == param.orgId}">selected="selected"</c:if>><c:out value="${RowData['orgName']}"/></option> 
+												 	
+												 		<option value="<c:out value="${RowData['orgId']}"/>" <c:if test="${RowData['orgId'] == param.orgId}">selected="selected"</c:if>>
+												 		
+												 		<c:out value="${RowData['orgName']}"/>
+												 		
+												 		</option> 
 												 	</c:forEach>
 												</select>
                     </div>

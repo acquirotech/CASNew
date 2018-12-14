@@ -15,6 +15,7 @@ function getaddEmp(){
 	var password=$("#password").val();
 	var emprole=$("#emprole").val();
 	var empid =$("#empid").val();
+	var manager =$("#reportManager").val();
 	var regex ="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\\s).{8,20}$";
 
 	 if(name==null||name==""){
@@ -46,7 +47,7 @@ function getaddEmp(){
 		return false;
 	}
 	
-	var sendvalue={employeeName:name,empEmailId:email,empPhone:phone,empPassword:password,empRole:emprole,empid:empid}
+	var sendvalue={employeeName:name,empEmailId:email,phone:phone,empPassword:password,empRole:emprole,empid:empid,reportManager:manager}
 	var opts = {
             type: "POST",
             success: function (data) {
@@ -122,7 +123,7 @@ function getaddEmp(){
                   <div class="col-md-5">
                     <div class="form-group">
                       <label for="phone">Phone</label>
-                      <input type="number" class="form-control input-lg" id="phone" value="${empPhone}" placeholder="Enter Phone">
+                      <input type="text" class="form-control input-lg" id="phone" value="${empPhone}" placeholder="Enter Phone">
                     </div>
                   </div>
                   <div class="col-md-1">&nbsp;</div>
@@ -146,11 +147,28 @@ function getaddEmp(){
                       <input type="text" class="form-control input-lg" data-clear-btn="true" name="emprole" id="emprole" value="${empRole}" digits="true" readonly="readonly"/>
                     </div>
                   </div>
+                
+                <div class="col-md-1">&nbsp;</div>
+                  <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="emprole">Report Manager </label>
+                    <select name="reportManager" id="reportManager" class="form-control input-lg">
+								  	  <c:if test="${reportManager==''}">
+								  	     <option value="NA">select</option> 	
+									  </c:if>
+									  <c:forEach var="RowData" items="${empList}">
+									  <option <c:if test="${RowData['executiveId'] == reportManager}">selected</c:if> value="<c:out value="${RowData['executiveId']}"/>">
+									  <c:out value="${RowData['executiveName']}"/>
+									  </option> 									  
+								  	  </c:forEach>
+								   </select></div>
+                  </div>
+                  </div>
                 </div>
               </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" data-target=".bs-example-modal-sm" class="btn btn-info pull-right" onclick="return getaddEmp();">Submit</button>
+                <button type="submit" data-target=".bs-example-modal-sm" class="btn btn-info pull-right" data-toggle="modal" onclick="return getaddEmp();">Submit</button>
               </div>
             </form>
           </div>
@@ -173,10 +191,7 @@ function getaddEmp(){
                                                 
       </div>
       <div class="modal-footer">
-        <form id="id2DelFrm" method="GET">
-          <input type="hidden" class="form-control" id="id2Delete" name="id2Delete">
-          <button type="submit" class="btn btn-danger"><i class="fa fa-fw fa-remove"></i>Close</button>
-        </form>
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

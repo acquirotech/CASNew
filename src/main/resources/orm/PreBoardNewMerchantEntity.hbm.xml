@@ -41,8 +41,10 @@
             <column name="LOCATION" length="65" not-null="false" />
         </property>
         
-         
-         <property name="kycCheck" type="string">
+           <property name="kycCheck" type="string">
+            <column name="KYC_CHECK" length="45" not-null="true" />
+        </property>
+         <property name="chequeNo" type="string">
             <column name="CHEQUE_NO" length="45" not-null="true" />
         </property>
         <property name="created_on" type="string">
@@ -51,6 +53,20 @@
         <property name="aquirerCode" type="string">
             <column name="AQUIRER_CODE" length="60" not-null="false" />
         </property>
-      
+        <property name="nashNumber" type="string">
+            <column name="NACH_NUMBER" length="60" not-null="false" />
+        </property>
+         <property name="nashBankNAme" type="string">
+            <column name="NACH_BANKNAME" length="60" not-null="false" />
+        </property>
+         <property name="nachDate" type="string">
+            <column name="NACH_DATE" length="60" not-null="false" />
+        </property>
+        <property name="salesType" type="string">
+            <column name="salestype" length="60" not-null="false" />
+        </property>
+         <property name="employeeName" type="string">
+            <column name="employeename" length="60" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

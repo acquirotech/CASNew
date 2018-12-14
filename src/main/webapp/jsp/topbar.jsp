@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <body class="hold-transition skin-blue fixed sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper"> <!-- closed in footer -->
@@ -26,21 +27,23 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs"><%= session.getAttribute("userName") %></span>
             </a>
             <ul class="dropdown-menu">
               <li class="user-header">
                 <img src="resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 <p>
-                  Alexander Pierce</br><small>Web Developer</small>
+                  <%= session.getAttribute("userName") %></br><small>
+                  <%= session.getAttribute("empRoleName") %>
+                  </small>
                 </p>
               </li>
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="empProfileTopBar?empId="<%= session.getAttribute("empRoleName") %> class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>

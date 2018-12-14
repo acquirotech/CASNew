@@ -56,6 +56,10 @@ public class MainController{
 	MainHandlerInf mainHandler;
 		
 	@Autowired
+	MerchantHanlderInf merchantHandler;
+
+	
+	@Autowired
 	MerchantHanlderInf  mrchantHandler;
 	final static Logger logger = Logger.getLogger(MainController.class);	
 		
@@ -129,17 +133,21 @@ public class MainController{
 		String merchantId =request.getParameter("MerchantId");
 		ModelAndView model = new ModelAndView();
 		List<HashMap<String,String>> list = null;
+		List<HashMap<String,String>> emplist = null;
 	    if (AcqAuthToken.getAuthToken().getName().length()!=13&&AcqAuthToken.getAuthToken().getName() != "anonymousUser" ){
 	    	String emp = AcqAuthToken.getAuthToken().getName();
 	    	
 	    	ServiceDto<Map> daoResponse = mainHandler.PreBoardedmerchantdetails(merchantId,emp);
 	    	Map merchantDetails = daoResponse.getResult();
+	    	ServiceDto<List<HashMap<String, String>>> globalempList= merchantHandler.empexecutivesList();
+			emplist = globalempList.getResult();
+			model.addObject("executiveListDsa", emplist);
 	    	ServiceDto<List<HashMap<String, String>>> global= mrchantHandler.executivesList();
 			list = global.getResult();
-			model.addObject("executiveList", list);
+			model.addObject("empList", list);
 			model.addObject("kycCheck", merchantDetails.get("kycCheck"));
-	    	//System.out.println("qqqqqqq::::::::::::::"+merchantDetails.get("kycCheck"));
 	    	model.addObject("allMerchantDetails", merchantDetails);
+	    	System.out.println("reter::"+merchantDetails);
 	    	model.setViewName("PreBoardingMerchantDetails");
 	    }else{
 			logger.info("you are logged out preboard merchant details");
@@ -155,7 +163,7 @@ public class MainController{
 		Map<String,String> responseMap = new HashMap<String,String>();
 		System.out.println("admnresadmnresadmnresadmnres:");
 		try{
-			if(AcqAuthToken.getAuthToken().getName().equals("admin@acquiro.com")){
+			if(AcqAuthToken.getAuthToken().getName().equals("admin@acquiropayments.com")){
 				ServiceDto<HashMap<String,String>> response1  = mainHandler.getSuperAdminDetails(AcqAuthToken.getAuthToken().getName(),admnres);
 				HashMap<String,String> res =  response1.getResult();
 				if(res.isEmpty()){
@@ -642,6 +650,19 @@ public class MainController{
 					HttpSession session = request.getSession();
 					session.setAttribute("userName", res.get(0));
 					session.setAttribute("empRole", res.get(1));
+					if(res.get(1).equals("1")){
+						session.setAttribute("empRoleName", "Admin");
+					}else if(res.get(1).equals("2")){
+						session.setAttribute("empRoleName", "Boarding");
+					}else if(res.get(1).equals("3")){
+						session.setAttribute("empRoleName", "Billing");
+					}else if(res.get(1).equals("4")){
+						session.setAttribute("empRoleName", "Support");
+					}else if(res.get(1).equals("5")){
+						session.setAttribute("empRoleName", "Sales");
+					}else{
+						
+					}
 					model.setViewName("home");
 				}else{
 					ServiceDto<List<String>> response1  = mainHandler.getHomePageReport(AcqAuthToken.getAuthToken().getName());
@@ -657,6 +678,19 @@ public class MainController{
 					HttpSession session = request.getSession();
 					session.setAttribute("userName", res.get(0));
 					session.setAttribute("empRole", res.get(1));
+					if(res.get(1).equals("1")){
+						session.setAttribute("empRoleName", "Admin");
+					}else if(res.get(1).equals("2")){
+						session.setAttribute("empRoleName", "Boarding");
+					}else if(res.get(1).equals("3")){
+						session.setAttribute("empRoleName", "Billing");
+					}else if(res.get(1).equals("4")){
+						session.setAttribute("empRoleName", "Support");
+					}else if(res.get(1).equals("5")){
+						session.setAttribute("empRoleName", "Sales");
+					}else{
+						
+					}
 					model.setViewName("nhome");
 				}				
 			}catch(Exception e){

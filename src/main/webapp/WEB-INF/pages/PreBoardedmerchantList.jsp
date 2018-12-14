@@ -12,16 +12,16 @@ function empProfile(profileid,user,email,phone,status,date,role){
 	document.getElementById("dynForm").submit();
 }
 
-function deleteEmp(empId){
-	if (confirm("Do you want to delete Employee ?") == true) {
-		var sendvalue={dummyUser:empId}
+function deleteDeviceConfirm(empId){
+	if (confirm("Do you want to delete PreBoard Merchant ?") == true) {
+		var sendvalue={id:empId}
 		var opts = {
 	            type: "POST",
 	            success: function (data) {
 	                $(".loading").css("visibility","hidden");
 	                if (data.status == 0&&data.message=='OK') {
-	                    $("#modal-body").html("<h2>Employee Deleted Successfully</h2>"); 
-	                     window.location.href="empList";
+	                    $("#modal-body").html("<h2>PreMerchant Deleted Successfully</h2>"); 
+	                     window.location.href="PreBoardedMerchantlist";
 	                } else if (data.status==111) {
 	                    $("body").attr("onload","noBack();");
 	                    $("body").attr("onpageshow","if (e00vent.persisted) noBack();");
@@ -45,7 +45,7 @@ function deleteEmp(empId){
 	                	$("#modal-body").html("<h2>Connection Error</h2><p>"+ textStatus+"</p>");  
 	                }
 	            },
-	            url: "deleteEmployee",
+	            url: "deletePreBoard",
 	            data: sendvalue
 	        }; 
 	        $.ajax(opts);
@@ -79,7 +79,7 @@ function deleteEmp(empId){
                 <table class="table table-hover table table-bordered">
                   <thead>
                     <tr>
-                                                 <th>Application No </th>
+                                                <th>PreBoard Id </th>
                                                 <th>Merchant Name</th>
                                                 <th>Contact Details </th>
                                                 <th>Location </th>
@@ -88,8 +88,7 @@ function deleteEmp(empId){
                   </tr>
                   </thead>
                   <tbody>
-                  <?php 
-                  for ($x = 0; $x <= 8; $x++) {?>
+                 
                    <c:forEach var="allRowData" items="${basicMerchantDetails}">
                                                 <c:set value="${allRowData['count']}" var="counter"></c:set>
                                                 <c:set value="${allRowData['merchantName']}" var="merchantvar"></c:set> 
@@ -107,12 +106,14 @@ function deleteEmp(empId){
                                                         <input type="hidden" name="MerchantId" id="MerchantId" value='<c:out value="${allRowData['applicationNo']}"/>' />
                                                          <button type="submit" class="btn btn-success btn-xs" ><i class="fa fa-fw fa-eye"></i>View Details</button>
 		                                          </form>
+		                                          	<button type="submit" class="btn btn-danger btn-xs" onclick='return deleteDeviceConfirm("${allRowData.applicationNo}")'<c:if test="${allRowData.empRole != '1'}">style="display:none;" </c:if>><i class="fa fa-fw fa-remove"></i>Delete</button>
+												
                                                         </div>
                                                         </td>
                                                     </tr>
                                                 </c:if>
                                             </c:forEach>
-                  <?php } ?>
+                
                   </tbody>
                 </table>
               </div>

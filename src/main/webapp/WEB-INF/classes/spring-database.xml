@@ -56,6 +56,10 @@
 				<value>orm/AcqLoanDetails.hbm.xml</value>	
 				<value>orm/AcqRechargeListEntity.hbm.xml</value>
 				<value>orm/AcqBankItTransactionEntity.hbm.xml</value>	
+				<value>orm/AcqDsaEntity.hbm.xml</value>
+				<value>orm/AcqPrepaidInventoryDeviceEntity.hbm.xml</value>
+				<value>orm/AcqCustomerDetails.hbm.xml</value>
+				<value>orm/AcqCustomerDetailComments.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
